@@ -29,16 +29,18 @@ TextEditingController controller = TextEditingController();
             controller: controller,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search),
-              hintText: 'Looking for...',
+              hintText: 'Cerca una ricetta...',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                //borderSide: BorderSide(color: colorsModel.getColoreSecondario()),
-                borderSide: BorderSide(color: colorsModel.getColoreSecondario()),
+               borderRadius: BorderRadius.circular(20),
+               borderSide: BorderSide(color: Colors.black),
+              ),
+              focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(color: colorsModel.getColoreSecondario(), width: 2.0),
+                ),
+              ),
               )
             )
-            )
-          )
-         
         ],
       ),
     );

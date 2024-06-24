@@ -143,4 +143,11 @@ class RicetteProvider extends ChangeNotifier{
 
   }
   
+  List <String> getNomeCategorie()
+  {
+    List <String> cat = [];
+    for (Categoria c in categorie)
+      cat.add(c.nome);
+    return cat;
+  }
 }

@@ -39,8 +39,19 @@ TextEditingController controller = TextEditingController();
               borderSide: BorderSide(color: colorsModel.getColoreSecondario(), width: 2.0),
                 ),
               ),
-              )
-            )
+              ),
+            ),
+            Expanded (
+              child: ListView.builder(
+                itemCount: ricetteModel.categorie.length,
+                itemBuilder: (context, index) {
+                  final category = ricetteModel.categorie[index];
+                  return ListTile(
+                    
+                  );
+                },
+              ),
+              ),
         ],
       ),
     );

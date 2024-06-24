@@ -10,89 +10,115 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class MyDialog extends StatelessWidget {
-MyDialog({super.key});
+  MyDialog({super.key});
 
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ColorsProvider,RicetteProvider>(builder: (context,colorsModel,ricetteModel,_){
-    return AlertDialog(
-      backgroundColor: Colors.white,
-      content: SizedBox(
-        width: 400,
-        height: 350,
-        child: Column(
-          children: [
-            Icon(
-              Icons.checklist_rounded,
-              color: Colors.orange.shade600,
-              size: 70,
-            ),
-            Spacer(),
-            Expanded(
-              child:ListView.builder(
-                  itemCount: ricetteModel.categorie.length,
-                  itemBuilder: (context,index){
-                  return Row(
-                    children: [
-                      RadioListTile(
-                        title: Text(
-                          ricetteModel.categorie.elementAt(index).nome,
-                          style: GoogleFonts.encodeSans(
-                            textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w600 )
+    return Consumer2<ColorsProvider, RicetteProvider>(
+      builder: (context, colorsModel, ricetteModel, _) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          content: SizedBox(
+            width: 400,
+            height: 350,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.checklist_rounded,
+                  color: Colors.orange.shade600,
+                  size: 70,
+                ),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: ricetteModel.categorie.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: ricetteModel.categorie.length,
+                          itemBuilder: (context, index) {
+                            return CheckboxListTile(
+                              activeColor: colorsModel.getColoreSecondario(),
+                              title: Text(
+                                ricetteModel.categorie.elementAt(index).nome,
+                                style: GoogleFonts.encodeSans(
+                                  textStyle: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              value: ricetteModel.selectedCategories[index],
+                              onChanged: (val) {
+                                ricetteModel.toggleCategorySelection(index);
+                              },
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Text(
+                            'No categories available',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                         ),
-                        value: index+1, 
-                        groupValue: index+1, 
-                        onChanged: (val){},
-                      ),  
-                    ],
-                  ); 
-                  },
                 ),
-            ),
-            Spacer(),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.orange.shade600,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1.5
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5), 
-                          spreadRadius: 1.5, 
-                          blurRadius: 4, 
-                          offset: Offset(0, 2), 
-                        ),
-                        
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          "OK",
-                          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        //reset button
+                        ElevatedButton(
+                          onPressed: () {
+                            ricetteModel.resetSelections();
+                          }, 
+                            style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white, 
+                            backgroundColor:colorsModel.getColoreSecondario() , // Cambia il colore in base allo stato del bottone,
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                          ),                          
+                          child: 
+                          Text(
+                              "Reset",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        // save button
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }, 
+                            style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white, 
+                            backgroundColor:colorsModel.getColoreSecondario() , // Cambia il colore in base allo stato del bottone,
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                          ),                          
+                          child: 
+                          Text(
+                              "Save",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-          ],
-        ),
-      ),
+              ],
+            ),
+          ),
+        );
+      },
     );
-  }
-  );
   }
 }

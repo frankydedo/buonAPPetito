@@ -25,10 +25,22 @@ class Ricetta{
     required this.dataAggiunta
   });
 
-  String getCategorie(){
+  /*String getCategorie(){
     String c="";
     for(String cat in categorie){
       c+=" "+cat;
+    }
+    return c;
+  }*/
+
+  String getCategorie() {
+    String c = "";
+    for (int i = 0; i < categorie.length; i++) {
+      if (i == 0) {
+        c += categorie[i]; 
+      }  else {
+        c += ' | ' + categorie[i];
+      }
     }
     return c;
   }

@@ -93,7 +93,7 @@ class RicetteProvider extends ChangeNotifier {
     )
   ];
 
-  List<bool> selectedCategories = List<bool>.filled(7, false);
+  List<bool> selectedCategories = List<bool>.filled(7, false);//risolvere il 7
 
   void toggleCategorySelection(int index) {
     selectedCategories[index] = !selectedCategories[index];

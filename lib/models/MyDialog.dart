@@ -2,6 +2,7 @@
 
 import 'package:buonappetito/models/MyDialog.dart';
 import 'package:buonappetito/models/Ricetta.dart';
+import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class MyDialog extends StatelessWidget {
-  MyDialog({super.key});
+  final Function (bool) onSelectionChanged;
+  MyDialog({super.key, required this.onSelectionChanged});
 
 
   @override
@@ -49,6 +51,9 @@ class MyDialog extends StatelessWidget {
                               value: ricetteModel.selectedCategories[index],
                               onChanged: (val) {
                                 ricetteModel.toggleCategorySelection(index);
+                                onSelectionChanged (
+                                  ricetteModel.selectedCategories.contains(true)
+                                );
                               },
                             );
                           },
@@ -68,6 +73,7 @@ class MyDialog extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             ricetteModel.resetSelections();
+                            onSelectionChanged(false);
                           }, 
                             style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white, 
@@ -105,7 +111,7 @@ class MyDialog extends StatelessWidget {
                           ),                          
                           child: 
                           Text(
-                              "Save",
+                              "Salva",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,

@@ -12,6 +12,18 @@ class ColorsProvider extends ChangeNotifier {
     return isLightMode ? colorePrimario_light : colorePrimario_dark;
   }
 
+  Color getBackgroudColor (BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isLightMode = brightness == Brightness.light;
+    return isLightMode ? Colors.grey.shade100 : colorePrimario_dark;
+  }
+
+  Color getTextColor (BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isLightMode = brightness == Brightness.light;
+    return isLightMode ? Colors.black : Colors.white;
+  }
+
   Color getColoreSecondario(){
     return coloreSecondario;
   }

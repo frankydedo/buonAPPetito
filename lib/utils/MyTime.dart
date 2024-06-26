@@ -1,26 +1,24 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables, unused_import, unnecessary_import
+// ignore_for_file: unused_import, unnecessary_import
 
-import 'package:buonappetito/models/MyDialog.dart';
-import 'package:buonappetito/models/Ricetta.dart';
-import 'package:buonappetito/pages/SearchPage.dart';
+import 'package:buonappetito/utils/MyDialog.dart';
+import 'package:buonappetito/utils/MyDifficolta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
-import 'package:buonappetito/providers/DifficultyProvider.dart';
+import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class MyDifficolta extends StatelessWidget {
+class MyTime extends StatelessWidget {
   final Function(int) onSelectionChanged;
-  final int selectedDifficultyIndex;
+  final int selectedTimeIndex;
 
-  MyDifficolta({Key? key, required this.onSelectionChanged, required this.selectedDifficultyIndex});
+  MyTime({Key? key, required this.onSelectionChanged, required this.selectedTimeIndex});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ColorsProvider, DifficultyProvider>(
-      builder: (context, colorsModel, difficultyModel, _) {
+    return Consumer2<ColorsProvider, Timeprovider>(
+      builder: (context, colorsModel, timeModel, _) {
         return AlertDialog(
           backgroundColor: colorsModel.getColorePrimario(context),
           content: SizedBox(
@@ -29,36 +27,38 @@ class MyDifficolta extends StatelessWidget {
             child: Column(
               children: [
                 Icon(
-                  Icons.restaurant_menu_rounded,
+                  Icons.schedule_rounded,
                   color: colorsModel.getColoreSecondario(),
                   size: 50,
                 ),
                 const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: difficultyModel.allDifficulties.length,
+                    itemCount: timeModel.allDifficulties.length,
                     itemBuilder: (context, index) {
-                      String difficulty = difficultyModel.allDifficulties[index];
-                      bool isSelected = difficultyModel.selectedDifficulties.contains(difficulty);
-
+                      String time = timeModel.allDifficulties[index];
+                      bool isSelected = timeModel.selectedDifficulties.contains(time);
                       return CheckboxListTile(
                         activeColor: colorsModel.getColoreSecondario(),
                         title: Text(
-                          difficulty,
+                          time,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        value: isSelected,
+                        value:isSelected,
                         onChanged: (val) {
-                          if (isSelected) {
-                            difficultyModel.selectedDifficulties.remove(difficulty);
-                            difficultyModel.setSelectedDifficultyIndex(-1);
-                            onSelectionChanged(-1);
-                          } else {
-                            difficultyModel.setSelectedDifficultyIndex(index);
-                            difficultyModel.selectedDifficulties.add(difficulty);
+                          if(isSelected)
+                          {
+                            timeModel.selectedDifficulties.remove(time);
+                            timeModel.setSelectedTimeIndex(-1);
+                            onSelectionChanged(-1);  
+                          }
+                          else
+                          {
+                            timeModel.setSelectedTimeIndex(index);
+                            timeModel.selectedDifficulties.add(time);
                             onSelectionChanged(index);
                           }
                         },
@@ -72,8 +72,8 @@ class MyDifficolta extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        difficultyModel.setSelectedDifficultyIndex(-1);
-                        difficultyModel.selectedDifficulties.clear();
+                        timeModel.setSelectedTimeIndex(-1);
+                        timeModel.selectedDifficulties.clear();
                         onSelectionChanged(-1);
                       },
                       style: ElevatedButton.styleFrom(
@@ -89,7 +89,7 @@ class MyDifficolta extends StatelessWidget {
                       child: Text(
                         "Reset",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -111,7 +111,7 @@ class MyDifficolta extends StatelessWidget {
                       child: Text(
                         "Salva",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

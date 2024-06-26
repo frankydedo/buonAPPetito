@@ -99,7 +99,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     );
   }
 
-  Future<Map<Categoria, bool>?> showcategorieDialog(BuildContext context) {
+  Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie),
@@ -324,7 +324,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         Spacer(),
                                         ElevatedButton(
                                           onPressed: () async {
-                                            selezioneCategorie= (await showcategorieDialog(context))!;
+                                            selezioneCategorie= (await showCategorieDialog(context))!;
                                             if (selezioneCategorie.isNotEmpty) {
                                               List<String> categorieSelezionate = [];
                                               for (MapEntry<Categoria, bool> entry in selezioneCategorie.entries ){

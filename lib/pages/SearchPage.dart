@@ -1,3 +1,5 @@
+import 'package:buonappetito/models/Categoria.dart';
+import 'package:buonappetito/utils/MyCategoriaDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -6,9 +8,9 @@ import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
-import 'package:buonappetito/models/MyDialog.dart';
-import 'package:buonappetito/models/MyDifficolta.dart';
-import 'package:buonappetito/models/MyTime.dart';
+import 'package:buonappetito/utils/MyDialog.dart';
+import 'package:buonappetito/utils/MyDifficolta.dart';
+import 'package:buonappetito/utils/MyTime.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -18,11 +20,15 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+
   TextEditingController controller = TextEditingController();
   List<Ricetta> ListaRicette = [];
   List<Ricetta> ListaFiltrata = [];
   List<Ricetta> ListaInizialeFiltrata = [];
   List<String> activeFilters = [];
+
+  Map<Categoria, bool> selezioneCategorie = {};
+  List<String> categorieSelezionate =[];
 
   bool isButtonPressed1 = false;
   bool isButtonPressed2 = false;
@@ -40,8 +46,44 @@ class _SearchPageState extends State<SearchPage> {
     searchAndFilterRecipes('');
   }
 
+  Future<void> showCategoriesDialog() async {
+    selezioneCategorie = (await showCategorieDialog(context))!;
+    categorieSelezionate.clear();
+    for(var entry in selezioneCategorie.entries){
+      if(entry.value){
+        categorieSelezionate.add(entry.key.nome);
+      }
+    }
+    if(categorieSelezionate.isEmpty){
+      setState(() {
+        isButtonPressed1=false;
+        if(activeFilters.contains('categories')){
+          toggleFilter('categories');
+        }
+      });
+    }else{
+      setState(() {
+        isButtonPressed1=true;
+        if(!activeFilters.contains('categories')){
+          toggleFilter('categories');
+        }
+      });
+    }
+    print(categorieSelezionate.length.toString());
+    searchAndFilterRecipes(controller.text);
+  }
+
+  Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -71,109 +113,116 @@ class _SearchPageState extends State<SearchPage> {
                   onChanged: (query) => searchAndFilterRecipes(query),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Primo pulsante (Categorie)
-                  SizedBox(
-                    width: screenWidth * 0.3,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        showCategoriesDialog();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: isButtonPressed1
-                            ? colorsModel.getColoreSecondario()
-                            : colorsModel.getColoreSecondario().withOpacity(.4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Primo pulsante (Categorie)
+                    SizedBox(
+                      width: screenWidth * 0.30,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          showCategoriesDialog();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: isButtonPressed1
+                              ? colorsModel.getColoreSecondario()
+                              : colorsModel.getColoreSecondario().withOpacity(.4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          elevation: isButtonPressed1 ? 3 : 0,
+                          shadowColor: Colors.black,
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        elevation: isButtonPressed1 ? 5 : 0,
-                        shadowColor: Colors.black,
-                      ),
-                      icon: Icon(Icons.checklist_rounded, size: 15),
-                      label: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          "Categorie",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                        icon: Icon(Icons.checklist_rounded, size: 20),
+                        label: FittedBox(
+                          //fit: BoxFit.scaleDown,
+                          child: Text(
+                            "Categ.",
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                    Spacer(),
+                
+                    // Secondo pulsante (Difficoltà)
+                    SizedBox(
+                      width: screenWidth * 0.30,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          showDifficultyDialog(context, difficultyModel);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: isButtonPressed2
+                              ? colorsModel.getColoreSecondario()
+                              : colorsModel.getColoreSecondario().withOpacity(.4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          elevation: isButtonPressed2 ? 3 : 0,
+                          shadowColor: Colors.black,
+                        ),
+                        icon: Icon(Icons.restaurant_menu_rounded, size: 20),
+                        label: FittedBox(
+                          //fit: BoxFit.scaleDown,
+                          child: Text(
+                            "Diffic.",
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
 
-                  // Secondo pulsante (Difficoltà)
-                  SizedBox(
-                    width: screenWidth * 0.3,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        showDifficultyDialog(context, difficultyModel);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: isButtonPressed2
-                            ? colorsModel.getColoreSecondario()
-                            : colorsModel.getColoreSecondario().withOpacity(.4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                    Spacer(),
+                
+                    // Terzo pulsante (Tempo)
+                    SizedBox(
+                      width: screenWidth * 0.30,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          showTimeDialog(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: isButtonPressed3
+                              ? colorsModel.getColoreSecondario()
+                              : colorsModel.getColoreSecondario().withOpacity(.4),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          elevation: isButtonPressed3 ? 3 : 0,
+                          shadowColor: Colors.black,
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        elevation: isButtonPressed2 ? 5 : 0,
-                        shadowColor: Colors.black,
-                      ),
-                      icon: Icon(Icons.restaurant_menu_rounded, size: 15),
-                      label: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          "Difficoltà",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
+                        icon: Icon(Icons.schedule_rounded, size: 20),
+                        label: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "Tempo",
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-
-                  // Terzo pulsante (Tempo)
-                  SizedBox(
-                    width: screenWidth * 0.25,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        showTimeDialog(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: isButtonPressed3
-                            ? colorsModel.getColoreSecondario()
-                            : colorsModel.getColoreSecondario().withOpacity(.4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        elevation: isButtonPressed3 ? 5 : 0,
-                        shadowColor: Colors.black,
-                      ),
-                      icon: Icon(Icons.schedule_rounded, size: 15),
-                      label: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          "Tempo",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              
               Expanded(
                 child: ListView.builder(
                   itemCount: ListaFiltrata.length,
@@ -190,10 +239,10 @@ class _SearchPageState extends State<SearchPage> {
                       },
                       child: ListTile(
                         leading: Container(
-                          width: 50,
-                          height: 50,
+                          width: 55,
+                          height: 55,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(30),
                             border: Border.all(
                               color: colorsModel.getColoreSecondario(),
                               width: 1.5,
@@ -236,49 +285,52 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void searchAndFilterRecipes(String query) {
-    // Resetta la lista filtrata all'inizio della ricerca
-    ListaFiltrata = List.from(ListaRicette);
 
-    if (query.isNotEmpty) {
-      ListaFiltrata = ListaFiltrata.where((ricetta) {
-        final recipeName = ricetta.titolo.toLowerCase();
-        final recipeIngredients = ricetta.ingredienti.keys.map((key) => key.toLowerCase()).join(' ');
-        final input = query.toLowerCase();
+    setState(() {
+      // Resetta la lista filtrata all'inizio della ricerca
+      ListaFiltrata = List.from(ListaRicette);
 
-        return recipeName.contains(input) || recipeIngredients.contains(input);
-      }).toList();
-    }
+      if (query.isNotEmpty) {
+        ListaFiltrata = ListaFiltrata.where((ricetta) {
+          final recipeName = ricetta.titolo.toLowerCase();
+          final recipeIngredients = ricetta.ingredienti.keys.map((key) => key.toLowerCase()).join(' ');
+          final input = query.toLowerCase();
 
-    // Applica i filtri attivi sulla lista filtrata
-    for (String filter in activeFilters) {
-      switch (filter) {
-        case 'difficulty':
-          ListaFiltrata = applyDifficultyFilter();
-          break;
-        case 'time':
-          ListaFiltrata = applyTimeFilter();
-          break;
+          return recipeName.contains(input) || recipeIngredients.contains(input);
+        }).toList();
       }
-    }
 
-    setState(() {});
+      // Applica i filtri attivi sulla lista filtrata
+      for (String filter in activeFilters) {
+        switch (filter) {
+          case 'difficulty':
+            ListaFiltrata = applyDifficultyFilter();
+            break;
+          case 'time':
+            ListaFiltrata = applyTimeFilter();
+            break;
+          case 'categories':
+            ListaFiltrata = applyCategoriesFilter();
+        }
+      }
+    });
   }
 
-  void showCategoriesDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return MyDialog(
-          onSelectionChanged: (isSelected) {
-            setState(() {
-              isButtonPressed1 = isSelected;
-              toggleFilter('categories');
-            });
-          },
-        );
-      },
-    );
-  }
+  // void showCategoriesDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return MyDialog(
+  //         onSelectionChanged: (isSelected) {
+  //           setState(() {
+  //             isButtonPressed1 = isSelected;
+  //             toggleFilter('categories');
+  //           });
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   void showDifficultyDialog(BuildContext context, DifficultyProvider difficultyProvider) {
     showDialog(
@@ -332,6 +384,16 @@ List<Ricetta> applyDifficultyFilter() {
   return filteredRecipes;
 }
 
+  // metodi per il filtraggio delle ricette in base alle categorie
+
+  List<Ricetta> applyCategoriesFilter() {
+    return ListaFiltrata.where(categoriaDaMostrare).toList();
+  }
+
+  bool categoriaDaMostrare(Ricetta r) {
+    return r.categorie.any((nomeCat) => categorieSelezionate.contains(nomeCat));
+  }
+
 
 
   List<Ricetta> applyTimeFilter() {
@@ -356,7 +418,7 @@ List<Ricetta> applyDifficultyFilter() {
           filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione < 90).toList();
           break;
         case "> 90":
-          filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione > 90).toList();
+          filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione > 0).toList();
           break;
       }
     }
@@ -370,7 +432,7 @@ List<Ricetta> applyDifficultyFilter() {
     } else {
       activeFilters.add(filter);
     }
-
+    print(activeFilters.toList().toString());
     searchAndFilterRecipes(controller.text); // Riesegue la ricerca e i filtri con i filtri aggiornati
   }
 }

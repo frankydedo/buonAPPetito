@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 
 class MyDifficolta extends StatelessWidget {
   final Function(int) onSelectionChanged;
+  final int selectedDifficultyIndex;
 
-  MyDifficolta({Key? key, required this.onSelectionChanged});
+  MyDifficolta({Key? key, required this.onSelectionChanged, required this.selectedDifficultyIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,8 @@ class MyDifficolta extends StatelessWidget {
                     itemCount: difficultyModel.allDifficulties.length,
                     itemBuilder: (context, index) {
                       String difficulty = difficultyModel.allDifficulties[index];
+                      bool isSelected = difficultyModel.selectedDifficulties.contains(difficulty);
+
                       return CheckboxListTile(
                         activeColor: colorsModel.getColoreSecondario(),
                         title: Text(
@@ -47,14 +50,17 @@ class MyDifficolta extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        value: difficultyModel.selectedDifficulties.contains(difficulty),
+                        value: isSelected,
                         onChanged: (val) {
-                          if (val!) {
-                            difficultyModel.setSelectedDifficultyIndex(index);
-                          } else {
+                          if (isSelected) {
+                            difficultyModel.selectedDifficulties.remove(difficulty);
                             difficultyModel.setSelectedDifficultyIndex(-1);
+                            onSelectionChanged(-1);
+                          } else {
+                            difficultyModel.setSelectedDifficultyIndex(index);
+                            difficultyModel.selectedDifficulties.add(difficulty);
+                            onSelectionChanged(index);
                           }
-                          onSelectionChanged(index);
                         },
                       );
                     },
@@ -67,6 +73,7 @@ class MyDifficolta extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         difficultyModel.setSelectedDifficultyIndex(-1);
+                        difficultyModel.selectedDifficulties.clear();
                         onSelectionChanged(-1);
                       },
                       style: ElevatedButton.styleFrom(

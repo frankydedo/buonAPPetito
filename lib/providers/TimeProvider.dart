@@ -11,12 +11,12 @@ class Timeprovider with ChangeNotifier {
   }
 
   List<String> get allDifficulties => [
-    "< 15" ,
-    "< 30" ,
-    "< 60" ,
-    "< 90" ,
-    "> 90" 
-    ];
+        "< 15",
+        "< 30",
+        "< 60",
+        "< 90",
+        "> 90"
+      ];
 
   List<String> get selectedDifficulties {
     if (_selectedTimeIndex == -1) {

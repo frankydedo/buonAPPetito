@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 
 class MyTime extends StatelessWidget {
   final Function(int) onSelectionChanged;
+  final int selectedTimeIndex;
 
-  MyTime({Key? key, required this.onSelectionChanged});
+  MyTime({Key? key, required this.onSelectionChanged, required this.selectedTimeIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class MyTime extends StatelessWidget {
       builder: (context, colorsModel, timeModel, _) {
         return AlertDialog(
           backgroundColor: colorsModel.getColorePrimario(context),
-        content: SizedBox(
+          content: SizedBox(
             width: 400,
             height: 450,
             child: Column(
@@ -35,24 +36,31 @@ class MyTime extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: timeModel.allDifficulties.length,
                     itemBuilder: (context, index) {
-                      String difficulty = timeModel.allDifficulties[index];
+                      String time = timeModel.allDifficulties[index];
+                      bool isSelected = timeModel.selectedDifficulties.contains(time);
                       return CheckboxListTile(
                         activeColor: colorsModel.getColoreSecondario(),
                         title: Text(
-                          difficulty,
+                          time,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        value: timeModel.selectedDifficulties.contains(difficulty),
+                        value:isSelected,
                         onChanged: (val) {
-                          if (val!) {
-                            timeModel.setSelectedTimeIndex(index);
-                          } else {
+                          if(isSelected)
+                          {
+                            timeModel.selectedDifficulties.remove(time);
                             timeModel.setSelectedTimeIndex(-1);
+                            onSelectionChanged(-1);  
                           }
-                          onSelectionChanged(index);
+                          else
+                          {
+                            timeModel.setSelectedTimeIndex(index);
+                            timeModel.selectedDifficulties.add(time);
+                            onSelectionChanged(index);
+                          }
                         },
                       );
                     },
@@ -65,6 +73,7 @@ class MyTime extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         timeModel.setSelectedTimeIndex(-1);
+                        timeModel.selectedDifficulties.clear();
                         onSelectionChanged(-1);
                       },
                       style: ElevatedButton.styleFrom(

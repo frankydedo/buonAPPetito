@@ -1,35 +1,44 @@
-import 'package:buonappetito/models/MyDialog.dart';
-import 'package:buonappetito/models/MyDifficolta.dart';
-import 'package:buonappetito/models/MyTime.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:buonappetito/models/MyDialog.dart';
+import 'package:buonappetito/models/MyDifficolta.dart';
+import 'package:buonappetito/models/MyTime.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  
   TextEditingController controller = TextEditingController();
-  List<Ricetta> ListaRicette = []; 
-  List<Ricetta> RicetteAttuali = [];
-  
-  List <Ricetta> ListaFiltrata = [];
+  List<Ricetta> ListaRicette = [];
+  List<Ricetta> ListaFiltrata = [];
+  List<Ricetta> ListaInizialeFiltrata = [];
   List<String> activeFilters = [];
 
   bool isButtonPressed1 = false;
   bool isButtonPressed2 = false;
   bool isButtonPressed3 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    ListaRicette = Provider.of<RicetteProvider>(context, listen: false).ricette;
+    applyInitialFiltering();
+  }
+
+  void applyInitialFiltering() {
+    // Applica la ricerca iniziale quando il widget viene inizializzato
+    searchAndFilterRecipes('');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
 
     return Consumer3<ColorsProvider, RicetteProvider, DifficultyProvider>(
       builder: (context, colorsModel, ricetteModel, difficultyModel, _) {
-        ListaRicette = ricetteModel.ricette; // Inizializzazione di ListaRicette 
+        ListaRicette = ricetteModel.ricette; // Aggiorna ListaRicette da Provider
         return Scaffold(
           body: Column(
             children: <Widget>[
@@ -59,13 +68,13 @@ class _SearchPageState extends State<SearchPage> {
                           color: colorsModel.getColoreSecondario(), width: 2.0),
                     ),
                   ),
-                  onChanged: (query) => searchRecipe(query, ricetteModel),
+                  onChanged: (query) => searchAndFilterRecipes(query),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  //first button
+                  // Primo pulsante (Categorie)
                   SizedBox(
                     width: screenWidth * 0.3,
                     child: ElevatedButton.icon(
@@ -98,7 +107,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
 
-                  //second button
+                  // Secondo pulsante (Difficoltà)
                   SizedBox(
                     width: screenWidth * 0.3,
                     child: ElevatedButton.icon(
@@ -131,7 +140,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
 
-                  //third button
+                  // Terzo pulsante (Tempo)
                   SizedBox(
                     width: screenWidth * 0.25,
                     child: ElevatedButton.icon(
@@ -226,19 +235,34 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  void searchRecipe(String query, RicetteProvider ricetteProvider) {
-    ListaFiltrata = ListaFiltrata.where((Ricetta ricetta) {
-      final recipeName = ricetta.titolo.toLowerCase();
-      final recipeIngredients =
-          ricetta.ingredienti.keys.map((key) => key.toLowerCase()).join(' ');
-      final input = query.toLowerCase();
+  void searchAndFilterRecipes(String query) {
+    // Resetta la lista filtrata all'inizio della ricerca
+    ListaFiltrata = List.from(ListaRicette);
 
-      return recipeName.contains(input) || recipeIngredients.contains(input);
-    }).toList();
+    if (query.isNotEmpty) {
+      ListaFiltrata = ListaFiltrata.where((ricetta) {
+        final recipeName = ricetta.titolo.toLowerCase();
+        final recipeIngredients = ricetta.ingredienti.keys.map((key) => key.toLowerCase()).join(' ');
+        final input = query.toLowerCase();
+
+        return recipeName.contains(input) || recipeIngredients.contains(input);
+      }).toList();
+    }
+
+    // Applica i filtri attivi sulla lista filtrata
+    for (String filter in activeFilters) {
+      switch (filter) {
+        case 'difficulty':
+          ListaFiltrata = applyDifficultyFilter();
+          break;
+        case 'time':
+          ListaFiltrata = applyTimeFilter();
+          break;
+      }
+    }
 
     setState(() {});
   }
-
 
   void showCategoriesDialog() {
     showDialog(
@@ -248,6 +272,7 @@ class _SearchPageState extends State<SearchPage> {
           onSelectionChanged: (isSelected) {
             setState(() {
               isButtonPressed1 = isSelected;
+              toggleFilter('categories');
             });
           },
         );
@@ -256,22 +281,22 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void showDifficultyDialog(BuildContext context, DifficultyProvider difficultyProvider) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return MyDifficolta(
-        onSelectionChanged: (selectedDifficultyIndex) {
-          difficultyProvider.setSelectedDifficultyIndex(selectedDifficultyIndex);
-          setState(() {
-            isButtonPressed2 = selectedDifficultyIndex != -1;
-            toggleFilter('difficulty');
-          });
-        },
-      );
-    },
-  );
-}
-
+    showDialog(
+      context: context,
+      builder: (context) {
+        return MyDifficolta(
+          onSelectionChanged: (selectedDifficultyIndex) {
+            difficultyProvider.setSelectedDifficultyIndex(selectedDifficultyIndex);
+            setState(() {
+              isButtonPressed2 = selectedDifficultyIndex != -1;
+              toggleFilter('difficulty');
+            });
+          },
+          selectedDifficultyIndex: difficultyProvider.selectedDifficultyIndex,
+        );
+      },
+    );
+  }
 
   void showTimeDialog(BuildContext context) {
     showDialog(
@@ -282,129 +307,72 @@ class _SearchPageState extends State<SearchPage> {
             Timeprovider timeProvider = Provider.of<Timeprovider>(context, listen: false);
             timeProvider.setSelectedTimeIndex(selectedTimeIndex);
             setState(() {
-            isButtonPressed3 = selectedTimeIndex != -1;
-            toggleFilter('time');
+              isButtonPressed3 = selectedTimeIndex != -1;
+              toggleFilter('time');
             });
-            // Aggiorna il filtro per il tempo
-            // Esegui un nuovo filtro basato sullo stato aggiornato di isButtonPressed3
           },
+          selectedTimeIndex: Provider.of<Timeprovider>(context, listen: false).selectedTimeIndex,
         );
       },
     );
   }
-  
-List <Ricetta> applyDifficultyFilter() {
 
-  // Ottenere le istanze dei provider
+List<Ricetta> applyDifficultyFilter() {
   DifficultyProvider difficultyProvider = Provider.of<DifficultyProvider>(context, listen: false);
-  
-  // Ottenere la difficoltà selezionata, se presente
   int selectedDifficultyIndex = difficultyProvider.selectedDifficultyIndex;
+  List<Ricetta> filteredRecipes = List.from(ListaFiltrata); // Creare una copia della lista filtrata
 
-  // Filtrare per difficoltà, se selezionata
   if (selectedDifficultyIndex != -1) {
     String selectedDifficulty = difficultyProvider.allDifficulties[selectedDifficultyIndex];
     int selectedDifficultyLevel = difficultyProvider.difficultyLevels[selectedDifficulty] ?? 0;
 
-    // Filtrare le ricette in base alla difficoltà selezionata
-    switch(selectedDifficultyLevel)
-    {
-      case 1:
-       ListaFiltrata = ListaFiltrata.where((ricetta) => ricetta.difficolta! <= 1).toList();
-       break;
-      case 2:
-       ListaFiltrata = ListaFiltrata.where((ricetta) => ricetta.difficolta! <= 2).toList();
-       break;
-      case 3:
-       ListaFiltrata = ListaFiltrata.where((ricetta) => ricetta.difficolta! <= 3).toList();
-       break;
-      case 4:
-       ListaFiltrata = ListaFiltrata.where((ricetta) => ricetta.difficolta! <= 4).toList();
-       break;
-      case 5:
-       ListaFiltrata = ListaFiltrata.where((ricetta) => ricetta.difficolta! <= 5).toList();
-       break;
-      default :
-      ListaFiltrata = ListaFiltrata.where((ricetta) => ricetta.difficolta! > 0).toList();
-      
-    }
-  }
-  return ListaFiltrata;
-
-}
-
-List<Ricetta> applyTimeFilter() {
-  Timeprovider timeProvider = Provider.of<Timeprovider>(context, listen: false);
-  int selectedTimeIndex = timeProvider.selectedTimeIndex;
-  List<Ricetta> filteredTime = ListaFiltrata;
-
-  if (selectedTimeIndex != -1) {
-    String selectedTime = timeProvider.allDifficulties[selectedTimeIndex];
-
-    // Applicare il filtro basato sull'intervallo di tempo selezionato
-    switch (selectedTime) {
-      case "< 15":
-        filteredTime = filteredTime.where((ricetta) => ricetta.minutiPreparazione < 15).toList();
-        break;
-      case "< 30":
-        filteredTime = filteredTime.where((ricetta) => ricetta.minutiPreparazione < 30).toList();
-        break;
-      case "< 60":
-        filteredTime = filteredTime.where((ricetta) => ricetta.minutiPreparazione < 60).toList();
-        break;
-      case "< 90":
-        filteredTime = filteredTime.where((ricetta) => ricetta.minutiPreparazione < 90).toList();
-        break;
-      case "> 90":
-        filteredTime = filteredTime.where((ricetta) => ricetta.minutiPreparazione > 0).toList();
-        break;
-      default:
-        break;
-    }
+    filteredRecipes = filteredRecipes.where((ricetta) => ricetta.difficolta! <= selectedDifficultyLevel).toList();
   }
 
-  return filteredTime; // Assicura che la funzione restituisca sempre un valore
+  return filteredRecipes;
 }
 
-// Funzione per applicare i filtri attivi
-  void applyActiveFilters() {
-    // Copia la lista filtrata iniziale
-    ListaFiltrata = List.from(ListaRicette);
 
-    // Applica ogni filtro attivo
-    for (String filter in activeFilters) {
-      switch (filter) {
-        case 'categories':
-          // Esempio di applicazione del filtro per categorie
-          //ListaFiltrata = applyCategoriesFilter();
+
+  List<Ricetta> applyTimeFilter() {
+    Timeprovider timeProvider = Provider.of<Timeprovider>(context, listen: false);
+    int selectedTimeIndex = timeProvider.selectedTimeIndex;
+    List<Ricetta> filteredRecipes = ListaFiltrata;
+
+    if (selectedTimeIndex != -1) {
+      String selectedTime = timeProvider.allDifficulties[selectedTimeIndex];
+
+      switch (selectedTime) {
+        case "< 15":
+          filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione < 15).toList();
           break;
-        case 'difficulty':
-          // Esempio di applicazione del filtro per difficoltà
-          ListaFiltrata = applyDifficultyFilter();
+        case "< 30":
+          filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione < 30).toList();
           break;
-        case 'time':
-          // Esempio di applicazione del filtro per tempo
-          ListaFiltrata = applyTimeFilter();
+        case "< 60":
+          filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione < 60).toList();
           break;
-        // Aggiungi altri casi per ulteriori tipi di filtri
+        case "< 90":
+          filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione < 90).toList();
+          break;
+        case "> 90":
+          filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione > 90).toList();
+          break;
       }
     }
 
-    setState(() {});
+    return filteredRecipes;
   }
 
-// Funzione per attivare o disattivare un filtro
   void toggleFilter(String filter) {
     if (activeFilters.contains(filter)) {
-      activeFilters.remove(filter); // Rimuovi il filtro se è attivo
+      activeFilters.remove(filter);
     } else {
-      activeFilters.add(filter); // Aggiungi il filtro se non è attivo
+      activeFilters.add(filter);
     }
 
-    applyActiveFilters(); // Rapplica i filtri attivi
+    searchAndFilterRecipes(controller.text); // Riesegue la ricerca e i filtri con i filtri aggiornati
   }
-
-
 }
 
 class PlaceholderPage extends StatelessWidget {

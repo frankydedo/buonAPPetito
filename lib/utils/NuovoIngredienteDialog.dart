@@ -144,43 +144,22 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                     // tasto annulla
 
                     GestureDetector(
-                      onTap: () {
+                      onTap: (){
                         Navigator.pop(context);
                       },
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        width: 130,
-                        decoration: BoxDecoration(
+                      child: Text(
+                        "Annulla",
+                        style: TextStyle(
                           color: colorsModel.getColoreSecondario(),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              spreadRadius: 1.5,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Text(
-                            "ANNULLA",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
+
                     // tasto fatto
-                    GestureDetector(
-                      onTap: () {
+                    ElevatedButton(
+                      onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
                           // Solo se l'unità è 'grammi', aggiunge il valore della quantità
                           if (unit == 'grammi') {
@@ -192,38 +171,26 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                             Navigator.pop(context, nuovoIngrediente);
                           }
                         }
-                      },
-                      child: Container(
-                        width: 130,
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: colorsModel.getColoreSecondario(),
+                      }, 
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white, 
+                        backgroundColor: colorsModel.getColoreSecondario(),
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              spreadRadius: 1.5,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
                         ),
-                        child: Center(
-                          child: Text(
-                            "FATTO",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        elevation: 5,
+                        shadowColor: Colors.black,
+                      ),                          
+                      child: Text(
+                        "Fatto",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
+                    
                   ],
                 ),
               ],

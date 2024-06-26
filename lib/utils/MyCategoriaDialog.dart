@@ -58,7 +58,7 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                 if (newCategoriaNome.isNotEmpty) {
                   Categoria newCategoria = Categoria(nome: newCategoriaNome);
                   setState(() {
-                    ricetteModel.aggiungiNuovacategoria(newCategoria);
+                    ricetteModel.aggiungiNuovaCategoria(newCategoria);
                     widget.selezioneCategorie[newCategoria] = false;
                   });
                   Navigator.pop(context);

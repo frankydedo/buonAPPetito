@@ -103,13 +103,6 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void aggiugniNuovaRicetta(Ricetta r) {
-    for (String nomeCategoria in r.categorie) {
-      for (Categoria c in categorie) {
-        if (c.nome == nomeCategoria) {
-      dataAggiunta: DateTime.now()
-    ),
-
   void aggiungiAiPreferiti(Ricetta r){
     r.setPreferita();
     preferiti.add(r);
@@ -122,7 +115,7 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void aggiungiNuovacategoria(Categoria c){
+  void aggiungiNuovaCategoria(Categoria c){
     if (categorie.contains(c)){
       return;
     }
@@ -135,7 +128,7 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
   
-  void aggiugniNuovaRicetta(Ricetta r){
+  void aggiungiNuovaRicetta(Ricetta r){
     for (String nomeCategoria in r.categorie){
       for(Categoria c in categorie){
         if (c.nome == nomeCategoria){
@@ -186,3 +179,4 @@ class RicetteProvider extends ChangeNotifier {
       return ric;
     }
   }
+}

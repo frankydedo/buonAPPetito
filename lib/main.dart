@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unused_import
 
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/FirstPage.dart';
@@ -6,6 +6,8 @@ import 'package:buonappetito/pages/ImpostazioniPage.dart';
 import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
+import 'package:buonappetito/providers/DifficultyProvider.dart';
+import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +19,15 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => ColorsProvider()),
         ChangeNotifierProvider(create: (_) => RicetteProvider()),
+        ChangeNotifierProvider(create: (_) => DifficultyProvider()),
+        ChangeNotifierProvider(create: (_) => Timeprovider()),
       ],
       child: const MyApp(),
     ),
   );
 }
+
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

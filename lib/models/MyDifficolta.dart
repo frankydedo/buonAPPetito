@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class MyDifficolta extends StatelessWidget {
-  final Function(bool) onSelectionChanged;
+  final Function(int) onSelectionChanged;
 
   MyDifficolta({Key? key, required this.onSelectionChanged});
 
@@ -54,7 +54,7 @@ class MyDifficolta extends StatelessWidget {
                           } else {
                             difficultyModel.setSelectedDifficultyIndex(-1);
                           }
-                          onSelectionChanged(val);
+                          onSelectionChanged(index);
                         },
                       );
                     },
@@ -67,7 +67,7 @@ class MyDifficolta extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         difficultyModel.setSelectedDifficultyIndex(-1);
-                        onSelectionChanged(false);
+                        onSelectionChanged(-1);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: colorsModel.getColorePrimario(context),

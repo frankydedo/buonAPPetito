@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MyTime extends StatelessWidget {
-  final Function(bool) onSelectionChanged;
+  final Function(int) onSelectionChanged;
 
   MyTime({Key? key, required this.onSelectionChanged});
 
@@ -26,7 +26,7 @@ class MyTime extends StatelessWidget {
             child: Column(
               children: [
                 Icon(
-                  Icons.restaurant_menu_rounded,
+                  Icons.schedule_rounded,
                   color: colorsModel.getColoreSecondario(),
                   size: 50,
                 ),
@@ -52,7 +52,7 @@ class MyTime extends StatelessWidget {
                           } else {
                             timeModel.setSelectedTimeIndex(-1);
                           }
-                          onSelectionChanged(val);
+                          onSelectionChanged(index);
                         },
                       );
                     },
@@ -65,7 +65,7 @@ class MyTime extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         timeModel.setSelectedTimeIndex(-1);
-                        onSelectionChanged(false);
+                        onSelectionChanged(-1);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: colorsModel.getColorePrimario(context),

@@ -3,6 +3,7 @@
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/FirstPage.dart';
 import 'package:buonappetito/pages/ImpostazioniPage.dart';
+import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
@@ -76,23 +77,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light, // Modalità scura non ancora disponibile
         theme: ThemeData(
-          scaffoldBackgroundColor: colorsModel.getColorePrimario(context),
+          scaffoldBackgroundColor: colorsModel.getBackgroudColor(context),
           datePickerTheme: DatePickerThemeData(
-            backgroundColor: colorsModel.getColorePrimario(context),
+            backgroundColor: colorsModel.getBackgroudColor(context),
             todayForegroundColor: MaterialStatePropertyAll(Colors.blue[900]),
           ),
           drawerTheme: DrawerThemeData(
-            backgroundColor: colorsModel.getColorePrimario(context),
+            backgroundColor: colorsModel.getBackgroudColor(context),
           ),
           appBarTheme: AppBarTheme(
-            color: colorsModel.getColorePrimario(context),
+            color: colorsModel.getBackgroudColor(context),
             iconTheme: IconThemeData(
               color: colorsModel.getColoreSecondario(),
               size: 28.0,
             ),
           ),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: colorsModel.getColorePrimario(context),
+            backgroundColor: colorsModel.getBackgroudColor(context),
             selectedItemColor: colorsModel.getColoreSecondario(),
             unselectedItemColor: colorsModel.getColoreSecondario(),
             selectedIconTheme: IconThemeData(
@@ -158,6 +159,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/searchpage': (context) => SearchPage(),
           '/preferitipage': (context) => PreferitiPage(),
           '/impostazionipage': (context) => ImpostazioniPage(),
+          '/nuovaricettapage': (context) => NuovaRicettaPage(),
         },
       );
     });

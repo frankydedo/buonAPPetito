@@ -49,18 +49,12 @@ class MyTime extends StatelessWidget {
                         ),
                         value:isSelected,
                         onChanged: (val) {
-                          if(isSelected)
-                          {
-                            timeModel.selectedDifficulties.remove(time);
-                            timeModel.setSelectedTimeIndex(-1);
-                            onSelectionChanged(-1);  
-                          }
-                          else
+                          if(index!=selectedTimeIndex)
                           {
                             timeModel.setSelectedTimeIndex(index);
                             timeModel.selectedDifficulties.add(time);
                             onSelectionChanged(index);
-                          }
+                          }                          
                         },
                       );
                     },
@@ -71,11 +65,13 @@ class MyTime extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        timeModel.setSelectedTimeIndex(-1);
-                        timeModel.selectedDifficulties.clear();
-                        onSelectionChanged(-1);
-                      },
+                      onPressed: timeModel.hasSelection
+                            ? () {
+                                timeModel.setSelectedTimeIndex(-1);
+                                onSelectionChanged(-1);
+                                Navigator.pop(context);
+                              }
+                            : null,
                       style: ElevatedButton.styleFrom(
                         foregroundColor: colorsModel.getColorePrimario(context),
                         backgroundColor: colorsModel.getColoreSecondario(),

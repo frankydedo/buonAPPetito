@@ -32,4 +32,5 @@ class DifficultyProvider with ChangeNotifier {
     }
     return allDifficulties.sublist(0, _selectedDifficultyIndex + 1);
   }
+   bool get hasSelection => _selectedDifficultyIndex != -1 || selectedDifficulties.isNotEmpty;
 }

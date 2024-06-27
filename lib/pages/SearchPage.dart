@@ -9,7 +9,6 @@ import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
-import 'package:buonappetito/utils/MyDialog.dart';
 import 'package:buonappetito/utils/MyDifficolta.dart';
 import 'package:buonappetito/utils/MyTime.dart';
 
@@ -345,8 +344,16 @@ class _SearchPageState extends State<SearchPage> {
           onSelectionChanged: (selectedDifficultyIndex) {
             difficultyProvider.setSelectedDifficultyIndex(selectedDifficultyIndex);
             setState(() {
-              isButtonPressed2 = selectedDifficultyIndex != -1;
-              toggleFilter('difficulty');
+              if(selectedDifficultyIndex == -1)
+              {
+               toggleFilter('difficulty');
+              }
+              else
+              {
+                activeFilters.add('difficulty');
+                searchAndFilterRecipes(controller.text);
+              }
+            isButtonPressed2 = selectedDifficultyIndex != -1;
             });
           },
           selectedDifficultyIndex: difficultyProvider.selectedDifficultyIndex,
@@ -363,9 +370,17 @@ class _SearchPageState extends State<SearchPage> {
           onSelectionChanged: (selectedTimeIndex) {
             Timeprovider timeProvider = Provider.of<Timeprovider>(context, listen: false);
             timeProvider.setSelectedTimeIndex(selectedTimeIndex);
-            setState(() {
-              isButtonPressed3 = selectedTimeIndex != -1;
-              toggleFilter('time');
+            setState(() {   
+              if(selectedTimeIndex == -1)
+              {
+               toggleFilter('time');
+              }
+              else
+              {
+                activeFilters.add('time');
+                searchAndFilterRecipes(controller.text);
+              }
+            isButtonPressed3 = selectedTimeIndex != -1;
             });
           },
           selectedTimeIndex: Provider.of<Timeprovider>(context, listen: false).selectedTimeIndex,

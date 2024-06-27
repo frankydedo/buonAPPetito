@@ -52,11 +52,7 @@ class MyDifficolta extends StatelessWidget {
                         ),
                         value: isSelected,
                         onChanged: (val) {
-                          if (isSelected) {
-                            difficultyModel.selectedDifficulties.remove(difficulty);
-                            difficultyModel.setSelectedDifficultyIndex(-1);
-                            onSelectionChanged(-1);
-                          } else {
+                          if (index!=selectedDifficultyIndex) {
                             difficultyModel.setSelectedDifficultyIndex(index);
                             difficultyModel.selectedDifficulties.add(difficulty);
                             onSelectionChanged(index);
@@ -71,11 +67,13 @@ class MyDifficolta extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: difficultyModel.hasSelection 
+                      ?() {
                         difficultyModel.setSelectedDifficultyIndex(-1);
-                        difficultyModel.selectedDifficulties.clear();
                         onSelectionChanged(-1);
-                      },
+                        Navigator.pop(context);
+                      }
+                      : null,
                       style: ElevatedButton.styleFrom(
                         foregroundColor: colorsModel.getColorePrimario(context),
                         backgroundColor: colorsModel.getColoreSecondario(),

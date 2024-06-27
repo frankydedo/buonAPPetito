@@ -33,6 +33,14 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, top: 8),
                 child: ListTile(
+                  onTap:() {Navigator.pushNamed(context, '/carrellopage');},
+                  leading: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario()),
+                  title: Text("CARRELLO", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, top: 8),
+                child: ListTile(
                   onTap:() {Navigator.pushNamed(context, '/impostazionipage');},
                   leading: Icon(Icons.settings_rounded, color: colorsModel.getColoreSecondario()),
                   title: Text("IMPOSTAZIONI", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),

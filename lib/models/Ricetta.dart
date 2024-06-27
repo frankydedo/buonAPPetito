@@ -75,6 +75,16 @@ class Ricetta {
     minutiPreparazione = minuti;
   }
 
+  String getDifficoltaAsString(){
+    switch (this.difficolta) {
+      case 1: return "Principiante";
+      case 2: return "Amatoriale";
+      case 3: return "Intermedio";
+      case 4: return "Chef";
+      default: return "Chef Stellato";
+    }
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

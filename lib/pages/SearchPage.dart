@@ -1,4 +1,5 @@
 import 'package:buonappetito/models/Categoria.dart';
+import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -139,7 +140,6 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         icon: Icon(Icons.checklist_rounded, size: 20),
                         label: FittedBox(
-                          //fit: BoxFit.scaleDown,
                           child: Text(
                             "Categ.",
                             style: TextStyle(
@@ -237,40 +237,45 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         );
                       },
-                      child: ListTile(
-                        leading: Container(
-                          width: 55,
-                          height: 55,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                              color: colorsModel.getColoreSecondario(),
-                              width: 1.5,
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);}));
+                        },
+                        child: ListTile(
+                          leading: Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(
+                                color: colorsModel.getColoreSecondario(),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: Image.asset(
+                                recipeScroll.percorsoImmagine,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(25),
-                            child: Image.asset(
-                              recipeScroll.percorsoImmagine,
-                              fit: BoxFit.cover,
-                            ),
+                          title: Text(
+                            recipeScroll.titolo,
+                            style: GoogleFonts.encodeSans(
+                                textStyle: TextStyle(
+                                    color: const Color.fromARGB(255, 16, 0, 0),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800)),
                           ),
-                        ),
-                        title: Text(
-                          recipeScroll.titolo,
-                          style: GoogleFonts.encodeSans(
-                              textStyle: TextStyle(
-                                  color: const Color.fromARGB(255, 16, 0, 0),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800)),
-                        ),
-                        subtitle: Text(
-                          recipeScroll.getCategorie(),
-                          style: GoogleFonts.encodeSans(
-                              textStyle: TextStyle(
-                                  color: Color.fromARGB(255, 9, 0, 0),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
+                          subtitle: Text(
+                            recipeScroll.getCategorie(),
+                            style: GoogleFonts.encodeSans(
+                                textStyle: TextStyle(
+                                    color: Color.fromARGB(255, 9, 0, 0),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400)),
+                          ),
                         ),
                       ),
                     );

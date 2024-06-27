@@ -12,6 +12,12 @@ class ColorsProvider extends ChangeNotifier {
     return isLightMode ? colorePrimario_light : colorePrimario_dark;
   }
 
+  Color getColoreTitoli(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isLightMode = brightness == Brightness.light;
+    return isLightMode ? Colors.indigo.shade800 : Colors.indigo.shade800;//da valutare il dark
+  }
+
   Color getBackgroudColor (BuildContext context) {
     var brightness = MediaQuery.of(context).platformBrightness;
     bool isLightMode = brightness == Brightness.light;

@@ -174,7 +174,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                         "Crea una nuova ricetta",
                         style: GoogleFonts.encodeSans(
                           textStyle: TextStyle(
-                            color: colorsModel.getColoreSecondario(),
+                            color: colorsModel.getColoreTitoli(context),
                             fontSize: 35,
                             fontWeight: FontWeight.w800,
                           ),
@@ -1158,7 +1158,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                   ricetteModel.aggiungiNuovaRicetta(nuovaRicetta);
                                   Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.black, fontSize: 18),), backgroundColor: Colors.white),
+                                    const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                                   );
                                   print(ricetteModel.ricette.length.toString());
                                 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:buonappetito/models/Ricetta.dart';
+import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/CaroselloTile.dart';
@@ -73,7 +74,12 @@ class _DashboardPageState extends State<DashboardPage> {
                           },
                           itemCount: ricetteCarosello.length,
                           itemBuilder: (context, index) {
-                            return CaroselloTile(ricetta: ricetteCarosello[index]);
+                            return GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ricetteCarosello[index]);}));
+                              },
+                              child: CaroselloTile(ricetta: ricetteCarosello[index])
+                            );
                           },
                         ),
                       ),
@@ -111,6 +117,9 @@ class _DashboardPageState extends State<DashboardPage> {
               ],
             ),
           ),
+
+          //tasto per l'aggiunta di una nuova ricetta 
+          
           floatingActionButton: FloatingActionButton(
             backgroundColor: colorsModel.getColoreSecondario(),
             child: Icon(Icons.add, color: Colors.white, size: 35),

@@ -46,13 +46,20 @@ class _CaroselloTileState extends State<CaroselloTile> {
                             if (widget.ricetta.isFavourite){
                               setState(() {
                                 ricetteModel.rimuoviDaiPreferiti(widget.ricetta);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Ricetta rimossa dai preferiti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                );
                               });
                             }else{
                               setState(() {
                                 ricetteModel.aggiungiAiPreferiti(widget.ricetta);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Ricetta aggiunta ai preferiti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                );
                               });
                             }
                           },
+                          // icona preferiti
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: 

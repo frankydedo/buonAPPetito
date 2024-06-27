@@ -69,7 +69,7 @@ class MyTime extends StatelessWidget {
                             ? () {
                                 timeModel.setSelectedTimeIndex(-1);
                                 onSelectionChanged(-1);
-                                Navigator.pop(context);
+                                
                               }
                             : null,
                       style: ElevatedButton.styleFrom(

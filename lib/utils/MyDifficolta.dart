@@ -71,7 +71,7 @@ class MyDifficolta extends StatelessWidget {
                       ?() {
                         difficultyModel.setSelectedDifficultyIndex(-1);
                         onSelectionChanged(-1);
-                        Navigator.pop(context);
+                        
                       }
                       : null,
                       style: ElevatedButton.styleFrom(

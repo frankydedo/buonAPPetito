@@ -24,6 +24,7 @@ class RicetteProvider extends ChangeNotifier {
   ];
 
   List<Ricetta> preferiti = [];
+  List<String> carrello =[];
   List <Ricetta> ricette = [
     Ricetta(
       categorie: ["Primi", "Carne"],
@@ -55,7 +56,7 @@ class RicetteProvider extends ChangeNotifier {
       percorsoImmagine: "assets/foto_piatti_gz/SpaghettiAlleVongole_1.jpg.avif",
       descrizione: "Spaghetti alle vongole",
       ingredienti: {
-        "Spagghetti": "120 g / testa",
+        "Spaghetti": "120 g / testa",
         "Vongole": "120 g / testa",
         "Sale": "q.b.",
         "Pepe": "q.b."
@@ -100,6 +101,15 @@ class RicetteProvider extends ChangeNotifier {
 
   void toggleCategorySelection(int index) {
     selectedCategories[index] = !selectedCategories[index];
+    notifyListeners();
+  }
+
+  void aggiungiIngredienteAlCarrello(String i){
+    carrello.add(i);
+    notifyListeners();
+  }
+  void rimuoviIngredienteDalCarrello(String i){
+    carrello.remove(i);
     notifyListeners();
   }
 

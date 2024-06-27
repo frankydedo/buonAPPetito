@@ -1,10 +1,12 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
+import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/FirstPage.dart';
 import 'package:buonappetito/pages/ImpostazioniPage.dart';
 import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
+import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
@@ -166,6 +168,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/preferitipage': (context) => PreferitiPage(),
           '/impostazionipage': (context) => ImpostazioniPage(),
           '/nuovaricettapage': (context) => NuovaRicettaPage(),
+          '/carrellopage': (context) => CarrelloPage(),
         },
       );
     });

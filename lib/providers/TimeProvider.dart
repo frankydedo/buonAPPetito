@@ -24,4 +24,6 @@ class Timeprovider with ChangeNotifier {
     }
     return allDifficulties.sublist(0, _selectedTimeIndex + 1);
   }
+
+  bool get hasSelection => _selectedTimeIndex != -1 || selectedDifficulties.isNotEmpty;
 }

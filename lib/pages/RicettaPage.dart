@@ -34,6 +34,19 @@ class _RicettaPageState extends State<RicettaPage> {
                 Spacer(),
                 GestureDetector(
                   onTap: (){
+                    Navigator.pop(context);
+                    ricetteModel.rimuoviRicetta(widget.recipe);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.getColoreSecondario()),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: (){
                     if(widget.recipe.isFavourite){
                       ricetteModel.rimuoviDaiPreferiti(widget.recipe);
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -114,14 +127,14 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     "Difficoltà: ",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w400
                                     ),
                                   ),
                                   Text(
                                     widget.recipe.getDifficoltaAsString() + " ",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w700
                                     ),
                                   )
@@ -138,14 +151,14 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     "Preparazione: ",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w400
                                     ),
                                   ),
                                   Text(
                                     widget.recipe.minutiPreparazione.toString() + " min",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w700
                                     ),
                                   )

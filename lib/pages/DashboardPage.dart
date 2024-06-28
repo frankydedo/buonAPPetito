@@ -4,8 +4,11 @@ import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/AggiuntiDiRecenteTile.dart';
 import 'package:buonappetito/utils/CaroselloTile.dart';
+import 'package:buonappetito/utils/FinestraTemporaleDialog.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -20,12 +23,13 @@ class _DashboardPageState extends State<DashboardPage> {
   Timer? _timer;
   int paginaAttivaCarosello = 0;
   List<Ricetta> ricetteCarosello = [];
+  List<Ricetta> aggiuntiDiRecente = [];
 
   @override
   void initState() {
     super.initState();
-    ricetteCarosello =Provider.of<RicetteProvider>(context, listen: false).generaRicetteCarosello();
-    startTimer();
+    ricetteCarosello = Provider.of<RicetteProvider>(context, listen: false).generaRicetteCarosello();
+    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
   }
 
   @override
@@ -46,17 +50,50 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
 
+      Future showFinestraTemporaleDialog(BuildContext context) {
+        return showDialog(
+          context: context,
+          builder: (context) => FinestraTemporaleDialog(),
+        );
+      }
+
         return Scaffold(
-          body: SingleChildScrollView(
+          body: ricetteModel.ricette.isEmpty?
+          Center(
+            child: Text(
+              "Aggiungi la tua prima ricetta\ncliccando il tasto + !!!",
+              style: GoogleFonts.encodeSans(
+                color: Colors.grey,
+                fontSize: 25,
+                fontWeight: FontWeight.w600
+              ),
+            ),
+          )
+          :
+          SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 12, 8),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "CONSIGLIATI",
+                      style: GoogleFonts.encodeSans(
+                        color: colorsModel.getColoreTitoli(context),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800
+                      ),
+                    ),
+                  ),
+                ),
                 // carosello
                 Center(
                   child: Stack(
@@ -76,7 +113,11 @@ class _DashboardPageState extends State<DashboardPage> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ricetteCarosello[index]);}));
+                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ricetteCarosello[index]);})).then((_){
+                                  setState(() {
+                                      aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+                                    });
+                                });
                               },
                               child: CaroselloTile(ricetta: ricetteCarosello[index])
                             );
@@ -114,6 +155,104 @@ class _DashboardPageState extends State<DashboardPage> {
                     ],
                   ),
                 ),
+
+                //aggiunti di recente
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 30, 12, 4),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "AGGIUNTI DI RECENTE",
+                      style: GoogleFonts.encodeSans(
+                        color: colorsModel.getColoreTitoli(context),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800
+                      ),
+                    ),
+                  ),
+                ),
+
+                // tasto per la selezione della finestra temporale in cui visualizzare le ricette  
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  child: SizedBox(
+                    width: screenWidth*0.95,
+                    child: ElevatedButton(
+                      onPressed: () async{
+                        await showFinestraTemporaleDialog(context);
+                        aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
+                        // refreshAggiuntiDiRecente();
+                        // setState(() {
+                        //   ricetteModel.refreshAggiuntiDiRecente();
+                        // });
+                      }, 
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorsModel.getColoreSecondario(),
+                      ),
+                      child: Text(
+                        ricetteModel.finestraTemporale==1
+                        ? ricetteModel.finestraTemporale.toString()+" SETTIMANA"
+                        : ricetteModel.finestraTemporale.toString()+" SETTIMANE",
+                        style: GoogleFonts.encodeSans(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700
+                        ),
+                      )
+                    ),
+                  ),
+                ),
+
+                // vista aggiunti di recente
+
+                aggiuntiDiRecente.isEmpty?
+
+                Text(
+                  "\nNulla da mostrare qui :)",
+                  style: GoogleFonts.encodeSans(
+                    color: Colors.grey,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600
+                  ),
+                )
+
+                :
+
+                SizedBox(
+                  height: screenHeight * 0.35,
+                  width: screenWidth,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        aggiuntiDiRecente.length,
+                        (index) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: aggiuntiDiRecente[index]);})).then((_){
+                                  setState(() {
+                                      aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+                                    });
+                                });
+                              },
+                              child: AggiuntiDiRecenteTile(
+                                ricetta: aggiuntiDiRecente.elementAt(index),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: 4,
+                )
               ],
             ),
           ),
@@ -124,7 +263,11 @@ class _DashboardPageState extends State<DashboardPage> {
             backgroundColor: colorsModel.getColoreSecondario(),
             child: Icon(Icons.add, color: Colors.white, size: 35),
             onPressed: () {
-              Navigator.pushNamed(context, '/nuovaricettapage');
+              Navigator.pushNamed(context, '/nuovaricettapage').then((_){
+                setState(() {
+                    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+                  });
+              });
             },
           ),
         );

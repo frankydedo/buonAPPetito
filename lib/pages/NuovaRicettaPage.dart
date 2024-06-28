@@ -1119,65 +1119,74 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                           ),
             
                           //tasto per la creazoine della ricetta
-                          ElevatedButton(
-                            onPressed: (){
-                              // controllo che sia stato inserito tutto e nel caso avviso l'utente su cosa manca
-                              if (_formKey.currentState!.validate()){
-                                if(categorie.isEmpty){
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Selezionare le categorie", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
-                                  );
-                                }else if(ingredientiInseriti.isEmpty){
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Inserire gli ingredienti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
-                                  );
-                                }else if(passaggiInseriti.isEmpty){
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Inserire i passaggi", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
-                                  );
-                                }else if(difficolta==null){
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Selezionare la difficoltà", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
-                                  );
-                                }else if(percorsoImmagine==null){
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Inserire la foto", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
-                                  );
-                                }else{
-                                  Ricetta nuovaRicetta = Ricetta(
-                                    percorsoImmagine: percorsoImmagine!, 
-                                    categorie: categorie, 
-                                    descrizione: descrizione!, 
-                                    ingredienti: ingredientiInseriti, 
-                                    passaggi: passaggiInseriti, 
-                                    titolo: titolo!, 
-                                    minutiPreparazione: minutiPreparazione!, 
-                                    dataAggiunta: DateTime.now(),
-                                    difficolta: difficolta!
-                                  );
-                                  ricetteModel.aggiungiNuovaRicetta(nuovaRicetta);
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
-                                  );
-                                  print(ricetteModel.ricette.length.toString());
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0, top: 12, right: 30, left:30),
+                            child: ElevatedButton(
+                              onPressed: (){
+                                // controllo che sia stato inserito tutto e nel caso avviso l'utente su cosa manca
+                                if (_formKey.currentState!.validate()){
+                                  if(categorie.isEmpty){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text("Selezionare le categorie", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
+                                    );
+                                  }else if(ingredientiInseriti.isEmpty){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text("Inserire gli ingredienti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
+                                    );
+                                  }else if(passaggiInseriti.isEmpty){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text("Inserire i passaggi", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
+                                    );
+                                  }else if(difficolta==null){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text("Selezionare la difficoltà", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
+                                    );
+                                  }else if(percorsoImmagine==null){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text("Inserire la foto", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
+                                    );
+                                  }else{
+                                    Ricetta nuovaRicetta = Ricetta(
+                                      percorsoImmagine: percorsoImmagine!, 
+                                      categorie: categorie, 
+                                      descrizione: descrizione!, 
+                                      ingredienti: ingredientiInseriti, 
+                                      passaggi: passaggiInseriti, 
+                                      titolo: titolo!, 
+                                      minutiPreparazione: minutiPreparazione!, 
+                                      dataAggiunta: DateTime.now(),
+                                      difficolta: difficolta!
+                                    );
+                            
+                                    if(ricetteModel.ricette.contains(nuovaRicetta)){
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text("Questa ricetta è già presente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
+                                      );
+                                    }else{
+                                      ricetteModel.aggiungiNuovaRicetta(nuovaRicetta);
+                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                      );
+                                    }
+                                  }
                                 }
-                              }
-                            }, 
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: colorsModel.getColoreSecondario()
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0, top: 6, right: 30, left:30),
-                              child: Text(
-                                "Crea Ricetta",
-                                style: GoogleFonts.encodeSans(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w700
-                                ),
+                              }, 
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: colorsModel.getColoreSecondario()
                               ),
-                            )
+                              child: Padding(
+                              padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
+                                child: Text(
+                                  "Crea Ricetta",
+                                  style: GoogleFonts.encodeSans(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700
+                                  ),
+                                ),
+                              )
+                            ),
                           )
                         ],
                       ),

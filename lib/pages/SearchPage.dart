@@ -9,6 +9,7 @@ import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+// ignore: unused_import
 import 'package:buonappetito/utils/MyDialog.dart';
 import 'package:buonappetito/utils/MyDifficolta.dart';
 import 'package:buonappetito/utils/MyTime.dart';
@@ -454,4 +455,5 @@ class PlaceholderPage extends StatelessWidget {
       ),
     );
   }
+
 }

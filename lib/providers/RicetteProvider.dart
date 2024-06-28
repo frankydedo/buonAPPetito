@@ -189,4 +189,18 @@ class RicetteProvider extends ChangeNotifier {
       return ric;
     }
   }
+
+  List<String> getCarrello() {
+    return carrello;
+  }
+
+   void aggiungiElementoCarrello(String elemento) {
+    carrello.add(elemento);
+    notifyListeners();
+  }
+
+  void rimuoviElementoCarrello(String elemento) {
+    carrello.remove(elemento);
+    notifyListeners();
+  }
 }

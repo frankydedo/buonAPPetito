@@ -59,7 +59,6 @@ class _CaroselloTileState extends State<CaroselloTile> {
                               });
                             }
                           },
-                          // icona preferiti
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: 
@@ -74,7 +73,7 @@ class _CaroselloTileState extends State<CaroselloTile> {
                     Spacer(),
                     // categorie ricetta
                     Padding(
-                      padding: const EdgeInsets.only(left: 3.0),
+                      padding: const EdgeInsets.only(left: 8.0),
                       child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(

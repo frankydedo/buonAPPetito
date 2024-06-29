@@ -108,6 +108,8 @@ class _DashboardPageState extends State<DashboardPage> {
                           onPageChanged: (value) {
                             setState(() {
                               paginaAttivaCarosello = value;
+                              _timer!.cancel();
+                              startTimer();
                             });
                           },
                           itemCount: ricetteCarosello.length,
@@ -184,10 +186,6 @@ class _DashboardPageState extends State<DashboardPage> {
                       onPressed: () async{
                         await showFinestraTemporaleDialog(context);
                         aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
-                        // refreshAggiuntiDiRecente();
-                        // setState(() {
-                        //   ricetteModel.refreshAggiuntiDiRecente();
-                        // });
                       }, 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorsModel.getColoreSecondario(),
@@ -222,7 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 :
 
                 SizedBox(
-                  height: 325,
+                  height: 360,
                   width: screenWidth,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,

@@ -105,7 +105,20 @@ class _AggiuntiDiRecenteTileState extends State<AggiuntiDiRecenteTile> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10,0,10,0),
+                child: AutoSizeText(
+                  widget.ricetta.getCategorie(),
+                  style: GoogleFonts.encodeSans(
+                    color: colorsModel.getColoreTitoli(context),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 2,
+                  minFontSize: 16, 
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),              
               Spacer(),
 
               Padding(

@@ -2,6 +2,7 @@ import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/RicettaTileOrizzontale.dart';
+import 'package:buonappetito/utils/TilePreferiti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -60,7 +61,7 @@ class _PreferitiPageState extends State<PreferitiPage> {
                                     )
                                   ],
                                 ),
-                                child: RicettaTileOrizzontale(ricetta: ricetta)
+                                child: TilePreferiti(ricetta: ricetta)
                               ),
                             );
                           },

@@ -126,6 +126,16 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void aggiungiElementoCarrello(String elemento) {
+    carrello.add(elemento);
+    notifyListeners();
+  }
+
+  void rimuoviElementoCarrello(String elemento) {
+    carrello.remove(elemento);
+    notifyListeners();
+  }
+
   void rimuoviDaiPreferiti(Ricetta r){
     r.resetPreferita();
     preferiti.remove(r);

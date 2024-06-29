@@ -1,8 +1,8 @@
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
+import 'package:buonappetito/utils/RicettaTileOrizzontale.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
@@ -240,42 +240,10 @@ class _SearchPageState extends State<SearchPage> {
                         onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);}));
                         },
-                        child: ListTile(
-                          leading: Container(
-                            width: 55,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                color: colorsModel.getColoreSecondario(),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: Image.asset(
-                                recipeScroll.percorsoImmagine,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            recipeScroll.titolo,
-                            style: GoogleFonts.encodeSans(
-                                textStyle: TextStyle(
-                                    color: const Color.fromARGB(255, 16, 0, 0),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800)),
-                          ),
-                          subtitle: Text(
-                            recipeScroll.getCategorie(),
-                            style: GoogleFonts.encodeSans(
-                                textStyle: TextStyle(
-                                    color: Color.fromARGB(255, 9, 0, 0),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
-                          ),
-                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RicettaTileOrizzontale(ricetta: recipeScroll),
+                        )
                       ),
                     );
                   },

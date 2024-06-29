@@ -1,8 +1,9 @@
 import 'package:buonappetito/models/Ricetta.dart';
-import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/RicettaTileOrizzontale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -26,113 +27,54 @@ class _PreferitiPageState extends State<PreferitiPage> {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-            'Le tue Ricette Preferite',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
-                color: colorsModel.getColoreSecondario()
+            'LE TUE RICETTE PREFERITE',
+              style: GoogleFonts.encodeSans(
+                color: colorsModel.getColoreTitoli(context),
+                fontSize: 22,
+                fontWeight: FontWeight.w800
               ),
             ),
             //backgroundColor: colorsModel.getColorePrimario(context),
           ),
           body: Container(
-            margin: EdgeInsets.all(16),
             child: preferiti.isNotEmpty
                 ? ListView.builder(
                     itemCount: preferiti.length,
                     itemBuilder: (context, index) {
                       final ricetta = preferiti[index];
-                      return Card(
-                        margin: EdgeInsets.symmetric(vertical: 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(
-                            color: colorsModel.getColoreSecondario(),
-                            width: 1.5,
-                          ),
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RicettaPage(recipe: ricetta),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenWidth * 0.2,
-                                  height: screenHeight * 0.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    border: Border.all(
-                                      color: colorsModel.getColoreSecondario(),
-                                      width: 1.5,
-                                    ),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(25),
-                                    child: Image.asset(
-                                      ricetta.percorsoImmagine,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ricetta.titolo,
-                                        style: GoogleFonts.encodeSans(
-                                          textStyle: TextStyle(
-                                            color: const Color.fromARGB(255, 16, 0, 0),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        ricetta.getCategorie(),
-                                        style: GoogleFonts.encodeSans(
-                                          textStyle: TextStyle(
-                                            color: Color.fromARGB(255, 9, 0, 0),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.delete_rounded,
-                                  color: colorsModel.getColoreSecondario(),
-                                  ),
-                                  onPressed: () {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(12.0, 10, 12, 0),
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                            motion: DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  setState(() {
                                     ricetteModel.rimuoviDaiPreferiti(ricetta);
-                                  },
-                                )
-                              ],
-                            ),
+                                  });
+                                },
+                                borderRadius: BorderRadius.circular(20),
+                                icon: Icons.heart_broken_rounded,
+                                backgroundColor: colorsModel.getColoreSecondario(),
+                                foregroundColor: Colors.white,
+                              )
+                            ],
                           ),
+                          child: RicettaTileOrizzontale(ricetta: ricetta)
                         ),
                       );
                     },
                   )
+
+                  // da mostrare in caso di lista vuota
                 : Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.favorite_border,
-                          color: colorsModel.getColoreSecondario(),
+                          Icons.heart_broken_rounded,
+                          color: Colors.grey,
                           size: 80,
                         ),
                         SizedBox(height: 16),
@@ -140,7 +82,7 @@ class _PreferitiPageState extends State<PreferitiPage> {
                           'Non hai ricette preferite.',
                           style: GoogleFonts.encodeSans(
                             textStyle: TextStyle(
-                              color: colorsModel.getColoreSecondario(),
+                              color: Colors.grey,
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                             ),

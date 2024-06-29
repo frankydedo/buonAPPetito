@@ -84,7 +84,7 @@ class _PreferitiPageState extends State<PreferitiPage> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'Non hai ricette preferite.',
+                          'Non hai ricette preferite',
                           style: GoogleFonts.encodeSans(
                             textStyle: TextStyle(
                               color: Colors.grey,

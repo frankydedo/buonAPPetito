@@ -44,11 +44,12 @@ class _RicettaPageState extends State<RicettaPage> {
                   onTap: () async{
                     bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
                     if (cancellare){
-                      Navigator.pop(context);
                       ricetteModel.rimuoviRicetta(widget.recipe);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
+                      print("zio pera");
+                      Navigator.pop(context);
                     }
                   },
                   child: Padding(
@@ -56,6 +57,9 @@ class _RicettaPageState extends State<RicettaPage> {
                     child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.getColoreSecondario()),
                   ),
                 ),
+
+                //tato preferiti
+
                 GestureDetector(
                   onTap: (){
                     if(widget.recipe.isFavourite){

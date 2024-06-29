@@ -24,7 +24,6 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController controller = TextEditingController();
   List<Ricetta> ListaRicette = [];
   List<Ricetta> ListaFiltrata = [];
-  List<Ricetta> ListaInizialeFiltrata = [];
   List<String> activeFilters = [];
 
   Map<Categoria, bool> selezioneCategorie = {};
@@ -229,25 +228,23 @@ class _SearchPageState extends State<SearchPage> {
                 child: ListView.builder(
                   itemCount: ListaFiltrata.length,
                   itemBuilder: (context, index) {
-                    final recipeScroll = ListaFiltrata[index];
+                    Ricetta recipeScroll = ListaFiltrata[index];
                     return GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);})).then((_){
-                          setState(() {
-                            ListaRicette = Provider.of<RicetteProvider>(context, listen: false).ricette;
-                            searchAndFilterRecipes(controller.text);
-                          });
+                          // setState(() {
+                          //   ListaRicette = ricetteModel.ricette;
+                          //   searchAndFilterRecipes(controller.text);
+                          //   print("here");
+                          // });
+                          Navigator.pushNamed(context, '/searchpage');
+                          print("culo");
                         });
                       },
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);}));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RicettaTileOrizzontale(ricetta: recipeScroll),
-                        )
-                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RicettaTileOrizzontale(ricetta: recipeScroll),
+                      )
                     );
                   },
                 ),

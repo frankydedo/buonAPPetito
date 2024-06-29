@@ -30,13 +30,16 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
     ricetteCarosello = Provider.of<RicetteProvider>(context, listen: false).generaRicetteCarosello();
     aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
-    startTimer();
+    if(ricetteCarosello.isNotEmpty){
+      startTimer();
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
     _timer?.cancel();
+    _controllerCarosello.dispose();
   }
 
   void startTimer() {
@@ -68,15 +71,40 @@ class _DashboardPageState extends State<DashboardPage> {
         return Scaffold(
           body: ricetteModel.ricette.isEmpty?
           Center(
-            child: Text(
-              "Aggiungi la tua prima ricetta\ncliccando il tasto + !!!",
-              style: GoogleFonts.encodeSans(
-                color: Colors.grey,
-                fontSize: 25,
-                fontWeight: FontWeight.w600
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_box_rounded,
+                    color: Colors.grey,
+                    size: 80,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Nulla da vedere qui',
+                    style: GoogleFonts.encodeSans(
+                      textStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Aggiungi la tua prima ricetta\ncliccando il tasto +',
+                    style: GoogleFonts.encodeSans(
+                      textStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-            ),
-          )
+            )
           :
           SingleChildScrollView(
             child: Column(
@@ -233,9 +261,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: aggiuntiDiRecente[index]);})).then((_){
-                                  setState(() {
-                                      aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
-                                    });
+                                  Navigator.pushNamed(context, '/firstpage');
+                                  print("sono qui");
                                 });
                               },
                               child: AggiuntiDiRecenteTile(
@@ -264,8 +291,8 @@ class _DashboardPageState extends State<DashboardPage> {
             onPressed: () {
               Navigator.pushNamed(context, '/nuovaricettapage').then((_){
                 setState(() {
-                    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
-                  });
+                  aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+                });
               });
             },
           ),

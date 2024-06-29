@@ -224,67 +224,65 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: ListaFiltrata.length,
-              //     itemBuilder: (context, index) {
-              //       //Ricetta recipeScroll = ListaFiltrata[index];
-              //       return GestureDetector(
-              //         // onTap: (){
-              //         //   Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);})).then((_){
-              //         //     // setState(() {
-              //         //     //   ListaRicette = ricetteModel.ricette;
-              //         //     //   searchAndFilterRecipes(controller.text);
-              //         //     //   print("here");
-              //         //     // });
-              //         //     Navigator.pushNamed(context, '/searchpage');
-              //         //     print("culo");
-              //         //   });
-              //         // },
-              //         onTap: (){
-              //           Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ListaFiltrata[index]);})).then((_){
-              //             setState(() {
-              //               ListaRicette = ricetteModel.ricette;
-              //               searchAndFilterRecipes(controller.text);
-              //               print("te prego");
-              //             });
-              //           });
-              //         },
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(8.0),
-              //           child: RicettaTileOrizzontale(ricetta: ListaFiltrata[index]),
-              //         )
-              //       );
-              //     },
-              //   ),
-              // ),
-
               Expanded(
-                child: Column(
-                  children: List.generate(
-                        ListaFiltrata.length,
-                        (index) {
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-                            child: GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ListaFiltrata[index]);})).then((_){
-                                  setState(() {
-                                    ListaRicette = ricetteModel.ricette;
-                                    searchAndFilterRecipes(controller.text);
-                                  });
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: RicettaTileOrizzontale(ricetta: ListaFiltrata[index]),
-                              )
-                            ),
-                          );
-                        },
-                      ),
-                )
-              )
+                child: ListView.builder(
+                  itemCount: ListaFiltrata.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      /// onTap: (){
+                      ///   Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);})).then((_){
+                      ///     // setState(() {
+                      ///     //   ListaRicette = ricetteModel.ricette;
+                      ///     //   searchAndFilterRecipes(controller.text);
+                      ///     //   print("here");
+                      ///     // });
+                      ///     Navigator.pushNamed(context, '/searchpage');
+                      ///     print("culo");
+                      ///   });
+                      /// },
+                      onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ListaFiltrata[index]);})).then((_){
+                          setState(() {
+                            ListaRicette = ricetteModel.ricette;
+                            searchAndFilterRecipes(controller.text);
+                          });
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RicettaTileOrizzontale(ricetta: ListaFiltrata[index]),
+                      )
+                    );
+                  },
+                ),
+              ),
+
+              // SingleChildScrollView(
+              //   child: Column(
+              //     children: List.generate(
+              //           ListaFiltrata.length,
+              //           (index) {
+              //             return Padding(
+              //               padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+              //               child: GestureDetector(
+              //                 onTap: (){
+              //                   Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ListaFiltrata[index]);})).then((_){
+              //                     setState(() {
+              //                       ListaRicette = ricetteModel.ricette;
+              //                       searchAndFilterRecipes(controller.text);
+              //                     });
+              //                   });
+              //                 },
+              //                 child: Padding(
+              //                   padding: const EdgeInsets.all(8.0),
+              //                   child: RicettaTileOrizzontale(ricetta: ListaFiltrata[index]),
+              //                 )
+              //               ),
+              //             );
+              //           },
+              //         ),
+              //   )
+              // )
 
 
 

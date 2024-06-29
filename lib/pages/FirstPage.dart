@@ -38,7 +38,19 @@ class _FirstPageState extends State<FirstPage>{
     return Consumer<ColorsProvider>(builder: (context, colorsModel, _) {
       return Scaffold(
 
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Spacer(),
+              IconButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/carrellopage');
+                }, 
+                icon: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario())
+              )
+            ],
+          ),
+        ),
         drawer: Drawer(
           child: ListView(
             children: [
@@ -51,16 +63,16 @@ class _FirstPageState extends State<FirstPage>{
                   title: Text("HOME", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 8.0, top: 8),
+              //   child: ListTile(
+              //     onTap:() {Navigator.pushNamed(context, '/carrellopage');},
+              //     leading: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario()),
+              //     title: Text("CARRELLO", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
+              //   ),
+              // ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 8),
-                child: ListTile(
-                  onTap:() {Navigator.pushNamed(context, '/carrellopage');},
-                  leading: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario()),
-                  title: Text("CARRELLO", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 8),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(
                   onTap:() {Navigator.pushNamed(context, '/impostazionipage');},
                   leading: Icon(Icons.settings_rounded, color: colorsModel.getColoreSecondario()),

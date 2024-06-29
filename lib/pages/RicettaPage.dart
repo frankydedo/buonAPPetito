@@ -48,7 +48,6 @@ class _RicettaPageState extends State<RicettaPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
-                      print("zio pera");
                       Navigator.pop(context);
                     }
                   },

@@ -272,7 +272,6 @@ class _SearchPageState extends State<SearchPage> {
                                   setState(() {
                                     ListaRicette = ricetteModel.ricette;
                                     searchAndFilterRecipes(controller.text);
-                                    print("te prego");
                                   });
                                 });
                               },

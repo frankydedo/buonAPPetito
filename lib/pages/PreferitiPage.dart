@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';

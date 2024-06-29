@@ -17,6 +17,8 @@ class RicettaPage extends StatefulWidget {
 
 class _RicettaPageState extends State<RicettaPage> {
 
+  String ingredientButtonText = "Aggiungi tutti";
+
   Future showConfermaDialog(BuildContext context, String domanda) {
     return showDialog(
       context: context,
@@ -44,11 +46,11 @@ class _RicettaPageState extends State<RicettaPage> {
                   onTap: () async{
                     bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
                     if (cancellare){
+                      Navigator.pop(context);
                       ricetteModel.rimuoviRicetta(widget.recipe);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
-                      Navigator.pop(context);
                     }
                   },
                   child: Padding(
@@ -56,9 +58,6 @@ class _RicettaPageState extends State<RicettaPage> {
                     child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.getColoreSecondario()),
                   ),
                 ),
-
-                //tato preferiti
-
                 GestureDetector(
                   onTap: (){
                     if(widget.recipe.isFavourite){
@@ -257,20 +256,39 @@ class _RicettaPageState extends State<RicettaPage> {
                                     ),
                                   ),
                                   Spacer(),
+
+                                  // tasto aggiungi tutti
+
                                   GestureDetector(
                                     onTap: (){
-                                      for (String ingrediente in widget.recipe.ingredienti.keys){
-                                        if (!ricetteModel.carrello.contains(ingrediente)){
-                                          ricetteModel.aggiungiIngredienteAlCarrello(ingrediente);
+                                      if(ingredientButtonText == "Aggiungi tutti"){
+                                        for (String ingrediente in widget.recipe.ingredienti.keys){
+                                          if (!ricetteModel.carrello.contains(ingrediente)){
+                                            ricetteModel.aggiungiIngredienteAlCarrello(ingrediente);
+                                          }
                                         }
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text("Tutti gli ingredienti sono stati aggiunti al carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                        );
+                                        setState(() {
+                                          ingredientButtonText = "Rimuovi tutti";
+                                        });
+                                      }else{
+                                        for(String ingrediente in widget.recipe.ingredienti.keys){
+                                          if (ricetteModel.carrello.contains(ingrediente)){
+                                            ricetteModel.rimuoviElementoCarrello(ingrediente);
+                                          }
+                                        }
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text("Tutti gli ingredienti sono stati rimossi dal carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                        );
+                                        setState(() {
+                                          ingredientButtonText = "Aggiungi tutti";
+                                        });
                                       }
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text("Tutti gli ingredienti sono stati aggiunti al carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
-                                      );
-                                      print(ricetteModel.carrello.length.toString());
                                     },
                                     child: Text(
-                                      "Aggiungi tutti",
+                                      ingredientButtonText,
                                       style: GoogleFonts.encodeSans(
                                         color: colorsModel.getColoreSecondario(),
                                         fontSize: 18,
@@ -311,11 +329,12 @@ class _RicettaPageState extends State<RicettaPage> {
                                         ),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: (){
+                                    IconButton(
+                                      onPressed: (){
                                         if(ricetteModel.carrello.contains(ingredienti.keys.elementAt(index))){
+                                          ricetteModel.rimuoviIngredienteDalCarrello(ingredienti.keys.elementAt(index));
                                           ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text("L'ingrediente è già presente nel carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                            const SnackBar(content: Text("L'ingrediente è stato rimosso dal carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                                           );
                                         }else{
                                           ricetteModel.aggiungiIngredienteAlCarrello(ingredienti.keys.elementAt(index));
@@ -323,13 +342,12 @@ class _RicettaPageState extends State<RicettaPage> {
                                             const SnackBar(content: Text("L'ingrediente è stato aggiunto al carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                                           );
                                         }
-                                        print(ricetteModel.carrello.length.toString());
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.add_shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35,),
-                                      ),
-                                    )
+                                      }, 
+                                      icon: !ricetteModel.carrello.contains(ingredienti.keys.elementAt(index)) ?
+                                        Icon(Icons.add_shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35)
+                                        :
+                                        Icon(Icons.remove_shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35)
+                                    ),
                                   ],
                                 );
                               },

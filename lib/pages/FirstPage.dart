@@ -5,6 +5,8 @@ import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
+import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/CarrelloIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,18 +37,30 @@ class _FirstPageState extends State<FirstPage>{
 
   @override 
   Widget build(BuildContext context){
-    return Consumer<ColorsProvider>(builder: (context, colorsModel, _) {
-      return Scaffold(
+    return Consumer2<ColorsProvider, RicetteProvider>(builder: (context, colorsModel, ricetteModel, _) {
 
+      int cartItemsNumber = Provider.of<RicetteProvider>(context, listen: false).carrello.length;
+
+      return Scaffold(
         appBar: AppBar(
           title: Row(
             children: [
               Spacer(),
-              IconButton(
+              /// IconButton(
+              ///   onPressed: (){
+              ///     Navigator.pushNamed(context, '/carrellopage');
+              ///   }, 
+              ///   icon: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35,)
+              /// )
+              CarrelloIcon(
                 onPressed: (){
-                  Navigator.pushNamed(context, '/carrellopage');
+                  Navigator.pushNamed(context, '/carrellopage').then((_){
+                    setState(() {
+                      cartItemsNumber = ricetteModel.carrello.length;
+                    });
+                  });
                 }, 
-                icon: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario())
+                showNumber: cartItemsNumber
               )
             ],
           ),

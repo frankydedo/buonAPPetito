@@ -1,5 +1,6 @@
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,8 +17,12 @@ class RicettaPage extends StatefulWidget {
 
 class _RicettaPageState extends State<RicettaPage> {
 
-  List<Ricetta> preferiteList = []; // Lista delle ricette preferite
-  // Sostituire preferiteList con preferiti
+  Future showConfermaDialog(BuildContext context, String domanda) {
+    return showDialog(
+      context: context,
+      builder: (context) => ConfermaDialog(domanda: domanda,),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +37,19 @@ class _RicettaPageState extends State<RicettaPage> {
             title: Row(
               children: [
                 Spacer(),
+
+                //tasto cancella
+
                 GestureDetector(
-                  onTap: (){
-                    Navigator.pop(context);
-                    ricetteModel.rimuoviRicetta(widget.recipe);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
-                    );
+                  onTap: () async{
+                    bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
+                    if (cancellare){
+                      Navigator.pop(context);
+                      ricetteModel.rimuoviRicetta(widget.recipe);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                      );
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

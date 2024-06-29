@@ -28,7 +28,7 @@ class _AggiuntiDiRecenteTileState extends State<AggiuntiDiRecenteTile> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
       return Container(
-        width: screenWidth*0.6,
+        width: 250,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),

@@ -30,6 +30,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
     ricetteCarosello = Provider.of<RicetteProvider>(context, listen: false).generaRicetteCarosello();
     aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+    startTimer();
   }
 
   @override
@@ -221,7 +222,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 :
 
                 SizedBox(
-                  height: screenHeight * 0.35,
+                  height: 325,
                   width: screenWidth,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,

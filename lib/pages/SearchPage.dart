@@ -41,8 +41,8 @@ class _SearchPageState extends State<SearchPage> {
     applyInitialFiltering();
   }
 
+  // Applica la ricerca iniziale quando il widget viene inizializzato
   void applyInitialFiltering() {
-    // Applica la ricerca iniziale quando il widget viene inizializzato
     searchAndFilterRecipes('');
   }
 
@@ -89,7 +89,7 @@ class _SearchPageState extends State<SearchPage> {
 
     return Consumer3<ColorsProvider, RicetteProvider, DifficultyProvider>(
       builder: (context, colorsModel, ricetteModel, difficultyModel, _) {
-        ListaRicette = ricetteModel.ricette; // Aggiorna ListaRicette da Provider
+        //ListaRicette = ricetteModel.ricette; // Aggiorna ListaRicette da Provider
         return Scaffold(
           body: Column(
             children: <Widget>[
@@ -227,54 +227,49 @@ class _SearchPageState extends State<SearchPage> {
                   itemCount: ListaFiltrata.length,
                   itemBuilder: (context, index) {
                     final recipeScroll = ListaFiltrata[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlaceholderPage(),
-                          ),
-                        );
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);})).then((_){
+                          setState(() {
+                            ListaRicette = Provider.of<RicetteProvider>(context, listen: false).ricette;
+                            searchAndFilterRecipes(controller.text);
+                          });
+                        });
                       },
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);}));
-                        },
-                        child: ListTile(
-                          leading: Container(
-                            width: 55,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                color: colorsModel.getColoreSecondario(),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: Image.asset(
-                                recipeScroll.percorsoImmagine,
-                                fit: BoxFit.cover,
-                              ),
+                      child: ListTile(
+                        leading: Container(
+                          width: 55,
+                          height: 55,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: colorsModel.getColoreSecondario(),
+                              width: 1.5,
                             ),
                           ),
-                          title: Text(
-                            recipeScroll.titolo,
-                            style: GoogleFonts.encodeSans(
-                                textStyle: TextStyle(
-                                    color: const Color.fromARGB(255, 16, 0, 0),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(25),
+                            child: Image.asset(
+                              recipeScroll.percorsoImmagine,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          subtitle: Text(
-                            recipeScroll.getCategorie(),
-                            style: GoogleFonts.encodeSans(
-                                textStyle: TextStyle(
-                                    color: Color.fromARGB(255, 9, 0, 0),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400)),
-                          ),
+                        ),
+                        title: Text(
+                          recipeScroll.titolo,
+                          style: GoogleFonts.encodeSans(
+                              textStyle: TextStyle(
+                                  color: const Color.fromARGB(255, 16, 0, 0),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800)),
+                        ),
+                        subtitle: Text(
+                          recipeScroll.getCategorie(),
+                          style: GoogleFonts.encodeSans(
+                              textStyle: TextStyle(
+                                  color: Color.fromARGB(255, 9, 0, 0),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400)),
                         ),
                       ),
                     );
@@ -319,22 +314,6 @@ class _SearchPageState extends State<SearchPage> {
       }
     });
   }
-
-  // void showCategoriesDialog() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return MyDialog(
-  //         onSelectionChanged: (isSelected) {
-  //           setState(() {
-  //             isButtonPressed1 = isSelected;
-  //             toggleFilter('categories');
-  //           });
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
 
   void showDifficultyDialog(BuildContext context, DifficultyProvider difficultyProvider) {
     showDialog(
@@ -453,20 +432,6 @@ List<Ricetta> applyDifficultyFilter() {
       activeFilters.add(filter);
     }
     print(activeFilters.toList().toString());
-    searchAndFilterRecipes(controller.text); // Riesegue la ricerca e i filtri con i filtri aggiornati
-  }
-}
-
-class PlaceholderPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Placeholder Page'),
-      ),
-      body: Center(
-        child: Text('This is a placeholder page.'),
-      ),
-    );
+    searchAndFilterRecipes(controller.text); // ricerca con i filtri aggiornati
   }
 }

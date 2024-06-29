@@ -1,5 +1,6 @@
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,8 +17,12 @@ class RicettaPage extends StatefulWidget {
 
 class _RicettaPageState extends State<RicettaPage> {
 
-  List<Ricetta> preferiteList = []; // Lista delle ricette preferite
-  // Sostituire preferiteList con preferiti
+  Future showConfermaDialog(BuildContext context, String domanda) {
+    return showDialog(
+      context: context,
+      builder: (context) => ConfermaDialog(domanda: domanda,),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +37,25 @@ class _RicettaPageState extends State<RicettaPage> {
             title: Row(
               children: [
                 Spacer(),
+
+                //tasto cancella
+
+                GestureDetector(
+                  onTap: () async{
+                    bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
+                    if (cancellare){
+                      Navigator.pop(context);
+                      ricetteModel.rimuoviRicetta(widget.recipe);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                      );
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.getColoreSecondario()),
+                  ),
+                ),
                 GestureDetector(
                   onTap: (){
                     if(widget.recipe.isFavourite){
@@ -114,14 +138,14 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     "Difficoltà: ",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w400
                                     ),
                                   ),
                                   Text(
                                     widget.recipe.getDifficoltaAsString() + " ",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w700
                                     ),
                                   )
@@ -138,14 +162,14 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     "Preparazione: ",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w400
                                     ),
                                   ),
                                   Text(
                                     widget.recipe.minutiPreparazione.toString() + " min",
                                     style: GoogleFonts.encodeSans(
-                                      fontSize: 25,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w700
                                     ),
                                   )

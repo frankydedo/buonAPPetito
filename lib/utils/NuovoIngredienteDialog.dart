@@ -138,7 +138,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
 
                 // tasti
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
 
                     // tasto annulla

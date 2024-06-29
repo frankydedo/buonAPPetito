@@ -23,6 +23,8 @@ class RicetteProvider extends ChangeNotifier {
     Categoria(nome: "Pesce")
   ];
 
+  int finestraTemporale = 1; //numero delle settimane da mostrare in "aggiunti di recente"
+
   List<Ricetta> preferiti = [];
   List<String> carrello =[];
   List <Ricetta> ricette = [
@@ -70,7 +72,7 @@ class RicetteProvider extends ChangeNotifier {
       titolo: "Spaghetti alle Vongole",
       minutiPreparazione: 12,
       difficolta: 1,
-      dataAggiunta: DateTime.now(),
+      dataAggiunta: DateTime.now().subtract(Duration(days: 8)),
     ),
     Ricetta(
       categorie: ["Secondi", "Carne"],
@@ -92,12 +94,17 @@ class RicetteProvider extends ChangeNotifier {
       titolo: "Ribs alla brace",
       minutiPreparazione: 130,
       difficolta: 2,
-      dataAggiunta: DateTime.now(),
+      dataAggiunta: DateTime.now().subtract(Duration(days: 20)),
     )
   ];
 
 
   List<bool> selectedCategories = List<bool>.filled(7, false);//risolvere il 7
+
+  void setFinestraTemporale(int settimane){
+    this.finestraTemporale = settimane;
+    notifyListeners();
+  }
 
   void toggleCategorySelection(int index) {
     selectedCategories[index] = !selectedCategories[index];
@@ -139,38 +146,30 @@ class RicetteProvider extends ChangeNotifier {
   }
   
   void aggiungiNuovaRicetta(Ricetta r){
-    for (String nomeCategoria in r.categorie){
-      for(Categoria c in categorie){
-        if (c.nome == nomeCategoria){
-          c.aggiungiRicetta(r);
-        }
-      }
-    }
     ricette.add(r);
+    //refreshAggiuntiDiRecente();
+    notifyListeners();
+  }
+
+  void rimuoviRicetta(Ricetta r){
+    ricette.remove(r);
+    if(preferiti.contains(r)){
+      rimuoviDaiPreferiti(r);
+    }
     notifyListeners();
   }
 
   void resetSelections() {
-      for (int i = 0; i < selectedCategories.length; i++) {
-        selectedCategories[i] = false;
-      }
-      notifyListeners();
+    for (int i = 0; i < selectedCategories.length; i++) {
+      selectedCategories[i] = false;
     }
-
-
-  void rimuoviRicetta(Ricetta r){
-    for(String nomeCategoria in r.categorie){
-      for(Categoria c in categorie){
-        if (c.nome == nomeCategoria){
-          c.rimuoviRicetta(r);
-          if (c.ricette.isEmpty){
-            categorie.remove(c);
-          }
-        }
-      }
-    }
-    ricette.remove(r);
     notifyListeners();
+  }
+
+  List<Ricetta> generaAggiuntiDiRecente(){
+    List<Ricetta> aggiuntiDiRecente = ricette.where((r) => r.dataAggiunta.isAfter(DateTime.now().subtract(Duration(days: 7 * finestraTemporale)))).toList();
+    aggiuntiDiRecente.sort((a, b) => b.dataAggiunta.compareTo(a.dataAggiunta));
+    return aggiuntiDiRecente;
   }
 
   List<Ricetta> generaRicetteCarosello() {

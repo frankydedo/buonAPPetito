@@ -24,48 +24,50 @@ class _PreferitiPageState extends State<PreferitiPage> {
       builder: (context, colorsModel, ricetteModel, _) {
         final List<Ricetta> preferiti = ricetteModel.preferiti;
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-            'LE TUE RICETTE PREFERITE',
-              style: GoogleFonts.encodeSans(
-                color: colorsModel.getColoreTitoli(context),
-                fontSize: 22,
-                fontWeight: FontWeight.w800
-              ),
-            ),
-            //backgroundColor: colorsModel.getColorePrimario(context),
-          ),
           body: Container(
             child: preferiti.isNotEmpty
-                ? ListView.builder(
-                    itemCount: preferiti.length,
-                    itemBuilder: (context, index) {
-                      final ricetta = preferiti[index];
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 10, 12, 0),
-                        child: Slidable(
-                          endActionPane: ActionPane(
-                            motion: DrawerMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (context) {
-                                  setState(() {
-                                    ricetteModel.rimuoviDaiPreferiti(ricetta);
-                                  });
-                                },
-                                borderRadius: BorderRadius.circular(20),
-                                icon: Icons.heart_broken_rounded,
-                                backgroundColor: colorsModel.getColoreSecondario(),
-                                foregroundColor: Colors.white,
-                              )
-                            ],
-                          ),
-                          child: RicettaTileOrizzontale(ricetta: ricetta)
+                ? Column(
+                  children: [
+                    Text(
+                    'LE TUE RICETTE PREFERITE',
+                      style: GoogleFonts.encodeSans(
+                        color: colorsModel.getColoreTitoli(context),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: preferiti.length,
+                          itemBuilder: (context, index) {
+                            final ricetta = preferiti[index];
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(12.0, 24, 12, 0),
+                              child: Slidable(
+                                endActionPane: ActionPane(
+                                  motion: DrawerMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (context) {
+                                        setState(() {
+                                          ricetteModel.rimuoviDaiPreferiti(ricetta);
+                                        });
+                                      },
+                                      borderRadius: BorderRadius.circular(20),
+                                      icon: Icons.heart_broken_rounded,
+                                      backgroundColor: colorsModel.getColoreSecondario(),
+                                      foregroundColor: Colors.white,
+                                    )
+                                  ],
+                                ),
+                                child: RicettaTileOrizzontale(ricetta: ricetta)
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  )
+                    ),
+                  ],
+                )
 
                   // da mostrare in caso di lista vuota
                 : Center(

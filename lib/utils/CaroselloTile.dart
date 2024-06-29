@@ -19,7 +19,7 @@ class _CaroselloTileState extends State<CaroselloTile> {
   Widget build(BuildContext context) {
 
     double screenHeight = MediaQuery.of(context).size.height;
-    //double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Consumer2<ColorsProvider, RicetteProvider>(builder: (context, colorsModel, ricetteModel, _) {
       return Card(
         shape: RoundedRectangleBorder(
@@ -31,7 +31,8 @@ class _CaroselloTileState extends State<CaroselloTile> {
             children: [
               Image.asset(
                 widget.ricetta.percorsoImmagine,
-                height: screenHeight*0.45,
+                width: screenWidth * 0.95,
+                height: 420,
                 fit: BoxFit.cover,
               ),
               Padding(

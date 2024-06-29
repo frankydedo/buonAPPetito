@@ -52,8 +52,9 @@ class _AggiuntiDiRecenteTileState extends State<AggiuntiDiRecenteTile> {
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
                       widget.ricetta.percorsoImmagine,
-                      width: screenWidth*0.6,
-                      fit: BoxFit.fitWidth,
+                      height: 170,
+                      width: 250,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Positioned(

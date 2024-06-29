@@ -120,6 +120,7 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     // Primo pulsante (Categorie)
                     SizedBox(
+                      height: 50,
                       width: screenWidth * 0.30,
                       child: ElevatedButton.icon(
                         onPressed: () {
@@ -133,7 +134,7 @@ class _SearchPageState extends State<SearchPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                           elevation: isButtonPressed1 ? 3 : 0,
                           shadowColor: Colors.black,
                         ),
@@ -153,6 +154,7 @@ class _SearchPageState extends State<SearchPage> {
                 
                     // Secondo pulsante (Difficoltà)
                     SizedBox(
+                      height: 50,
                       width: screenWidth * 0.30,
                       child: ElevatedButton.icon(
                         onPressed: () {
@@ -188,6 +190,7 @@ class _SearchPageState extends State<SearchPage> {
                 
                     // Terzo pulsante (Tempo)
                     SizedBox(
+                      height: 50,
                       width: screenWidth * 0.30,
                       child: ElevatedButton.icon(
                         onPressed: () {

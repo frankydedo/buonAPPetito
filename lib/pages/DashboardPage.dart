@@ -101,7 +101,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     children: [
                       // tile del carosello
                       SizedBox(
-                        height: screenHeight * 0.45,
+                        height: 420,
                         width: screenWidth * 0.95,
                         child: PageView.builder(
                           controller: _controllerCarosello,

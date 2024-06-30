@@ -8,14 +8,20 @@ import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
+import 'package:buonappetito/pages/TutorialScreen.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
+
   runApp(
     MultiProvider(
       providers: [
@@ -24,15 +30,14 @@ void main() {
         ChangeNotifierProvider(create: (_) => DifficultyProvider()),
         ChangeNotifierProvider(create: (_) => Timeprovider()),
       ],
-      child: const MyApp(),
+      child: MyApp(seenTutorial: seenTutorial),
     ),
   );
 }
 
-
-
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final bool seenTutorial;
+  const MyApp({super.key, required this.seenTutorial});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -160,9 +165,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             ),
           ),
         ),
-        home: FirstPage(),
+        home: widget.seenTutorial ? FirstPage() : TutorialScreen(),
         routes: {
           '/firstpage': (context) => FirstPage(),
+         
+
           '/dashboardpage': (context) => DashboardPage(),
           '/searchpage': (context) => SearchPage(),
           '/preferitipage': (context) => PreferitiPage(),

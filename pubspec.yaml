@@ -42,6 +42,7 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.11
   auto_size_text: ^3.0.0
+  shared_preferences: ^2.0.6
 
     
 

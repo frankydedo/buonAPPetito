@@ -27,6 +27,9 @@ class RicetteProvider extends ChangeNotifier {
 
   List<Ricetta> preferiti = [];
   List<String> carrello =[];
+  List<String> get carrelloInvertito => carrello.reversed.toList();
+  List<String> elementiCancellatiCarrello = [];
+
   List <Ricetta> ricette = [
     Ricetta(
       categorie: ["Primi", "Carne"],
@@ -112,11 +115,30 @@ class RicetteProvider extends ChangeNotifier {
   }
 
   void aggiungiIngredienteAlCarrello(String i){
+    if(elementiCancellatiCarrello.contains(i)){
+      elementiCancellatiCarrello.remove(i);
+    }
     carrello.add(i);
     notifyListeners();
   }
   void rimuoviIngredienteDalCarrello(String i){
+    elementiCancellatiCarrello.add(i);
     carrello.remove(i);
+    notifyListeners();
+  }
+
+  void ripristinaCancellaizioneCarrello(){
+    String elem = elementiCancellatiCarrello.last;
+    elementiCancellatiCarrello.remove(elem);
+    aggiungiIngredienteAlCarrello(elem);
+    notifyListeners();
+  }
+
+  void rimuoviTuttoDalCarrello(){
+    for(String elem in carrello){
+      elementiCancellatiCarrello.add(elem);
+    }
+    carrello.clear();
     notifyListeners();
   }
 
@@ -126,15 +148,6 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void aggiungiElementoCarrello(String elemento) {
-    carrello.add(elemento);
-    notifyListeners();
-  }
-
-  void rimuoviElementoCarrello(String elemento) {
-    carrello.remove(elemento);
-    notifyListeners();
-  }
 
   void rimuoviDaiPreferiti(Ricetta r){
     r.resetPreferita();

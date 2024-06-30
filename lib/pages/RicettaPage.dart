@@ -276,7 +276,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                       }else{
                                         for(String ingrediente in widget.recipe.ingredienti.keys){
                                           if (ricetteModel.carrello.contains(ingrediente)){
-                                            ricetteModel.rimuoviElementoCarrello(ingrediente);
+                                            ricetteModel.rimuoviIngredienteDalCarrello(ingrediente);
                                           }
                                         }
                                         ScaffoldMessenger.of(context).showSnackBar(

@@ -55,6 +55,34 @@ class _CarrelloIconState extends State<CarrelloIcon> {
 
             :
 
+            widget.showNumber > 99 ?
+
+            Positioned(
+              left: 18,
+              child: SizedBox(
+                height: 22,
+                width: 33,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: colorsModel.getColoreTitoli(context),
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: Center(
+                    child: Text(
+                      "99+",
+                      style: GoogleFonts.encodeSans(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+
+            :
+
             Positioned(
               left: 22,
               child: SizedBox(

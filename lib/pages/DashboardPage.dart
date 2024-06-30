@@ -262,7 +262,6 @@ class _DashboardPageState extends State<DashboardPage> {
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: aggiuntiDiRecente[index]);})).then((_){
                                   Navigator.pushNamed(context, '/firstpage');
-                                  print("sono qui");
                                 });
                               },
                               child: AggiuntiDiRecenteTile(

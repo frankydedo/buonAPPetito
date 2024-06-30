@@ -27,6 +27,33 @@ class _RicettaPageState extends State<RicettaPage> {
   }
 
   @override
+  void initState()
+  {
+    super.initState();
+    if(!controlloCarrello())
+    {
+      ingredientButtonText = "Aggiungi tutti";
+    }
+    else
+    {
+      ingredientButtonText = "Rimuovi tutti";
+    }
+  }
+
+  bool controlloCarrello()
+  {
+    List <String> carrello = Provider.of<RicetteProvider>(context, listen: false).carrello;
+    for (String ingrediente in widget.recipe.ingredienti.keys)
+    {
+      if(!carrello.contains(ingrediente))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     double screenHeight = MediaQuery.of(context).size.height;

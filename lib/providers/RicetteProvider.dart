@@ -102,15 +102,8 @@ class RicetteProvider extends ChangeNotifier {
   ];
 
 
-  List<bool> selectedCategories = List<bool>.filled(7, false);//risolvere il 7
-
   void setFinestraTemporale(int settimane){
     this.finestraTemporale = settimane;
-    notifyListeners();
-  }
-
-  void toggleCategorySelection(int index) {
-    selectedCategories[index] = !selectedCategories[index];
     notifyListeners();
   }
 
@@ -182,12 +175,6 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetSelections() {
-    for (int i = 0; i < selectedCategories.length; i++) {
-      selectedCategories[i] = false;
-    }
-    notifyListeners();
-  }
 
   List<Ricetta> generaAggiuntiDiRecente(){
     List<Ricetta> aggiuntiDiRecente = ricette.where((r) => r.dataAggiunta.isAfter(DateTime.now().subtract(Duration(days: 7 * finestraTemporale)))).toList();

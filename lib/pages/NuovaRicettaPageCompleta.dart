@@ -7,6 +7,7 @@ import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog2.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
@@ -19,14 +20,23 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-class NuovaRicettaPage extends StatefulWidget {
-  const NuovaRicettaPage({super.key, });
+class NuovaRicettaPageCompleta extends StatefulWidget {
+  final Ricetta recipe;
+  const NuovaRicettaPageCompleta({super.key, required this.recipe});
 
   @override
-  State<NuovaRicettaPage> createState() => _NuovaRicettaPageState();
+  State<NuovaRicettaPageCompleta> createState() => _NuovaRicettaPageStateCompleta();
 }
 
-class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
+class _NuovaRicettaPageStateCompleta extends State<NuovaRicettaPageCompleta> {
+
+@override
+  void initState()
+  {
+    super.initState();
+    print(widget.recipe);
+    riempiPagina();    
+  }
 
 
   final _formKey = GlobalKey<FormState>();
@@ -44,7 +54,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
 
   Map<Categoria, bool> selezioneCategorie = {};
 
-  TextEditingController _titolocontroller = TextEditingController();
+  late TextEditingController _titolocontroller = TextEditingController();
   TextEditingController _descrizionecontroller = TextEditingController();
   TextEditingController _tempocontroller = TextEditingController();
 
@@ -61,6 +71,35 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     setState(() {
       percorsoImmagine = imagePath;
     });
+  }
+
+  void riempiPagina()
+  {
+    percorsoImmagine= widget.recipe.percorsoImmagine;
+    ingredientiInseriti=widget.recipe.ingredienti;
+    passaggiInseriti=widget.recipe.passaggi;
+    difficolta=widget.recipe.difficolta;
+    dataAggiunta=widget.recipe.dataAggiunta;
+    _titolocontroller = TextEditingController(text: widget.recipe.titolo);
+    titolo = widget.recipe.titolo;
+    _descrizionecontroller = TextEditingController(text: widget.recipe.descrizione);
+    descrizione=widget.recipe.descrizione;
+    _tempocontroller = TextEditingController(text:  widget.recipe.minutiPreparazione.toString());
+    minutiPreparazione=widget.recipe.minutiPreparazione;
+
+    List <Categoria>ListaCategorie = Provider.of<RicetteProvider>(context, listen: false).categorie;
+    categorie=widget.recipe.categorie;
+    print(categorie.toString());
+    for (Categoria categoria in ListaCategorie) {
+      if(categorie.contains(categoria.nome))
+      {
+       selezioneCategorie[Categoria(nome: categoria.nome)] = true;
+      }
+      else
+      {
+        selezioneCategorie[Categoria(nome: categoria.nome)] = false;
+      }
+    }
   }
 
   Future<void> pickImageFromGallery() async {
@@ -105,12 +144,22 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     );
   }
 
-  Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) {
-    return showDialog(
+Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) async {
+  print("sono in show categorie dialog\n");
+  print(selezioneCategorie.toString());
+  return showDialog<Map<Categoria, bool>>(
+    context: context,
+    builder: (context) => MyCategoriaDialog2(selezioneCategorie: selezioneCategorie),
+  );
+}
+
+Future showConfermaDialog ()
+{
+  return showDialog(
       context: context,
-      builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie),
+      builder: (context) => ConfermaDialog(domanda: "Sei sicuro di voler annullare le modifiche apportate?"),
     );
-  }
+}
 
   void generaDifficoltaInAutomatico() {
     int diffPassaggi;
@@ -168,7 +217,18 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_rounded),
+              onPressed: () async {
+                bool conferma = await showConfermaDialog();
+                if(conferma)
+                {
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          ),
           body: GestureDetector(
             onTap: (){
               unfocus();
@@ -184,7 +244,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                       child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        "Crea una nuova ricetta",
+                        "Modifica ricetta",
                         style: GoogleFonts.encodeSans(
                           textStyle: TextStyle(
                             color: colorsModel.getColoreTitoli(context),
@@ -348,8 +408,10 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                 }
                                               }
                                               setState(() {
+                                                print("ci sono");                                               
                                                 categorie.clear();
                                                 categorie.addAll(categorieSelezionate);
+                                                print(categorie.toString());
                                               });
                                             }
                                             unfocus();
@@ -1133,7 +1195,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                               ],
                             ),
                           ),
-                          //tasto per la creazione della ricetta
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12.0, top: 12, right: 30, left:30),
                             child: ElevatedButton(
@@ -1153,47 +1214,38 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       const SnackBar(content: Text("Inserire i passaggi", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
                                     );
                                   }else if(difficolta==null){
+
                                       ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(content: Text("Selezionare la difficoltà", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
                                     );
-                                  }else if(percorsoImmagine==null){
+                                  }else if(percorsoImmagine==null){                                   
                                       ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(content: Text("Inserire la foto", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
                                     );
-                                  }else{
-                                    Ricetta nuovaRicetta = Ricetta(
-                                      percorsoImmagine: percorsoImmagine!, 
-                                      categorie: categorie, 
-                                      descrizione: descrizione!, 
-                                      ingredienti: ingredientiInseriti, 
-                                      passaggi: passaggiInseriti, 
-                                      titolo: titolo!, 
-                                      minutiPreparazione: minutiPreparazione!, 
-                                      dataAggiunta: DateTime.now(),
-                                      difficolta: difficolta!
-                                    );
-                            
-                                    if(ricetteModel.ricette.contains(nuovaRicetta)){
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text("Questa ricetta è già presente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
-                                      );
-                                    }else{
-                                      ricetteModel.aggiungiNuovaRicetta(nuovaRicetta);
-                                      Navigator.pop(context);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
-                                      );
-                                    }
                                   }
-                                }
-                              }, 
+                                  else{
+                                    widget.recipe.setDescrizione(descrizione!);
+                                    widget.recipe.setImmagine(percorsoImmagine!);
+                                    widget.recipe.setCategorie(categorie);
+                                    widget.recipe.setIngredienti(ingredientiInseriti);
+                                    widget.recipe.setPassaggi(passaggiInseriti);
+                                    widget.recipe.setTitolo(titolo!);
+                                    widget.recipe.setMinutiPreparazione(minutiPreparazione!);
+                                    widget.recipe.setDifficolta(difficolta!);
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Ricetta modificata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                    );
+                                  };                                
+                                };
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: colorsModel.getColoreSecondario()
                               ),
                               child: Padding(
                               padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
                                 child: Text(
-                                  "Crea Ricetta",
+                                  "Salva Modifiche ",
                                   style: GoogleFonts.encodeSans(
                                     color: Colors.white,
                                     fontSize: 30,

@@ -9,17 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class MyCategoriaDialog extends StatefulWidget {
+class MyCategoriaDialog2 extends StatefulWidget {
   Map<Categoria, bool> selezioneCategorie;
   
 
-  MyCategoriaDialog({super.key, required this.selezioneCategorie});
+  MyCategoriaDialog2({super.key, required this.selezioneCategorie});
 
   @override
-  State<MyCategoriaDialog> createState() => _MyCategoriaDialogState();
+  State<MyCategoriaDialog2> createState() => _MyCategoriaDialogState2();
 }
 
-class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
+class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
 
   Map<Categoria, bool> selezionePrecedente = {};
 
@@ -143,8 +143,10 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                         ? ListView.builder(
                             itemCount: ricetteModel.categorie.length,
                             itemBuilder: (context, index) {
-                              Categoria categoria = ricetteModel.categorie[index];
-                              bool isSelected = widget.selezioneCategorie[categoria] ?? false;
+                              Categoria categoria = widget.selezioneCategorie.keys.elementAt(index);
+                              print("le categorie selezionate al primo avvio "+ widget.selezioneCategorie.toString());                              
+                              bool isSelected = widget.selezioneCategorie[categoria]!;
+                              print(isSelected);
                               return CheckboxListTile(
                                 activeColor: colorsModel.getColoreSecondario(),
                                 title: Text(

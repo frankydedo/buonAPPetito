@@ -39,10 +39,6 @@ class TilePreferiti extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                // border: Border.all(
-                //   color: colorsModel.getColoreSecondario(),
-                //   width: 1.5,
-                // ),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),

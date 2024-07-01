@@ -67,14 +67,6 @@ class RicettaTileOrizzontale extends StatelessWidget {
               ],
             ),
           ),
-          // IconButton(
-          //   icon: Icon(Icons.delete_rounded,
-          //   color: colorsModel.getColoreSecondario(),
-          //   ),
-          //   onPressed: () {
-          //     ricetteModel.rimuoviDaiPreferiti(ricetta);
-          //   },
-          // )
         ],
       ),
     );

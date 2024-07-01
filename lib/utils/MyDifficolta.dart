@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables, unused_import, unnecessary_import
 
-import 'package:buonappetito/utils/MyDialog.dart';
+
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';

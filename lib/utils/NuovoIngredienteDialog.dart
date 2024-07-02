@@ -25,7 +25,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: colorsModel.dialogBackgroudColor,
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -33,7 +33,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                 // icona [?]
                 Icon(
                   Icons.help_outline,
-                  color: colorsModel.getColoreSecondario(),
+                  color: colorsModel.coloreSecondario,
                   size: 70,
                 ),
                 SizedBox(height: 20),
@@ -43,7 +43,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                   widget.msg,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: colorsModel.textColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
                   ),
@@ -73,9 +73,17 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                           fontWeight: FontWeight.normal,
                         ),
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Ingrediente',
-                        ),
+                                hoverColor: colorsModel.coloreSecondario,
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20)
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(color: colorsModel.coloreSecondario)
+                                ),
+                                hintText: "Ingrediente"
+                              ),
                       ),
                       SizedBox(height: 20),
 
@@ -98,18 +106,27 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                                 provQuantita = value;
                               },
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.grey,
                                 fontSize: 20,
                                 fontWeight: FontWeight.normal,
                               ),
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Quantità ciascuno',
+                                hoverColor: colorsModel.coloreSecondario,
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20)
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(color: colorsModel.coloreSecondario)
+                                ),
+                                hintText: "Quantità cadauno"
                               ),
                             ),
                           ),
                           SizedBox(width: 10),
                           DropdownButton<String>(
+                            dropdownColor: colorsModel.dialogBackgroudColor,
                             value: unit,
                             icon: Icon(Icons.arrow_downward),
                             onChanged: (String? newValue) {
@@ -125,7 +142,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text(value),
+                                child: Text(value, style: TextStyle(color:colorsModel.isLightMode ? Colors.black : Colors.grey)),
                               );
                             }).toList(),
                           ),
@@ -150,7 +167,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                       child: Text(
                         "Annulla",
                         style: TextStyle(
-                          color: colorsModel.getColoreSecondario(),
+                          color: colorsModel.coloreSecondario,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -174,7 +191,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                       }, 
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white, 
-                        backgroundColor: colorsModel.getColoreSecondario(),
+                        backgroundColor: colorsModel.coloreSecondario,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

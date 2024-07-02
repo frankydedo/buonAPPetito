@@ -24,7 +24,7 @@ class _CarrelloIconState extends State<CarrelloIcon> {
         children: [
             IconButton(
               onPressed: widget.onPressed,
-              icon: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35,),
+              icon: Icon(Icons.shopping_cart_rounded, color: colorsModel.coloreSecondario, size: 35,),
             ),
 
             widget.showNumber < 10 ?
@@ -36,14 +36,14 @@ class _CarrelloIconState extends State<CarrelloIcon> {
                 width: 22,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: colorsModel.getColoreTitoli(context),
+                    color: colorsModel.coloreTitoli,
                     borderRadius: BorderRadius.circular(20)
                   ),
                   child: Center(
                     child: Text(
                       widget.showNumber.toString(),
                       style: GoogleFonts.encodeSans(
-                        color: Colors.white,
+                        color: colorsModel.isLightMode ? Colors.white : Colors.black,
                         fontSize: 14,
                         fontWeight: FontWeight.w700
                       ),
@@ -64,14 +64,14 @@ class _CarrelloIconState extends State<CarrelloIcon> {
                 width: 33,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: colorsModel.getColoreTitoli(context),
+                    color: colorsModel.coloreTitoli,
                     borderRadius: BorderRadius.circular(20)
                   ),
                   child: Center(
                     child: Text(
                       "99+",
                       style: GoogleFonts.encodeSans(
-                        color: Colors.white,
+                        color: colorsModel.isLightMode ? Colors.white : Colors.black,
                         fontSize: 14,
                         fontWeight: FontWeight.w700
                       ),
@@ -90,14 +90,14 @@ class _CarrelloIconState extends State<CarrelloIcon> {
                 width: 28,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: colorsModel.getColoreTitoli(context),
+                    color: colorsModel.coloreTitoli,
                     borderRadius: BorderRadius.circular(20)
                   ),
                   child: Center(
                     child: Text(
                       widget.showNumber.toString(),
                       style: GoogleFonts.encodeSans(
-                        color: Colors.white,
+                        color: colorsModel.isLightMode ? Colors.white : Colors.black,
                         fontSize: 14,
                         fontWeight: FontWeight.w700
                       ),

@@ -30,7 +30,7 @@ class _AggiuntiDiRecenteTileState extends State<AggiuntiDiRecenteTile> {
       return Container(
         width: 250,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorsModel.tileBackGroudColor,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -96,7 +96,7 @@ class _AggiuntiDiRecenteTileState extends State<AggiuntiDiRecenteTile> {
                 child: AutoSizeText(
                   widget.ricetta.titolo,
                   style: GoogleFonts.encodeSans(
-                    color: colorsModel.getColoreTitoli(context),
+                    color: colorsModel.coloreTitoli,
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                   ),
@@ -110,7 +110,7 @@ class _AggiuntiDiRecenteTileState extends State<AggiuntiDiRecenteTile> {
                 child: AutoSizeText(
                   widget.ricetta.getCategorie(),
                   style: GoogleFonts.encodeSans(
-                    color: colorsModel.getColoreTitoli(context),
+                    color: colorsModel.coloreTitoli,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),

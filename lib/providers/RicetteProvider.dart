@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 
 class RicetteProvider extends ChangeNotifier {
 
+  String percorsoFotoProfilo = 'assets/images/logoAPPetito-1024.png';
+  String nomeProfilo = "your name";
+
   List<Categoria> categorie = [
     Categoria(nome: "Primi"),
     Categoria(nome: "Secondi"),
@@ -101,6 +104,15 @@ class RicetteProvider extends ChangeNotifier {
     )
   ];
 
+  void cambiaFotoProfilo(String nuovaFoto){
+    percorsoFotoProfilo = nuovaFoto;
+    notifyListeners();
+  }
+
+  void cambiaNomeProfilo(String nuovoNome){
+    nomeProfilo = nuovoNome;
+    notifyListeners();
+  }
 
   void setFinestraTemporale(int settimane){
     this.finestraTemporale = settimane;

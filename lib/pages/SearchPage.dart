@@ -90,23 +90,29 @@ class _SearchPageState extends State<SearchPage> {
       builder: (context, colorsModel, ricetteModel, difficultyModel, _) {
         //ListaRicette = ricetteModel.ricette; // Aggiorna ListaRicette da Provider
         return Scaffold(
+          backgroundColor: colorsModel.backgroudColor,
           body: Column(
             children: <Widget>[
               Container(
                 margin: EdgeInsets.fromLTRB(16, 16, 16, 16),
                 child: TextField(
                   controller: controller,
+                  cursorColor: colorsModel.coloreSecondario,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search, color: Colors.grey.shade600),
                     hintText: 'Cerca una ricetta...',
+                    hintStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(20)
                     ),
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(20),
+                    //   borderSide: BorderSide(color: Colors.black),
+                    // ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(
-                          color: colorsModel.getColoreSecondario(), width: 2.0),
+                          color: colorsModel.coloreSecondario, width: 2.0),
                     ),
                   ),
                   onChanged: (query) => searchAndFilterRecipes(query),
@@ -128,8 +134,8 @@ class _SearchPageState extends State<SearchPage> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: isButtonPressed1
-                              ? colorsModel.getColoreSecondario()
-                              : colorsModel.getColoreSecondario().withOpacity(.4),
+                              ? colorsModel.coloreSecondario
+                              : colorsModel.coloreSecondario.withOpacity(.4),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -162,8 +168,8 @@ class _SearchPageState extends State<SearchPage> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: isButtonPressed2
-                              ? colorsModel.getColoreSecondario()
-                              : colorsModel.getColoreSecondario().withOpacity(.4),
+                              ? colorsModel.coloreSecondario
+                              : colorsModel.coloreSecondario.withOpacity(.4),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -198,8 +204,8 @@ class _SearchPageState extends State<SearchPage> {
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: isButtonPressed3
-                              ? colorsModel.getColoreSecondario()
-                              : colorsModel.getColoreSecondario().withOpacity(.4),
+                              ? colorsModel.coloreSecondario
+                              : colorsModel.coloreSecondario.withOpacity(.4),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

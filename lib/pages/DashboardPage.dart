@@ -69,6 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
       }
 
         return Scaffold(
+          backgroundColor: colorsModel.backgroudColor,
           body: ricetteModel.ricette.isEmpty?
           Center(
               child: Column(
@@ -116,7 +117,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: Text(
                       "CONSIGLIATI",
                       style: GoogleFonts.encodeSans(
-                        color: colorsModel.getColoreTitoli(context),
+                        color: colorsModel.coloreTitoli,
                         fontSize: 22,
                         fontWeight: FontWeight.w800
                       ),
@@ -196,7 +197,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: Text(
                       "AGGIUNTI DI RECENTE",
                       style: GoogleFonts.encodeSans(
-                        color: colorsModel.getColoreTitoli(context),
+                        color: colorsModel.coloreTitoli,
                         fontSize: 22,
                         fontWeight: FontWeight.w800
                       ),
@@ -216,7 +217,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
                       }, 
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: colorsModel.getColoreSecondario(),
+                        backgroundColor: colorsModel.coloreSecondario,
                       ),
                       child: Text(
                         ricetteModel.finestraTemporale==1
@@ -285,7 +286,7 @@ class _DashboardPageState extends State<DashboardPage> {
           //tasto per l'aggiunta di una nuova ricetta 
           
           floatingActionButton: FloatingActionButton(
-            backgroundColor: colorsModel.getColoreSecondario(),
+            backgroundColor: colorsModel.coloreSecondario,
             child: Icon(Icons.add, color: Colors.white, size: 35),
             onPressed: () {
               Navigator.pushNamed(context, '/nuovaricettapage').then((_){

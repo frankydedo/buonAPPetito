@@ -1,28 +1,29 @@
-// ignore_for_file: must_be_immutable, deprecated_member_use
-
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ConfermaDialog extends StatelessWidget {
+class CambiaNomeDialog extends StatefulWidget {
 
-  String domanda;
+  const CambiaNomeDialog({Key? key}) : super(key: key);
 
-  ConfermaDialog({super.key, required this.domanda});
+  @override
+  _CambiaNomeDialogState createState() => _CambiaNomeDialogState();
+}
+
+class _CambiaNomeDialogState extends State<CambiaNomeDialog> {
+  String? provNome;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
-        return WillPopScope(
-          onWillPop: () async {
-            Navigator.pop(context, false);
-            return false;
-          },
-          child: AlertDialog(
-            backgroundColor: colorsModel.dialogBackgroudColor,
-            content: Column(
+        return AlertDialog(
+          backgroundColor: colorsModel.backgroudColor,
+          content: SingleChildScrollView(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // icona [?]
@@ -32,10 +33,10 @@ class ConfermaDialog extends StatelessWidget {
                   size: 70,
                 ),
                 SizedBox(height: 20),
-            
+
                 // testo richiesta
                 Text(
-                  domanda,
+                  "Inserisci il tuo nome",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: colorsModel.textColor,
@@ -44,18 +45,51 @@ class ConfermaDialog extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-            
-                
+
+                // form
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      // passaggio
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Inserire nome";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          provNome = value;
+                        },
+                        style: TextStyle(
+                          color: colorsModel.textColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'nuovo nome',
+                          fillColor: colorsModel.coloreSecondario,
+                          hintStyle: TextStyle(color: Colors.grey)
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+
                 // tasti
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-            
+
                     // tasto annulla
-            
+
                     GestureDetector(
                       onTap: (){
-                        Navigator.pop(context, false);
+                        Navigator.pop(context);
                       },
                       child: Text(
                         "Annulla",
@@ -66,11 +100,14 @@ class ConfermaDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-            
+
                     // tasto fatto
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context, true);
+                        if (_formKey.currentState?.validate() ?? false) {
+                          String nuovoNome = provNome!;
+                          Navigator.pop(context, nuovoNome);
+                        }
                       }, 
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white, 
@@ -83,14 +120,14 @@ class ConfermaDialog extends StatelessWidget {
                         shadowColor: Colors.black,
                       ),                          
                       child: Text(
-                        "Conferma",
+                        "Fatto",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    
+
                   ],
                 ),
               ],

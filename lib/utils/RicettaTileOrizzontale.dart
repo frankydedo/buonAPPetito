@@ -18,7 +18,7 @@ class RicettaTileOrizzontale extends StatelessWidget {
     builder: (context, colorsModel, _) {
     return Card(
       margin: EdgeInsets.zero,
-      color: Colors.white,
+      color: colorsModel.tileBackGroudColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -47,7 +47,7 @@ class RicettaTileOrizzontale extends StatelessWidget {
                   ricetta.titolo,
                   style: GoogleFonts.encodeSans(
                     textStyle: TextStyle(
-                      color: colorsModel.getColoreTitoli(context),
+                      color: colorsModel.coloreTitoli,
                       fontSize: 22,
                       fontWeight: FontWeight.w800,
                     ),
@@ -58,7 +58,7 @@ class RicettaTileOrizzontale extends StatelessWidget {
                   ricetta.getCategorie(),
                   style: GoogleFonts.encodeSans(
                     textStyle: TextStyle(
-                      color: colorsModel.getColoreTitoli(context),
+                      color: colorsModel.coloreTitoli,
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),

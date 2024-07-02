@@ -39,20 +39,30 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // Logica di inizializzazione
-    print('App initialized');
+
+    Future.microtask(() {
+      final colorsProvider = Provider.of<ColorsProvider>(context, listen: false);
+      colorsProvider.initLightMode(context);
+    });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // Logica di pulizia
-    print('App disposed');
     super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if(Provider.of<ColorsProvider>(context, listen: false).temaAttuale == "Sistema Operativo"){
+      final colorsProvider = Provider.of<ColorsProvider>(context, listen: false);
+      colorsProvider.updateLightMode(context);
+    }
   }
 
   @override
@@ -83,83 +93,93 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       return MaterialApp(
         title: 'buonAPPetito',
         debugShowCheckedModeBanner: false,
-        themeMode: ThemeMode.light, // Modalità scura non ancora disponibile
-        theme: ThemeData(
-          scaffoldBackgroundColor: colorsModel.getBackgroudColor(context),
-          datePickerTheme: DatePickerThemeData(
-            backgroundColor: colorsModel.getBackgroudColor(context),
-            todayForegroundColor: MaterialStatePropertyAll(Colors.blue[900]),
-          ),
-          drawerTheme: DrawerThemeData(
-            backgroundColor: colorsModel.getBackgroudColor(context),
-          ),
-          appBarTheme: AppBarTheme(
-            color: colorsModel.getBackgroudColor(context),
-            iconTheme: IconThemeData(
-              color: colorsModel.getColoreSecondario(),
-              size: 28.0,
-            ),
-          ),
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: colorsModel.getBackgroudColor(context),
-            selectedItemColor: colorsModel.getColoreSecondario(),
-            unselectedItemColor: colorsModel.getColoreSecondario(),
-            selectedIconTheme: IconThemeData(
-              size: 30,
-              opacity: 1,
-            ),
-            unselectedIconTheme: IconThemeData(
-              size: 25,
-              opacity: .5,
-            ),
-            selectedLabelStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-        ),
-        darkTheme: ThemeData(
-          scaffoldBackgroundColor: Colors.grey[850],
-          datePickerTheme: DatePickerThemeData(
-            backgroundColor: Colors.grey[850],
-            todayForegroundColor: MaterialStatePropertyAll(Colors.blue[900]),
-          ),
-          drawerTheme: DrawerThemeData(
-            backgroundColor: Colors.grey[850],
-          ),
-          appBarTheme: AppBarTheme(
-            color: Colors.grey[850],
-            iconTheme: IconThemeData(
-              color: Colors.grey,
-              size: 28.0,
-            ),
-          ),
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: Colors.grey[850],
-            selectedItemColor: Colors.grey,
-            unselectedItemColor: Colors.grey,
-            selectedIconTheme: IconThemeData(
-              size: 30,
-              opacity: 1,
-            ),
-            unselectedIconTheme: IconThemeData(
-              size: 25,
-              opacity: .5,
-            ),
-            selectedLabelStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.normal,
-            ),
-          ),
-        ),
+        // themeMode: colorsModel.temaAttuale=="Sistema Operativo"? ThemeMode.system : ThemeMode.light, // Modalità scura non ancora disponibile
+        // theme: ThemeData(
+        //   scaffoldBackgroundColor: colorsModel.backgroudColor,
+        //   datePickerTheme: DatePickerThemeData(
+        //     backgroundColor: colorsModel.backgroudColor,
+        //     todayForegroundColor: MaterialStatePropertyAll(Colors.blue[900]),
+        //   ),
+        //   drawerTheme: DrawerThemeData(
+        //     backgroundColor: colorsModel.backgroudColor,
+        //   ),
+        //   appBarTheme: AppBarTheme(
+        //     color: colorsModel.backgroudColor,
+        //     iconTheme: IconThemeData(
+        //       color: colorsModel.coloreSecondario,
+        //       size: 28.0,
+        //     ),
+        //   ),
+        //   bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        //     backgroundColor: colorsModel.backgroudColor,
+        //     selectedItemColor: colorsModel.coloreSecondario,
+        //     unselectedItemColor: colorsModel.coloreSecondario,
+        //     selectedIconTheme: IconThemeData(
+        //       size: 30,
+        //       opacity: 1,
+        //     ),
+        //     unselectedIconTheme: IconThemeData(
+        //       size: 25,
+        //       opacity: .5,
+        //     ),
+        //     selectedLabelStyle: TextStyle(
+        //       fontSize: 18,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //     unselectedLabelStyle: TextStyle(
+        //       fontSize: 13,
+        //       fontWeight: FontWeight.normal,
+        //     ),
+        //   ),
+        // ),
+        // darkTheme: ThemeData(
+        //   scaffoldBackgroundColor: Colors.grey[850],
+        //   datePickerTheme: DatePickerThemeData(
+        //     backgroundColor: Colors.grey[850],
+        //     todayForegroundColor: MaterialStatePropertyAll(Colors.blue[900]),
+        //   ),
+        //   drawerTheme: DrawerThemeData(
+        //     backgroundColor: Colors.grey[850],
+        //   ),
+        //   appBarTheme: AppBarTheme(
+        //     color: Colors.grey[850],
+        //     iconTheme: IconThemeData(
+        //       color: Colors.grey,
+        //       size: 28.0,
+        //     ),
+        //   ),
+        //   bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        //     backgroundColor: colorsModel.getBackgroudColor(context),
+        //     selectedItemColor: colorsModel.coloreSecondario,
+        //     unselectedItemColor: colorsModel.coloreSecondario,
+        //     selectedIconTheme: IconThemeData(
+        //       size: 30,
+        //       opacity: 1,
+        //     ),
+        //     unselectedIconTheme: IconThemeData(
+        //       size: 25,
+        //       opacity: .5,
+        //     ),
+        //     selectedLabelStyle: TextStyle(
+        //       fontSize: 18,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //     unselectedLabelStyle: TextStyle(
+        //       fontSize: 13,
+        //       fontWeight: FontWeight.normal,
+        //     ),
+        //   ),
+        // ),
+        // theme: ThemeData(
+        //   inputDecorationTheme: InputDecorationTheme(
+        //   focusedBorder: OutlineInputBorder(
+        //     borderSide: BorderSide(color: colorsModel.coloreSecondario, width: 2.0),
+        //   ),
+        //   enabledBorder: OutlineInputBorder(
+        //     borderSide: BorderSide(color: colorsModel.coloreSecondario, width: 1.0),
+        //   ),
+        //   ),
+        // ),
         home: FirstPage(),
         routes: {
           '/firstpage': (context) => FirstPage(),

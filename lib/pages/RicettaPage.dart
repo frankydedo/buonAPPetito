@@ -1,3 +1,5 @@
+import 'package:buonappetito/pages/NuovaRicettaPage.dart';
+import 'package:buonappetito/pages/NuovaRicettaPageCompleta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/ConfermaDialog.dart';
@@ -74,36 +76,50 @@ class _RicettaPageState extends State<RicettaPage> {
                 Spacer(),
 
                 //tasto cancella
-
-                GestureDetector(
-                  onTap: () async{
-                    bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
+                IconButton(
+                onPressed: () async{                
+                  bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
                     if (cancellare){
                       Navigator.pop(context);
                       ricetteModel.rimuoviRicetta(widget.recipe);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                      const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
                     }
+
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.coloreSecondario),
                   ),
                 ),
-                GestureDetector(
-                  onTap: (){
-                    if(widget.recipe.isFavourite){
-                      ricetteModel.rimuoviDaiPreferiti(widget.recipe);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Ricetta rimossa dai preferiti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
-                      );
-                    } else {
+                //tasto modifica ricetta
+                IconButton(
+                onPressed: () async{                
+                    Navigator.push(context,MaterialPageRoute(builder: (context) =>NuovaRicettaPageCompleta(recipe: widget.recipe,))).then((_){
+                      setState(() {
+                        
+                      });
+                    });
+
+                }, 
+                icon: Icon(Icons.edit_rounded, size: 35, color: colorsModel.getColoreSecondario()),
+                ),
+                // tasto rimuovi dai preferiti
+                IconButton(
+                onPressed: () async{                
+                  if(widget.recipe.isFavourite){
+                    ricetteModel.rimuoviDaiPreferiti(widget.recipe);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Ricetta rimossa dai preferiti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                    );
+                  } else {
                       ricetteModel.aggiungiAiPreferiti(widget.recipe);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Ricetta aggiunta ai preferiti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
                     }
+
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

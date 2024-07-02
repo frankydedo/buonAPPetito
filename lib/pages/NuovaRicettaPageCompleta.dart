@@ -7,6 +7,7 @@ import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog2.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
@@ -19,14 +20,23 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-class NuovaRicettaPage extends StatefulWidget {
-  const NuovaRicettaPage({super.key, });
+class NuovaRicettaPageCompleta extends StatefulWidget {
+  final Ricetta recipe;
+  const NuovaRicettaPageCompleta({super.key, required this.recipe});
 
   @override
-  State<NuovaRicettaPage> createState() => _NuovaRicettaPageState();
+  State<NuovaRicettaPageCompleta> createState() => _NuovaRicettaPageStateCompleta();
 }
 
-class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
+class _NuovaRicettaPageStateCompleta extends State<NuovaRicettaPageCompleta> {
+
+@override
+  void initState()
+  {
+    super.initState();
+    print(widget.recipe);
+    riempiPagina();    
+  }
 
 
   final _formKey = GlobalKey<FormState>();
@@ -44,7 +54,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
 
   Map<Categoria, bool> selezioneCategorie = {};
 
-  TextEditingController _titolocontroller = TextEditingController();
+  late TextEditingController _titolocontroller = TextEditingController();
   TextEditingController _descrizionecontroller = TextEditingController();
   TextEditingController _tempocontroller = TextEditingController();
 
@@ -61,6 +71,35 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     setState(() {
       percorsoImmagine = imagePath;
     });
+  }
+
+  void riempiPagina()
+  {
+    percorsoImmagine= widget.recipe.percorsoImmagine;
+    ingredientiInseriti=widget.recipe.ingredienti;
+    passaggiInseriti=widget.recipe.passaggi;
+    difficolta=widget.recipe.difficolta;
+    dataAggiunta=widget.recipe.dataAggiunta;
+    _titolocontroller = TextEditingController(text: widget.recipe.titolo);
+    titolo = widget.recipe.titolo;
+    _descrizionecontroller = TextEditingController(text: widget.recipe.descrizione);
+    descrizione=widget.recipe.descrizione;
+    _tempocontroller = TextEditingController(text:  widget.recipe.minutiPreparazione.toString());
+    minutiPreparazione=widget.recipe.minutiPreparazione;
+
+    List <Categoria>ListaCategorie = Provider.of<RicetteProvider>(context, listen: false).categorie;
+    categorie=widget.recipe.categorie;
+    print(categorie.toString());
+    for (Categoria categoria in ListaCategorie) {
+      if(categorie.contains(categoria.nome))
+      {
+       selezioneCategorie[Categoria(nome: categoria.nome)] = true;
+      }
+      else
+      {
+        selezioneCategorie[Categoria(nome: categoria.nome)] = false;
+      }
+    }
   }
 
   Future<void> pickImageFromGallery() async {
@@ -105,12 +144,22 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     );
   }
 
-  Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) {
-    return showDialog(
+Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) async {
+  print("sono in show categorie dialog\n");
+  print(selezioneCategorie.toString());
+  return showDialog<Map<Categoria, bool>>(
+    context: context,
+    builder: (context) => MyCategoriaDialog2(selezioneCategorie: selezioneCategorie),
+  );
+}
+
+Future showConfermaDialog ()
+{
+  return showDialog(
       context: context,
-      builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie),
+      builder: (context) => ConfermaDialog(domanda: "Sei sicuro di voler annullare le modifiche apportate?"),
     );
-  }
+}
 
   void generaDifficoltaInAutomatico() {
     int diffPassaggi;
@@ -168,13 +217,17 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return Scaffold(
-          backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
-            backgroundColor: colorsModel.backgroudColor,
-            iconTheme: IconThemeData(
-            color: colorsModel.coloreSecondario,
-            size: 28.0,
-          ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_rounded),
+              onPressed: () async {
+                bool conferma = await showConfermaDialog();
+                if(conferma)
+                {
+                  Navigator.pop(context);
+                }
+              },
+            ),
           ),
           body: GestureDetector(
             onTap: (){
@@ -191,10 +244,10 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                       child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        "Crea una nuova ricetta",
+                        "Modifica ricetta",
                         style: GoogleFonts.encodeSans(
                           textStyle: TextStyle(
-                            color: colorsModel.isLightMode? colorsModel.coloreTitoli : colorsModel.coloreSecondario,
+                            color: colorsModel.getColoreTitoli(context),
                             fontSize: 35,
                             fontWeight: FontWeight.w800,
                           ),
@@ -217,7 +270,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                 Text(
                                   "Titolo",
                                   style: GoogleFonts.encodeSans(
-                                    color: colorsModel.textColor,
                                     textStyle: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.w700,
@@ -229,7 +281,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                   width: screenWidth * 0.68,
                                   child: TextFormField(
                                     controller: _titolocontroller,
-                                    cursorColor: colorsModel.coloreSecondario,
                                     textInputAction: TextInputAction.done,
                                     onFieldSubmitted: (_){},
                                     focusNode: _focusNode_titolo,
@@ -251,14 +302,12 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       fontWeight: FontWeight.normal,
                                     ),
                                     decoration: InputDecoration(
-                                      hoverColor: colorsModel.coloreSecondario,
-                                      hintStyle: TextStyle(color: Colors.grey),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20)
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        borderSide: BorderSide(color: colorsModel.coloreSecondario)
+                                      hintStyle: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     ),
                                   ),
@@ -279,7 +328,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       "Descrizione",
                                       style: GoogleFonts.encodeSans(
                                         textStyle: TextStyle(
-                                          color: colorsModel.textColor,
                                           fontSize: 25,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -292,7 +340,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                   height: screenHeight * 0.15,
                                   child: TextFormField(
                                     controller: _descrizionecontroller,
-                                    cursorColor: colorsModel.coloreSecondario,
                                     textInputAction: TextInputAction.done,
                                     onFieldSubmitted: (_){},
                                     focusNode: _focusNode_descrizione,
@@ -311,14 +358,12 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       fontWeight: FontWeight.normal,
                                     ),
                                     decoration: InputDecoration(
-                                      hoverColor: colorsModel.coloreSecondario,
-                                      hintStyle: TextStyle(color: Colors.grey),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20)
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        borderSide: BorderSide(color: colorsModel.coloreSecondario)
+                                      hintStyle: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     ),
                                   ),
@@ -340,14 +385,13 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         "Categorie",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
-                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
                                       ),
                                     ),
-
+            
                                     // tasto
                                     Row(
                                       children: [
@@ -363,14 +407,16 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                 }
                                               }
                                               setState(() {
+                                                print("ci sono");                                               
                                                 categorie.clear();
                                                 categorie.addAll(categorieSelezionate);
+                                                print(categorie.toString());
                                               });
                                             }
                                             unfocus();
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorsModel.coloreSecondario,
+                                            backgroundColor: colorsModel.getColoreSecondario(),
                                           ),
                                           child: Icon(Icons.add, color: Colors.white, size: 25),
                                         ),
@@ -470,7 +516,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         "Ingredienti",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
-                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -493,7 +538,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                             unfocus();
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorsModel.coloreSecondario,
+                                            backgroundColor: colorsModel.getColoreSecondario(),
                                           ),
                                           child: Icon(Icons.add, color: Colors.white, size: 25),
                                         ),
@@ -595,14 +640,13 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         "Passaggi",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
-                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
                                       ),
                                     ),
-
+            
                                     // tasto
                                     Row(
                                       children: [
@@ -618,7 +662,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                             unfocus();
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorsModel.coloreSecondario,
+                                            backgroundColor: colorsModel.getColoreSecondario(),
                                           ),
                                           child: Icon(Icons.add, color: Colors.white, size: 25),
                                         ),
@@ -723,7 +767,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                             child: Text(
                               "Tempo di Preparazione",
                               style: GoogleFonts.encodeSans(
-                                color: colorsModel.textColor,
                                 fontSize: 25,
                                 fontWeight: FontWeight.w700
                               ),
@@ -736,7 +779,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                 Text(
                                   "Minuti:",
                                   style: GoogleFonts.encodeSans(
-                                    color: colorsModel.textColor,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500
                                   ),
@@ -746,7 +788,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                   width: screenWidth * 0.68,
                                   child: TextFormField(
                                     controller: _tempocontroller,
-                                    cursorColor: colorsModel.coloreSecondario,
                                     textInputAction: TextInputAction.done,
                                     onFieldSubmitted: (_){},
                                     focusNode: _focusNode_tempo,
@@ -774,14 +815,12 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       fontWeight: FontWeight.normal,
                                     ),
                                     decoration: InputDecoration(
-                                      hoverColor: colorsModel.coloreSecondario,
-                                      hintStyle: TextStyle(color: Colors.grey),
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(20)
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20),
-                                        borderSide: BorderSide(color: colorsModel.coloreSecondario)
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
                                       ),
                                     ),
                                   ),
@@ -799,7 +838,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                 child: Text(
                                   "Difficoltà",
                                   style: GoogleFonts.encodeSans(
-                                    color: colorsModel.textColor,
                                     fontSize: 25,
                                     fontWeight: FontWeight.w700
                                   ),
@@ -823,7 +861,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                     },
                                     style: ElevatedButton.styleFrom(
                                       elevation: (minutiPreparazione!=null && passaggiInseriti.isNotEmpty) ? 1 : 0,
-                                      backgroundColor: (minutiPreparazione!=null && passaggiInseriti.isNotEmpty) ? colorsModel.coloreSecondario : colorsModel.coloreSecondario.withOpacity(.5) ,
+                                      backgroundColor: (minutiPreparazione!=null && passaggiInseriti.isNotEmpty) ? colorsModel.getColoreSecondario() : colorsModel.getColoreSecondario().withOpacity(.5) ,
                                     ),
                                     child: Icon(Icons.auto_awesome_rounded , color: Colors.white, size: 25),
                                   ),
@@ -857,11 +895,11 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: colorsModel.tileBackGroudColor,
+                                            color: Colors.white,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 1 ? colorsModel.coloreSecondario : Colors.transparent
+                                              color: difficolta == 1 ? colorsModel.getColoreSecondario() : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -870,7 +908,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                 Text(
                                                   "Principiante",
                                                   style: GoogleFonts.encodeSans(
-                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -897,11 +934,11 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: colorsModel.tileBackGroudColor,
+                                            color: Colors.white,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 2 ? colorsModel.coloreSecondario : Colors.transparent
+                                              color: difficolta == 2 ? colorsModel.getColoreSecondario() : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -910,7 +947,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                 Text(
                                                   "Amatoriale",
                                                   style: GoogleFonts.encodeSans(
-                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -938,11 +974,11 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: colorsModel.tileBackGroudColor,
+                                            color: Colors.white,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 3 ? colorsModel.coloreSecondario : Colors.transparent
+                                              color: difficolta == 3 ? colorsModel.getColoreSecondario() : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -951,7 +987,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                 Text(
                                                   "Intermedio",
                                                   style: GoogleFonts.encodeSans(
-                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -980,11 +1015,11 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: colorsModel.tileBackGroudColor,
+                                            color: Colors.white,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 4 ? colorsModel.coloreSecondario : Colors.transparent
+                                              color: difficolta == 4 ? colorsModel.getColoreSecondario() : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -993,7 +1028,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                 Text(
                                                   "Chef",
                                                   style: GoogleFonts.encodeSans(
-                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -1023,11 +1057,11 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: colorsModel.tileBackGroudColor,
+                                            color: Colors.white,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 5 ? colorsModel.coloreSecondario : Colors.transparent
+                                              color: difficolta == 5 ? colorsModel.getColoreSecondario() : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -1036,7 +1070,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                 Text(
                                                   "Chef Stellato",
                                                   style: GoogleFonts.encodeSans(
-                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -1076,7 +1109,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         "Foto",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
-                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -1094,7 +1126,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                           ElevatedButton(
                                             onPressed: () => pickImageFromCamera(),
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: colorsModel.coloreSecondario,
+                                              backgroundColor: colorsModel.getColoreSecondario(),
                                             ),
                                             child: Icon(Icons.camera_alt_rounded, color: Colors.white, size: 25),
                                           ),
@@ -1104,7 +1136,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                           ElevatedButton(
                                             onPressed: () => pickImageFromGallery(),
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: colorsModel.coloreSecondario,
+                                              backgroundColor: colorsModel.getColoreSecondario(),
                                             ),
                                             child: Icon(Icons.photo_library_rounded, color: Colors.white, size: 25),
                                           ),
@@ -1160,7 +1192,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                               ],
                             ),
                           ),
-                          //tasto per la creazione della ricetta
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12.0, top: 12, right: 30, left:30),
                             child: ElevatedButton(
@@ -1180,47 +1211,38 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       const SnackBar(content: Text("Inserire i passaggi", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
                                     );
                                   }else if(difficolta==null){
+
                                       ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(content: Text("Selezionare la difficoltà", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
                                     );
-                                  }else if(percorsoImmagine==null){
+                                  }else if(percorsoImmagine==null){                                   
                                       ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(content: Text("Inserire la foto", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
                                     );
-                                  }else{
-                                    Ricetta nuovaRicetta = Ricetta(
-                                      percorsoImmagine: percorsoImmagine!, 
-                                      categorie: categorie, 
-                                      descrizione: descrizione!, 
-                                      ingredienti: ingredientiInseriti, 
-                                      passaggi: passaggiInseriti, 
-                                      titolo: titolo!, 
-                                      minutiPreparazione: minutiPreparazione!, 
-                                      dataAggiunta: DateTime.now(),
-                                      difficolta: difficolta!
-                                    );
-                            
-                                    if(ricetteModel.ricette.contains(nuovaRicetta)){
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text("Questa ricetta è già presente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
-                                      );
-                                    }else{
-                                      ricetteModel.aggiungiNuovaRicetta(nuovaRicetta);
-                                      Navigator.pop(context);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
-                                      );
-                                    }
                                   }
-                                }
-                              }, 
+                                  else{
+                                    widget.recipe.setDescrizione(descrizione!);
+                                    widget.recipe.setImmagine(percorsoImmagine!);
+                                    widget.recipe.setCategorie(categorie);
+                                    widget.recipe.setIngredienti(ingredientiInseriti);
+                                    widget.recipe.setPassaggi(passaggiInseriti);
+                                    widget.recipe.setTitolo(titolo!);
+                                    widget.recipe.setMinutiPreparazione(minutiPreparazione!);
+                                    widget.recipe.setDifficolta(difficolta!);
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Ricetta modificata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                    );
+                                  };                                
+                                };
+                              },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: colorsModel.coloreSecondario
+                                backgroundColor: colorsModel.getColoreSecondario()
                               ),
                               child: Padding(
                               padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
                                 child: Text(
-                                  "Crea Ricetta",
+                                  "Salva Modifiche ",
                                   style: GoogleFonts.encodeSans(
                                     color: Colors.white,
                                     fontSize: 30,

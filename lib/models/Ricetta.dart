@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 class Ricetta {
   String percorsoImmagine;
   String titolo;
@@ -39,12 +41,28 @@ class Ricetta {
     isFavourite = true;
   }
 
+  void setImmagine(String immagine) {
+    percorsoImmagine= immagine ;
+  }
+
   void resetPreferita() {
     isFavourite = false;
   }
 
+  void setIngredienti(Map<String, String> listaIngredienti) {
+    this.ingredienti = listaIngredienti;
+  }
+
+  void setPassaggi(List <String> listaPassaggi) {
+    this.passaggi = listaPassaggi;
+  }
+
   void setTitolo(String titoloNuovo) {
     this.titolo = titoloNuovo;
+  }
+
+  void setCategorie(List <String> listaCategorie) {
+    this.categorie = listaCategorie;
   }
 
   void setDescrizione(String descrizioneNuova) {

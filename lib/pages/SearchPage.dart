@@ -163,7 +163,7 @@ class _SearchPageState extends State<SearchPage> {
                       width: screenWidth * 0.30,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          showDifficultyDialog(context, difficultyModel);
+                          showDifficultyDialog(context);
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -235,17 +235,6 @@ class _SearchPageState extends State<SearchPage> {
                   itemCount: ListaFiltrata.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      /// onTap: (){
-                      ///   Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: recipeScroll);})).then((_){
-                      ///     // setState(() {
-                      ///     //   ListaRicette = ricetteModel.ricette;
-                      ///     //   searchAndFilterRecipes(controller.text);
-                      ///     //   print("here");
-                      ///     // });
-                      ///     Navigator.pushNamed(context, '/searchpage');
-                      ///     print("culo");
-                      ///   });
-                      /// },
                       onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ListaFiltrata[index]);})).then((_){
                           setState(() {
@@ -262,37 +251,6 @@ class _SearchPageState extends State<SearchPage> {
                   },
                 ),
               ),
-
-              // SingleChildScrollView(
-              //   child: Column(
-              //     children: List.generate(
-              //           ListaFiltrata.length,
-              //           (index) {
-              //             return Padding(
-              //               padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
-              //               child: GestureDetector(
-              //                 onTap: (){
-              //                   Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ListaFiltrata[index]);})).then((_){
-              //                     setState(() {
-              //                       ListaRicette = ricetteModel.ricette;
-              //                       searchAndFilterRecipes(controller.text);
-              //                     });
-              //                   });
-              //                 },
-              //                 child: Padding(
-              //                   padding: const EdgeInsets.all(8.0),
-              //                   child: RicettaTileOrizzontale(ricetta: ListaFiltrata[index]),
-              //                 )
-              //               ),
-              //             );
-              //           },
-              //         ),
-              //   )
-              // )
-
-
-
-
             ],
           ),
         );
@@ -332,31 +290,45 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void showDifficultyDialog(BuildContext context, DifficultyProvider difficultyProvider) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return MyDifficolta(
-          onSelectionChanged: (selectedDifficultyIndex) {
-            difficultyProvider.setSelectedDifficultyIndex(selectedDifficultyIndex);
-            setState(() {
-              if(selectedDifficultyIndex == -1)
-              {
-               toggleFilter('difficulty');
-              }
-              else
-              {
-                activeFilters.add('difficulty');
-                searchAndFilterRecipes(controller.text);
-              }
-            isButtonPressed2 = selectedDifficultyIndex != -1;
-            });
-          },
-          selectedDifficultyIndex: difficultyProvider.selectedDifficultyIndex,
-        );
-      },
-    );
-  }
+Future<void> showDifficultyDialog(BuildContext context) async {
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return MyDifficolta(
+        onSelectionChanged: (selectedDifficultyIndices) {
+          DifficultyProvider difficultyProvider = Provider.of<DifficultyProvider>(context, listen: false);
+          difficultyProvider.resetSelection();
+          selectedDifficultyIndices.forEach((index) {
+            difficultyProvider.toggleDifficultyIndex(index);
+          });
+
+          if (difficultyProvider.hasSelection) {
+            if(!activeFilters.contains('difficulty'))
+            {
+              activeFilters.add('difficulty');
+            }
+          } else {
+            activeFilters.remove('difficulty');
+          }
+          print(activeFilters.toString());
+          isButtonPressed2 = difficultyProvider.hasSelection;
+
+          setState(() {
+            // Aggiorna il pulsante di difficoltà
+            isButtonPressed2 = difficultyProvider.hasSelection;
+
+            // Richiama la funzione di filtro e ricerca
+            searchAndFilterRecipes(controller.text);
+          });
+        },
+        selectedDifficultyIndices: Provider.of<DifficultyProvider>(context, listen: false).selectedDifficultyIndices,
+      );
+    },
+  );
+}
+
+
+
 
   void showTimeDialog(BuildContext context) {
     showDialog(
@@ -387,18 +359,18 @@ class _SearchPageState extends State<SearchPage> {
 
 List<Ricetta> applyDifficultyFilter() {
   DifficultyProvider difficultyProvider = Provider.of<DifficultyProvider>(context, listen: false);
-  int selectedDifficultyIndex = difficultyProvider.selectedDifficultyIndex;
-  List<Ricetta> filteredRecipes = List.from(ListaFiltrata); // Creare una copia della lista filtrata
+  List<int> selectedDifficulties = difficultyProvider.selectedDifficultyIndices;
+  List<Ricetta> filteredRecipes = [];
 
-  if (selectedDifficultyIndex != -1) {
-    String selectedDifficulty = difficultyProvider.allDifficulties[selectedDifficultyIndex];
-    int selectedDifficultyLevel = difficultyProvider.difficultyLevels[selectedDifficulty] ?? 0;
-
-    filteredRecipes = filteredRecipes.where((ricetta) => ricetta.difficolta! <= selectedDifficultyLevel).toList();
-  }
+  // Filtra le ricette in base alle difficoltà selezionate
+  filteredRecipes = ListaFiltrata.where((ricetta) {
+    // Verifica se la ricetta è compatibile con almeno una delle difficoltà selezionate
+    return selectedDifficulties.contains(ricetta.difficolta);
+  }).toList();
 
   return filteredRecipes;
 }
+
 
   // metodi per il filtraggio delle ricette in base alle categorie
 
@@ -433,7 +405,7 @@ List<Ricetta> applyDifficultyFilter() {
         case "< 90":
           filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione < 90).toList();
           break;
-        case "> 90":
+        case "oltre":
           filteredRecipes = filteredRecipes.where((ricetta) => ricetta.minutiPreparazione > 0).toList();
           break;
       }

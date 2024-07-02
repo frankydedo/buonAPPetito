@@ -29,7 +29,6 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
     for(var entry in widget.selezioneCategorie.entries){
       selezionePrecedente.addAll({entry.key : entry.value});
     }
-    print("le categorie selezionate sono" + widget.selezioneCategorie.toString()+ "\n");
   }
 
   void _showAddCategoryDialog(RicetteProvider ricetteModel) {
@@ -144,9 +143,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                             itemCount: ricetteModel.categorie.length,
                             itemBuilder: (context, index) {
                               Categoria categoria = widget.selezioneCategorie.keys.elementAt(index);
-                              print("le categorie selezionate al primo avvio "+ widget.selezioneCategorie.toString());                              
                               bool isSelected = widget.selezioneCategorie[categoria]!;
-                              print(isSelected);
                               return CheckboxListTile(
                                 activeColor: colorsModel.coloreSecondario,
                                 title: Text(

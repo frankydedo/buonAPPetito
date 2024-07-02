@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 class Ricetta {
   String percorsoImmagine;
   String titolo;

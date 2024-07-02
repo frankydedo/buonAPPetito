@@ -8,7 +8,6 @@ import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
-import 'package:buonappetito/utils/MyCategoriaDialog2.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
 import 'package:buonappetito/utils/NuovoPassaggioDialog.dart';
 import 'package:flutter/material.dart';

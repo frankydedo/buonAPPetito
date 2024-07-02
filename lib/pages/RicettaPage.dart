@@ -1,4 +1,4 @@
-import 'package:buonappetito/pages/NuovaRicettaPageCompleta.dart';
+import 'package:buonappetito/pages/ModificaRicettaPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/ConfermaDialog.dart';
@@ -95,7 +95,7 @@ class _RicettaPageState extends State<RicettaPage> {
                 //tasto modifica ricetta
                 IconButton(
                 onPressed: () async{                
-                    Navigator.push(context,MaterialPageRoute(builder: (context) =>NuovaRicettaPageCompleta(recipe: widget.recipe,))).then((_){
+                    Navigator.push(context,MaterialPageRoute(builder: (context) =>ModificaRicettaPage(recipe: widget.recipe,))).then((_){
                       setState(() {
                         
                       });

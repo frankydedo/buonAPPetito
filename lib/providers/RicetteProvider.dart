@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 
 class RicetteProvider extends ChangeNotifier {
 
+  String percorsoFotoProfilo = 'assets/images/logoAPPetito-1024.png';
+  String nomeProfilo = "your name";
+
   List<Categoria> categorie = [
     Categoria(nome: "Primi"),
     Categoria(nome: "Secondi"),
@@ -27,6 +30,9 @@ class RicetteProvider extends ChangeNotifier {
 
   List<Ricetta> preferiti = [];
   List<String> carrello =[];
+  List<String> get carrelloInvertito => carrello.reversed.toList();
+  List<String> elementiCancellatiCarrello = [];
+
   List <Ricetta> ricette = [
     Ricetta(
       categorie: ["Primi", "Carne"],
@@ -98,25 +104,46 @@ class RicetteProvider extends ChangeNotifier {
     )
   ];
 
+  void cambiaFotoProfilo(String nuovaFoto){
+    percorsoFotoProfilo = nuovaFoto;
+    notifyListeners();
+  }
 
-  List<bool> selectedCategories = List<bool>.filled(7, false);//risolvere il 7
+  void cambiaNomeProfilo(String nuovoNome){
+    nomeProfilo = nuovoNome;
+    notifyListeners();
+  }
 
   void setFinestraTemporale(int settimane){
     this.finestraTemporale = settimane;
     notifyListeners();
   }
 
-  void toggleCategorySelection(int index) {
-    selectedCategories[index] = !selectedCategories[index];
-    notifyListeners();
-  }
-
   void aggiungiIngredienteAlCarrello(String i){
+    if(elementiCancellatiCarrello.contains(i)){
+      elementiCancellatiCarrello.remove(i);
+    }
     carrello.add(i);
     notifyListeners();
   }
   void rimuoviIngredienteDalCarrello(String i){
+    elementiCancellatiCarrello.add(i);
     carrello.remove(i);
+    notifyListeners();
+  }
+
+  void ripristinaCancellaizioneCarrello(){
+    String elem = elementiCancellatiCarrello.last;
+    elementiCancellatiCarrello.remove(elem);
+    aggiungiIngredienteAlCarrello(elem);
+    notifyListeners();
+  }
+
+  void rimuoviTuttoDalCarrello(){
+    for(String elem in carrello){
+      elementiCancellatiCarrello.add(elem);
+    }
+    carrello.clear();
     notifyListeners();
   }
 
@@ -126,15 +153,6 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void aggiungiElementoCarrello(String elemento) {
-    carrello.add(elemento);
-    notifyListeners();
-  }
-
-  void rimuoviElementoCarrello(String elemento) {
-    carrello.remove(elemento);
-    notifyListeners();
-  }
 
   void rimuoviDaiPreferiti(Ricetta r){
     r.resetPreferita();
@@ -169,12 +187,6 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetSelections() {
-    for (int i = 0; i < selectedCategories.length; i++) {
-      selectedCategories[i] = false;
-    }
-    notifyListeners();
-  }
 
   List<Ricetta> generaAggiuntiDiRecente(){
     List<Ricetta> aggiuntiDiRecente = ricette.where((r) => r.dataAggiunta.isAfter(DateTime.now().subtract(Duration(days: 7 * finestraTemporale)))).toList();

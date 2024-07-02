@@ -25,7 +25,7 @@ class _FinestraTemporaleDialogState extends State<FinestraTemporaleDialog> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return AlertDialog(
-          backgroundColor: colorsModel.getColorePrimario(context),
+          backgroundColor: colorsModel.dialogBackgroudColor,
           content: SizedBox(
             width: 300,
             height: 400,
@@ -33,7 +33,7 @@ class _FinestraTemporaleDialogState extends State<FinestraTemporaleDialog> {
               children: [
                 Icon(
                   Icons.access_time,
-                  color: colorsModel.getColoreSecondario(),
+                  color: colorsModel.coloreSecondario,
                   size: 50,
                 ),
                 const SizedBox(height: 20),
@@ -43,7 +43,7 @@ class _FinestraTemporaleDialogState extends State<FinestraTemporaleDialog> {
                     itemBuilder: (context, index) {
                       int key = listValues.keys.elementAt(index);
                       return RadioListTile<int>(
-                        activeColor: colorsModel.getColoreSecondario(),
+                        activeColor: colorsModel.coloreSecondario,
                         value: key,
                         groupValue: ricetteModel.finestraTemporale,
                         onChanged: (value) {
@@ -58,6 +58,7 @@ class _FinestraTemporaleDialogState extends State<FinestraTemporaleDialog> {
                           ? "1 Settimana"
                           : (index+1).toString() + " Settimane",
                           style: GoogleFonts.encodeSans(
+                            color: colorsModel.textColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -73,7 +74,7 @@ class _FinestraTemporaleDialogState extends State<FinestraTemporaleDialog> {
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: colorsModel.getColoreSecondario(),
+                    backgroundColor: colorsModel.coloreSecondario,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),

@@ -5,6 +5,8 @@ import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
+import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/CarrelloIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,23 +37,35 @@ class _FirstPageState extends State<FirstPage>{
 
   @override 
   Widget build(BuildContext context){
-    return Consumer<ColorsProvider>(builder: (context, colorsModel, _) {
-      return Scaffold(
+    return Consumer2<ColorsProvider, RicetteProvider>(builder: (context, colorsModel, ricetteModel, _) {
 
+      int cartItemsNumber = Provider.of<RicetteProvider>(context, listen: false).carrello.length;
+
+      return Scaffold(
         appBar: AppBar(
+          backgroundColor: colorsModel.backgroudColor,
+          iconTheme: IconThemeData(
+            color: colorsModel.coloreSecondario,
+            size: 28.0,
+          ),
           title: Row(
             children: [
               Spacer(),
-              IconButton(
+              CarrelloIcon(
                 onPressed: (){
-                  Navigator.pushNamed(context, '/carrellopage');
+                  Navigator.pushNamed(context, '/carrellopage').then((_){
+                    setState(() {
+                      cartItemsNumber = ricetteModel.carrello.length;
+                    });
+                  });
                 }, 
-                icon: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario())
+                showNumber: cartItemsNumber
               )
             ],
           ),
         ),
         drawer: Drawer(
+          backgroundColor: colorsModel.backgroudColor,
           child: ListView(
             children: [
               DrawerHeader(child: Image.asset('assets/images/logo_arancio.png')),
@@ -59,24 +73,16 @@ class _FirstPageState extends State<FirstPage>{
                 padding: const EdgeInsets.only(left: 8.0, top: 8),
                 child: ListTile(
                   onTap:() {Navigator.pushNamed(context, '/firstpage');},
-                  leading: Icon(Icons.home_rounded, color: colorsModel.getColoreSecondario()),
-                  title: Text("HOME", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
+                  leading: Icon(Icons.home_rounded, color: colorsModel.coloreSecondario),
+                  title: Text("HOME", style: TextStyle(color: colorsModel.coloreSecondario, fontWeight: FontWeight.bold),),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 8.0, top: 8),
-              //   child: ListTile(
-              //     onTap:() {Navigator.pushNamed(context, '/carrellopage');},
-              //     leading: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario()),
-              //     title: Text("CARRELLO", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(
                   onTap:() {Navigator.pushNamed(context, '/impostazionipage');},
-                  leading: Icon(Icons.settings_rounded, color: colorsModel.getColoreSecondario()),
-                  title: Text("IMPOSTAZIONI", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
+                  leading: Icon(Icons.settings_rounded, color: colorsModel.coloreSecondario),
+                  title: Text("IMPOSTAZIONI", style: TextStyle(color: colorsModel.coloreSecondario, fontWeight: FontWeight.bold),),
                 ),
               ),
             ],
@@ -86,6 +92,25 @@ class _FirstPageState extends State<FirstPage>{
         body: _pages[_selectedIndex],
 
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: colorsModel.backgroudColor,
+          selectedItemColor: colorsModel.coloreSecondario,
+          unselectedItemColor: colorsModel.coloreSecondario,
+          selectedIconTheme: IconThemeData(
+            size: 30,
+            opacity: 1,
+          ),
+          unselectedIconTheme: IconThemeData(
+            size: 25,
+            opacity: .5,
+          ),
+          selectedLabelStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          unselectedLabelStyle: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.normal,
+          ),
           currentIndex: _selectedIndex,
           onTap: _navigateBottomBar,
           items: [

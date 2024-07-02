@@ -42,7 +42,6 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.11
   auto_size_text: ^3.0.0
-
     
 
   # The following adds the Cupertino Icons font to your application.
@@ -93,6 +92,10 @@ flutter:
     - assets/foto_piatti/ZitiAllaGenovese_2.jpg
     - assets/foto_piatti_gz/SpaghettiAlleVongole_1.jpg.avif
     - assets/foto_piatti_gz/Ribs_1.jpg.avif
+    - assets/colori/arancio.png
+    - assets/colori/indigo.png
+    - assets/colori/verde.png
+    - assets/colori/viola.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

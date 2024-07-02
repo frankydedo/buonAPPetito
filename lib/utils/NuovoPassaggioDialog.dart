@@ -23,7 +23,7 @@ class _NuovoPassaggioDialogState extends State<NuovoPassaggioDialog> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: colorsModel.dialogBackgroudColor,
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -31,7 +31,7 @@ class _NuovoPassaggioDialogState extends State<NuovoPassaggioDialog> {
                 // icona [?]
                 Icon(
                   Icons.help_outline,
-                  color: colorsModel.getColoreSecondario(),
+                  color: colorsModel.coloreSecondario,
                   size: 70,
                 ),
                 SizedBox(height: 20),
@@ -41,7 +41,7 @@ class _NuovoPassaggioDialogState extends State<NuovoPassaggioDialog> {
                   widget.msg,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: colorsModel.textColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
                   ),
@@ -71,8 +71,16 @@ class _NuovoPassaggioDialogState extends State<NuovoPassaggioDialog> {
                           fontWeight: FontWeight.normal,
                         ),
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Passaggio',
+                          hoverColor: colorsModel.coloreSecondario,
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: colorsModel.coloreSecondario)
+                          ),
+                          hintText: "Quantità cadauno"
                         ),
                       ),
                     ],
@@ -94,7 +102,7 @@ class _NuovoPassaggioDialogState extends State<NuovoPassaggioDialog> {
                       child: Text(
                         "Annulla",
                         style: TextStyle(
-                          color: colorsModel.getColoreSecondario(),
+                          color: colorsModel.coloreSecondario,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -111,7 +119,7 @@ class _NuovoPassaggioDialogState extends State<NuovoPassaggioDialog> {
                       }, 
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white, 
-                        backgroundColor: colorsModel.getColoreSecondario(),
+                        backgroundColor: colorsModel.coloreSecondario,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

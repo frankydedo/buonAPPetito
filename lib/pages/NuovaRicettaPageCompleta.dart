@@ -391,7 +391,6 @@ Future showConfermaDialog ()
                                         ),
                                       ),
                                     ),
-                                    Spacer(),
             
                                     // tasto
                                     Row(
@@ -523,7 +522,6 @@ Future showConfermaDialog ()
                                         ),
                                       ),
                                     ),
-                                    Spacer(),
             
                                     // tasto
                                     Row(
@@ -648,7 +646,6 @@ Future showConfermaDialog ()
                                         ),
                                       ),
                                     ),
-                                    Spacer(),
             
                                     // tasto
                                     Row(

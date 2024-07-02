@@ -331,7 +331,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         ),
                                       ),
                                     ),
-                                    Spacer(),
             
                                     // tasto
                                     Row(
@@ -461,7 +460,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         ),
                                       ),
                                     ),
-                                    Spacer(),
             
                                     // tasto
                                     Row(
@@ -586,7 +584,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                         ),
                                       ),
                                     ),
-                                    Spacer(),
             
                                     // tasto
                                     Row(

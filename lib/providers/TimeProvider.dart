@@ -15,7 +15,7 @@ class Timeprovider with ChangeNotifier {
         "< 30",
         "< 60",
         "< 90",
-        "> 90"
+        "oltre"
       ];
 
   List<String> get selectedDifficulties {

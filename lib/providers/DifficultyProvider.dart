@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class DifficultyProvider with ChangeNotifier {
-  int _selectedDifficultyIndex = -1;
+  List<int> _selectedDifficultyIndices = [];
 
-  int get selectedDifficultyIndex => _selectedDifficultyIndex;
+  List<int> get selectedDifficultyIndices => _selectedDifficultyIndices;
 
-  void setSelectedDifficultyIndex(int index) {
-    _selectedDifficultyIndex = index;
+  void toggleDifficultyIndex(int index) {
+    if (_selectedDifficultyIndices.contains(index)) {
+      _selectedDifficultyIndices.remove(index);
+    } else {
+      _selectedDifficultyIndices.add(index);
+    }
     notifyListeners();
   }
 
@@ -19,18 +23,29 @@ class DifficultyProvider with ChangeNotifier {
   ];
 
   Map<String, int> get difficultyLevels => {
-    "Principiante": 1,
-    "Amatoriale": 2,
-    "Intermedio": 3,
-    "Chef": 4,
-    "Chef Stellato": 5
+    "Principiante": 0,
+    "Amatoriale": 1,
+    "Intermedio": 2,
+    "Chef": 3,
+    "Chef Stellato": 4
   };
 
   List<String> get selectedDifficulties {
-    if (_selectedDifficultyIndex == -1) {
-      return [];
+    List<String> selected = [];
+    for (int index in _selectedDifficultyIndices) {
+      selected.add(allDifficulties[index]);
     }
-    return allDifficulties.sublist(0, _selectedDifficultyIndex + 1);
+    return selected;
   }
-   bool get hasSelection => _selectedDifficultyIndex != -1 || selectedDifficulties.isNotEmpty;
+
+  bool isSelected(int index) {
+    return _selectedDifficultyIndices.contains(index);
+  }
+
+  bool get hasSelection => _selectedDifficultyIndices.isNotEmpty;
+
+  void resetSelection() {
+    _selectedDifficultyIndices.clear();
+    notifyListeners();
+  }
 }

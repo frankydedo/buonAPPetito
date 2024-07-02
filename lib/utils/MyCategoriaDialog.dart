@@ -36,9 +36,10 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
     showDialog(
       context: context,
       builder: (context) {
+        ColorsProvider colorsModel = Provider.of<ColorsProvider>(context, listen: false);
         return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text("Aggiungi Categoria"),
+          backgroundColor: colorsModel.backgroudColor,
+          title: Text("Aggiungi Categoria", style: TextStyle(color: colorsModel.textColor),),
           content: TextField(
             controller: categoriaController,
             decoration: InputDecoration(
@@ -50,8 +51,26 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Annulla", style: TextStyle(color: Colors.black)),
+              child: Text("Annulla", style: TextStyle(color: colorsModel.coloreSecondario)),
             ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     String newCategoriaNome = categoriaController.text.trim();
+            //     if (newCategoriaNome.isNotEmpty) {
+            //       Categoria newCategoria = Categoria(nome: newCategoriaNome);
+            //       setState(() {
+            //         ricetteModel.aggiungiNuovaCategoria(newCategoria);
+            //         widget.selezioneCategorie[newCategoria] = false;
+            //       });
+            //       Navigator.pop(context);
+            //     }
+            //   },
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
+                
+            //   ),
+            //   child: Text("Aggiungi", style: TextStyle(color: Colors.white),),
+            // ),
             ElevatedButton(
               onPressed: () {
                 String newCategoriaNome = categoriaController.text.trim();
@@ -63,11 +82,24 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                   });
                   Navigator.pop(context);
                 }
-              },
+              }, 
               style: ElevatedButton.styleFrom(
-                backgroundColor: Provider.of<ColorsProvider>(context, listen: false).getColoreSecondario()
+                foregroundColor: Colors.white, 
+                backgroundColor: colorsModel.coloreSecondario,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                elevation: 5,
+                shadowColor: Colors.black,
+              ),                          
+              child: Text(
+                "Salva",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              child: Text("Aggiungi", style: TextStyle(color: Colors.white),),
             ),
           ],
         );
@@ -85,7 +117,7 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
             return false;
           },
           child: AlertDialog(
-            backgroundColor: Colors.white,
+            backgroundColor: colorsModel.dialogBackgroudColor,
             content: SizedBox(
               width: 400,
               height: 500,
@@ -96,7 +128,7 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                       Center(
                         child: Icon(
                           Icons.checklist_rounded,
-                          color: colorsModel.getColoreSecondario(),
+                          color: colorsModel.coloreSecondario,
                           size: 70,
                         ),
                       ),
@@ -109,7 +141,7 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Icon(Icons.arrow_back_ios, color:colorsModel.getColoreSecondario()),
+                              child: Icon(Icons.arrow_back_ios, color:colorsModel.coloreSecondario),
                             )
                           ),
                           Spacer(),
@@ -120,7 +152,7 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                               onPressed: () => _showAddCategoryDialog(ricetteModel),
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: colorsModel.getColoreSecondario(),
+                                backgroundColor: colorsModel.coloreSecondario,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -138,40 +170,42 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                   const SizedBox(height: 20),
                   Expanded(
                     child: ricetteModel.categorie.isNotEmpty
-                        ? ListView.builder(
-                            itemCount: ricetteModel.categorie.length,
-                            itemBuilder: (context, index) {
-                              Categoria categoria = ricetteModel.categorie[index];
-                              bool isSelected = widget.selezioneCategorie[categoria] ?? false;
-                              return CheckboxListTile(
-                                activeColor: colorsModel.getColoreSecondario(),
-                                title: Text(
-                                  categoria.nome,
-                                  style: GoogleFonts.encodeSans(
-                                    textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                      ? ListView.builder(
+                          itemCount: ricetteModel.categorie.length,
+                          itemBuilder: (context, index) {
+                            Categoria categoria = ricetteModel.categorie[index];
+                            bool isSelected = widget.selezioneCategorie[categoria] ?? false;
+                            return CheckboxListTile(
+                              side: BorderSide(color: colorsModel.textColor),
+                              activeColor: colorsModel.coloreSecondario,
+                              title: Text(
+                                categoria.nome,
+                                style: GoogleFonts.encodeSans(
+                                  textStyle: TextStyle(
+                                    color: colorsModel.textColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                value: isSelected,
-                                onChanged: (val) {
-                                  setState(() {
-                                    widget.selezioneCategorie[categoria] = val!;
-                                  });
-                                },
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Text(
-                              'Nessuna categoria disponibile :/',
-                              style: GoogleFonts.encodeSans(
-                                color: Colors.grey,
-                                fontSize: 20
-                              )
-                            ),
+                              ),
+                              value: isSelected,
+                              onChanged: (val) {
+                                setState(() {
+                                  widget.selezioneCategorie[categoria] = val!;
+                                });
+                              },
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Text(
+                            'Nessuna categoria disponibile :/',
+                            style: GoogleFonts.encodeSans(
+                              color: Colors.grey,
+                              fontSize: 20
+                            )
                           ),
+                        ),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -179,14 +213,16 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                     children: [
                       //reset button
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: widget.selezioneCategorie.values.every((value) => value == false) ? 
+                        null:
+                        () {
                           setState(() {
                             widget.selezioneCategorie.updateAll((key, value) => false);
                           });
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white, 
-                          backgroundColor: colorsModel.getColoreSecondario(),
+                          backgroundColor: colorsModel.coloreSecondario,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -210,7 +246,7 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                         }, 
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white, 
-                          backgroundColor: colorsModel.getColoreSecondario(),
+                          backgroundColor: colorsModel.coloreSecondario,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

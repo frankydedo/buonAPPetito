@@ -62,7 +62,13 @@ class _RicettaPageState extends State<RicettaPage> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return Scaffold(
+          backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
+            backgroundColor: colorsModel.backgroudColor,
+            iconTheme: IconThemeData(
+              color: colorsModel.coloreSecondario,
+              size: 28.0,
+            ),
             title: Row(
               children: [
                 Spacer(),
@@ -82,7 +88,7 @@ class _RicettaPageState extends State<RicettaPage> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.getColoreSecondario()),
+                    child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.coloreSecondario),
                   ),
                 ),
                 GestureDetector(
@@ -101,16 +107,15 @@ class _RicettaPageState extends State<RicettaPage> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: widget.recipe.isFavourite ?  Icon(Icons.favorite_rounded, size: 35, color: colorsModel.getColoreSecondario()) : Icon(Icons.favorite_border_rounded, size: 35, color: colorsModel.getColoreSecondario()),
+                    child: widget.recipe.isFavourite ?  Icon(Icons.favorite_rounded, size: 35, color: colorsModel.coloreSecondario) : Icon(Icons.favorite_border_rounded, size: 35, color: colorsModel.coloreSecondario),
                   ),
                 )
               ],
             ),
-            backgroundColor: colorsModel.getBackgroudColor(context),
           ),
           body: SingleChildScrollView(
             child: Container(
-              color: colorsModel.getBackgroudColor(context),
+              color: colorsModel.backgroudColor,
               padding: EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +148,7 @@ class _RicettaPageState extends State<RicettaPage> {
                     child: Text(
                       widget.recipe.titolo,
                       style: GoogleFonts.encodeSans(
-                        color: colorsModel.getColoreTitoli(context),
+                        color: colorsModel.coloreTitoli,
                         fontSize: 40,
                         fontWeight: FontWeight.w800
                       )
@@ -162,11 +167,12 @@ class _RicettaPageState extends State<RicettaPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Icon(Icons.restaurant_menu_rounded, color: colorsModel.getColoreSecondario(), size: 30,),
+                                  Icon(Icons.restaurant_menu_rounded, color: colorsModel.coloreSecondario, size: 30,),
                                   SizedBox(width: 8),
                                   Text(
                                     "Difficoltà: ",
                                     style: GoogleFonts.encodeSans(
+                                      color: colorsModel.textColor,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w400
                                     ),
@@ -174,6 +180,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     widget.recipe.getDifficoltaAsString() + " ",
                                     style: GoogleFonts.encodeSans(
+                                      color: colorsModel.textColor,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700
                                     ),
@@ -186,11 +193,12 @@ class _RicettaPageState extends State<RicettaPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Icon(Icons.timer_outlined, color: colorsModel.getColoreSecondario(), size: 30,),
+                                  Icon(Icons.timer_outlined, color: colorsModel.coloreSecondario, size: 30,),
                                   SizedBox(width: 8),
                                   Text(
                                     "Preparazione: ",
                                     style: GoogleFonts.encodeSans(
+                                      color: colorsModel.textColor,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w400
                                     ),
@@ -198,6 +206,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     widget.recipe.minutiPreparazione.toString() + " min",
                                     style: GoogleFonts.encodeSans(
+                                      color: colorsModel.textColor,
                                       fontSize: 22,
                                       fontWeight: FontWeight.w700
                                     ),
@@ -232,7 +241,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     "DESCRIZIONE",
                                     style: GoogleFonts.encodeSans(
-                                      color: colorsModel.getColoreTitoli(context),
+                                      color: colorsModel.coloreTitoli,
                                       fontSize: 25,
                                       fontWeight: FontWeight.w700
                                     ),
@@ -245,7 +254,7 @@ class _RicettaPageState extends State<RicettaPage> {
                           Text(
                             widget.recipe.descrizione,
                             style: GoogleFonts.encodeSans(
-                              color: colorsModel.getTextColor(context),
+                              color: colorsModel.textColor,
                               fontSize: 20,
                               fontWeight: FontWeight.w400
                             ),
@@ -264,7 +273,7 @@ class _RicettaPageState extends State<RicettaPage> {
                     child: Container(
                       width: screenWidth,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: colorsModel.isLightMode ?  Colors.grey.shade200 : Colors.grey.shade300,
                       ),
                       child: Column(
                         children: [
@@ -277,7 +286,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     "INGREDIENTI",
                                     style: GoogleFonts.encodeSans(
-                                      color: colorsModel.getColoreTitoli(context),
+                                      color: colorsModel.isLightMode ? colorsModel.coloreTitoli : Colors.grey.shade700,
                                       fontSize: 25,
                                       fontWeight: FontWeight.w700
                                     ),
@@ -317,7 +326,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                     child: Text(
                                       ingredientButtonText,
                                       style: GoogleFonts.encodeSans(
-                                        color: colorsModel.getColoreSecondario(),
+                                        color: colorsModel.coloreSecondario,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500
                                       ),
@@ -371,9 +380,9 @@ class _RicettaPageState extends State<RicettaPage> {
                                         }
                                       }, 
                                       icon: !ricetteModel.carrello.contains(ingredienti.keys.elementAt(index)) ?
-                                        Icon(Icons.add_shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35)
+                                        Icon(Icons.add_shopping_cart_rounded, color: colorsModel.coloreSecondario, size: 35)
                                         :
-                                        Icon(Icons.remove_shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35)
+                                        Icon(Icons.remove_shopping_cart_rounded, color: colorsModel.coloreSecondario, size: 35)
                                     ),
                                   ],
                                 );
@@ -405,7 +414,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                   Text(
                                     "PREPARAZIONE",
                                     style: GoogleFonts.encodeSans(
-                                      color: colorsModel.getColoreTitoli(context),
+                                      color: colorsModel.coloreTitoli,
                                       fontSize: 25,
                                       fontWeight: FontWeight.w700
                                     ),
@@ -428,6 +437,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                   title: Text(
                                     "STEP "+ (index+1).toString(),
                                     style: GoogleFonts.encodeSans(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600
                                     ),
@@ -435,6 +445,7 @@ class _RicettaPageState extends State<RicettaPage> {
                                   subtitle: Text(
                                     step.elementAt(index),
                                     style: GoogleFonts.encodeSans(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w400
                                     ),

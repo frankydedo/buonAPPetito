@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables, unused_import, unnecessary_import
 
-import 'package:buonappetito/utils/MyDialog.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
@@ -22,7 +21,7 @@ class MyDifficolta extends StatelessWidget {
     return Consumer2<ColorsProvider, DifficultyProvider>(
       builder: (context, colorsModel, difficultyModel, _) {
         return AlertDialog(
-          backgroundColor: colorsModel.getColorePrimario(context),
+          backgroundColor: colorsModel.dialogBackgroudColor,
           content: SizedBox(
             width: 400,
             height: 450,
@@ -30,7 +29,7 @@ class MyDifficolta extends StatelessWidget {
               children: [
                 Icon(
                   Icons.restaurant_menu_rounded,
-                  color: colorsModel.getColoreSecondario(),
+                  color: colorsModel.coloreSecondario,
                   size: 50,
                 ),
                 const SizedBox(height: 20),
@@ -42,10 +41,12 @@ class MyDifficolta extends StatelessWidget {
                       bool isSelected = difficultyModel.selectedDifficulties.contains(difficulty);
 
                       return CheckboxListTile(
-                        activeColor: colorsModel.getColoreSecondario(),
+                        side: BorderSide(color: colorsModel.textColor),
+                        activeColor: colorsModel.coloreSecondario,
                         title: Text(
                           difficulty,
                           style: TextStyle(
+                            color: colorsModel.textColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -71,12 +72,11 @@ class MyDifficolta extends StatelessWidget {
                       ?() {
                         difficultyModel.setSelectedDifficultyIndex(-1);
                         onSelectionChanged(-1);
-                        
                       }
                       : null,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: colorsModel.getColorePrimario(context),
-                        backgroundColor: colorsModel.getColoreSecondario(),
+                        foregroundColor:  Colors.white,
+                        backgroundColor: colorsModel.coloreSecondario,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -98,7 +98,7 @@ class MyDifficolta extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: colorsModel.getColoreSecondario(),
+                        backgroundColor: colorsModel.coloreSecondario,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

@@ -20,7 +20,7 @@ class MyTime extends StatelessWidget {
     return Consumer2<ColorsProvider, Timeprovider>(
       builder: (context, colorsModel, timeModel, _) {
         return AlertDialog(
-          backgroundColor: colorsModel.getColorePrimario(context),
+          backgroundColor: colorsModel.dialogBackgroudColor,
           content: SizedBox(
             width: 400,
             height: 450,
@@ -28,7 +28,7 @@ class MyTime extends StatelessWidget {
               children: [
                 Icon(
                   Icons.schedule_rounded,
-                  color: colorsModel.getColoreSecondario(),
+                  color: colorsModel.coloreSecondario,
                   size: 50,
                 ),
                 const SizedBox(height: 20),
@@ -39,10 +39,12 @@ class MyTime extends StatelessWidget {
                       String time = timeModel.allDifficulties[index];
                       bool isSelected = timeModel.selectedDifficulties.contains(time);
                       return CheckboxListTile(
-                        activeColor: colorsModel.getColoreSecondario(),
+                        side: BorderSide(color: colorsModel.textColor),
+                        activeColor: colorsModel.coloreSecondario,
                         title: Text(
                           time,
                           style: TextStyle(
+                            color: colorsModel.textColor,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -65,16 +67,15 @@ class MyTime extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: timeModel.hasSelection
-                            ? () {
-                                timeModel.setSelectedTimeIndex(-1);
-                                onSelectionChanged(-1);
-                                
-                              }
-                            : null,
+                      onPressed: timeModel.hasSelection 
+                      ?() {
+                        timeModel.setSelectedTimeIndex(-1);
+                        onSelectionChanged(-1);
+                      }
+                      : null,
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: colorsModel.getColorePrimario(context),
-                        backgroundColor: colorsModel.getColoreSecondario(),
+                        foregroundColor:  Colors.white,
+                        backgroundColor: colorsModel.coloreSecondario,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -96,7 +97,7 @@ class MyTime extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: colorsModel.getColoreSecondario(),
+                        backgroundColor: colorsModel.coloreSecondario,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

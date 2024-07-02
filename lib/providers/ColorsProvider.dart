@@ -1,42 +1,70 @@
 import 'package:flutter/material.dart';
 
 class ColorsProvider extends ChangeNotifier {
+  bool isLightMode = true;
 
-  Color colorePrimario_light = Colors.white;
-  Color colorePrimario_dark = Colors.grey.shade800;
-  Color coloreSecondario = Colors.orange.shade600;
+  String _temaAttuale = "Sistema Operativo";
 
-  Color getColorePrimario(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isLightMode = brightness == Brightness.light;
-    return isLightMode ? colorePrimario_light : colorePrimario_dark;
+  String get temaAttuale => _temaAttuale;
+
+  Color _colorePrimario = Colors.grey.shade100;
+  Color _colorePrimario_dark = Color.fromARGB(255, 9, 9, 9);
+  Color _coloreSecondario = Colors.orange.shade600;
+  Color _coloreTitoli = Colors.indigo.shade800;
+  // Color _coloreTitoli_dark = Colors.indigo.shade200;
+
+  Color get coloreTitoli => isLightMode ? _coloreTitoli : _colorePrimario;
+  Color get colorePrimario => isLightMode ? _colorePrimario : _colorePrimario_dark;
+  Color get coloreSecondario => _coloreSecondario != Colors.indigo.shade800 ? _coloreSecondario : (isLightMode ? Colors.indigo.shade800 : Colors.indigo.shade300);
+  Color get backgroudColor => isLightMode ? _colorePrimario : _colorePrimario_dark;
+  Color get tileBackGroudColor => isLightMode ? Colors.white : const Color.fromARGB(255, 36, 36, 36);
+  Color get textColor => !isLightMode ? Colors.white : Colors.black;
+  Color get dialogBackgroudColor=> isLightMode ? _colorePrimario : const Color.fromARGB(255, 60, 60, 60);
+  
+
+  void setTemaAttualeChiaroScuro(BuildContext context, String nuovoTema){
+    _temaAttuale = nuovoTema;
+    isLightMode = _temaAttuale == "Chiaro" ? true : false;
   }
 
-  Color getColoreTitoli(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isLightMode = brightness == Brightness.light;
-    return isLightMode ? Colors.indigo.shade800 : Colors.indigo.shade800;//da valutare il dark
+  void setTemaAttualeSistemaOperativo(BuildContext context){
+    _temaAttuale = "Sistema Operativo";
+    initLightMode(context);
   }
 
-  Color getBackgroudColor (BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isLightMode = brightness == Brightness.light;
-    return isLightMode ? Colors.grey.shade100 : colorePrimario_dark;
+  void initLightMode(BuildContext context) {
+    if(_temaAttuale == "Sistema Operativo"){
+      final brightness = MediaQuery.of(context).platformBrightness;
+      isLightMode = brightness == Brightness.light;
+      notifyListeners();
+    }
   }
 
-  Color getTextColor (BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isLightMode = brightness == Brightness.light;
-    return isLightMode ? Colors.black : Colors.white;
+  void updateLightMode(BuildContext context) {
+    if(_temaAttuale == "Sistema Operativo"){
+      final brightness = MediaQuery.of(context).platformBrightness;
+      isLightMode = brightness != Brightness.light;
+      notifyListeners();
+    }
   }
 
-  Color getColoreSecondario(){
-    return coloreSecondario;
-  }
-
-  void setColoreSecondario(Color newColor){
-    coloreSecondario = newColor;
+  void setViolaColoreSecondario() {
+    _coloreSecondario = Colors.purple.shade600;
     notifyListeners();
   }
-  
+
+  void setArancioneColoreSecondario() {
+    _coloreSecondario = Colors.orange.shade600;
+    notifyListeners();
+  }
+
+  void setBluColoreSecondario() {
+    _coloreSecondario = Colors.indigo.shade800;
+    notifyListeners();
+  }
+
+  void setVerdeColoreSecondario() {
+    _coloreSecondario = Colors.green.shade800;
+    notifyListeners();
+  }
 }

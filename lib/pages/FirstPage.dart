@@ -43,15 +43,14 @@ class _FirstPageState extends State<FirstPage>{
 
       return Scaffold(
         appBar: AppBar(
+          backgroundColor: colorsModel.backgroudColor,
+          iconTheme: IconThemeData(
+            color: colorsModel.coloreSecondario,
+            size: 28.0,
+          ),
           title: Row(
             children: [
               Spacer(),
-              /// IconButton(
-              ///   onPressed: (){
-              ///     Navigator.pushNamed(context, '/carrellopage');
-              ///   }, 
-              ///   icon: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario(), size: 35,)
-              /// )
               CarrelloIcon(
                 onPressed: (){
                   Navigator.pushNamed(context, '/carrellopage').then((_){
@@ -66,6 +65,7 @@ class _FirstPageState extends State<FirstPage>{
           ),
         ),
         drawer: Drawer(
+          backgroundColor: colorsModel.backgroudColor,
           child: ListView(
             children: [
               DrawerHeader(child: Image.asset('assets/images/logo_arancio.png')),
@@ -73,24 +73,16 @@ class _FirstPageState extends State<FirstPage>{
                 padding: const EdgeInsets.only(left: 8.0, top: 8),
                 child: ListTile(
                   onTap:() {Navigator.pushNamed(context, '/firstpage');},
-                  leading: Icon(Icons.home_rounded, color: colorsModel.getColoreSecondario()),
-                  title: Text("HOME", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
+                  leading: Icon(Icons.home_rounded, color: colorsModel.coloreSecondario),
+                  title: Text("HOME", style: TextStyle(color: colorsModel.coloreSecondario, fontWeight: FontWeight.bold),),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 8.0, top: 8),
-              //   child: ListTile(
-              //     onTap:() {Navigator.pushNamed(context, '/carrellopage');},
-              //     leading: Icon(Icons.shopping_cart_rounded, color: colorsModel.getColoreSecondario()),
-              //     title: Text("CARRELLO", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(
                   onTap:() {Navigator.pushNamed(context, '/impostazionipage');},
-                  leading: Icon(Icons.settings_rounded, color: colorsModel.getColoreSecondario()),
-                  title: Text("IMPOSTAZIONI", style: TextStyle(color: colorsModel.getColoreSecondario(), fontWeight: FontWeight.bold),),
+                  leading: Icon(Icons.settings_rounded, color: colorsModel.coloreSecondario),
+                  title: Text("IMPOSTAZIONI", style: TextStyle(color: colorsModel.coloreSecondario, fontWeight: FontWeight.bold),),
                 ),
               ),
             ],
@@ -100,6 +92,25 @@ class _FirstPageState extends State<FirstPage>{
         body: _pages[_selectedIndex],
 
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: colorsModel.backgroudColor,
+          selectedItemColor: colorsModel.coloreSecondario,
+          unselectedItemColor: colorsModel.coloreSecondario,
+          selectedIconTheme: IconThemeData(
+            size: 30,
+            opacity: 1,
+          ),
+          unselectedIconTheme: IconThemeData(
+            size: 25,
+            opacity: .5,
+          ),
+          selectedLabelStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          unselectedLabelStyle: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.normal,
+          ),
           currentIndex: _selectedIndex,
           onTap: _navigateBottomBar,
           items: [

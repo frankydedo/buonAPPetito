@@ -27,6 +27,7 @@ class _PreferitiPageState extends State<PreferitiPage> {
       builder: (context, colorsModel, ricetteModel, _) {
         final List<Ricetta> preferiti = ricetteModel.preferiti;
         return Scaffold(
+          backgroundColor: colorsModel.backgroudColor,
           body: Container(
             child: preferiti.isNotEmpty
                 ? Column(
@@ -34,7 +35,7 @@ class _PreferitiPageState extends State<PreferitiPage> {
                     Text(
                     'LE TUE RICETTE PREFERITE',
                       style: GoogleFonts.encodeSans(
-                        color: colorsModel.getColoreTitoli(context),
+                        color: colorsModel.coloreTitoli,
                         fontSize: 22,
                         fontWeight: FontWeight.w800
                       ),
@@ -58,7 +59,7 @@ class _PreferitiPageState extends State<PreferitiPage> {
                                       },
                                       borderRadius: BorderRadius.circular(20),
                                       icon: Icons.heart_broken_rounded,
-                                      backgroundColor: colorsModel.getColoreSecondario(),
+                                      backgroundColor: colorsModel.coloreSecondario,
                                       foregroundColor: Colors.white,
                                     )
                                   ],

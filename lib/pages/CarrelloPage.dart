@@ -34,11 +34,17 @@ class _CarrelloPageState extends State<CarrelloPage> {
         }
 
         return Scaffold(
+          backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
+            backgroundColor: colorsModel.backgroudColor,
+            iconTheme: IconThemeData(
+              color: colorsModel.coloreSecondario,
+              size: 28.0,
+            ),
             title: Text(
               carrello.isEmpty ? '' : 'CARRELLO',
               style: GoogleFonts.encodeSans(
-                color: colorsModel.getColoreTitoli(context),
+                color: colorsModel.coloreTitoli,
                 fontSize: 22,
                 fontWeight: FontWeight.w800,
               ),
@@ -63,7 +69,7 @@ class _CarrelloPageState extends State<CarrelloPage> {
                             },
                             icon: Icon(
                               Icons.undo_rounded,
-                              color: ricetteModel.elementiCancellatiCarrello.isNotEmpty ? colorsModel.getColoreSecondario() : Colors.grey.withOpacity(.5),
+                              color: ricetteModel.elementiCancellatiCarrello.isNotEmpty ? colorsModel.coloreSecondario : Colors.grey.withOpacity(.5),
                               size: 30,
                             ),
                           ),
@@ -124,7 +130,7 @@ class _CarrelloPageState extends State<CarrelloPage> {
                             },
                             icon: Icon(
                               Icons.undo_rounded,
-                              color: ricetteModel.elementiCancellatiCarrello.isNotEmpty ? colorsModel.getColoreSecondario() : Colors.grey.withOpacity(.5),
+                              color: ricetteModel.elementiCancellatiCarrello.isNotEmpty ? colorsModel.coloreSecondario : Colors.grey.withOpacity(.5),
                               size: 30,
                             ),
                           ),
@@ -144,7 +150,7 @@ class _CarrelloPageState extends State<CarrelloPage> {
                             child: Text(
                               "Rimuovi tutto",
                               style: GoogleFonts.encodeSans(
-                                color: colorsModel.getColoreSecondario(),
+                                color: colorsModel.coloreSecondario,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -184,7 +190,7 @@ class _CarrelloPageState extends State<CarrelloPage> {
                                 child: Container(
                                   height: 80,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.1),
+                                    color: colorsModel.tileBackGroudColor,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: ListTile(
@@ -204,9 +210,9 @@ class _CarrelloPageState extends State<CarrelloPage> {
                                             child: Text(
                                               item,
                                               style: GoogleFonts.encodeSans(
+                                                color: colorsModel.textColor,
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.black,
                                               ),
                                             ),
                                           ),

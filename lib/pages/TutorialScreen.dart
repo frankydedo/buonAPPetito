@@ -93,6 +93,36 @@ class _TutorialScreenState extends State<TutorialScreen> {
         },
         onSkip: _onSkip,
       ),
+
+      CarrelloPageTutorial(
+        onPreviousPage: () {
+          _pageController.previousPage(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+        },
+        onSkip: _onSkip,
+      ),
+
+      PreferitiPageTutorial(
+        onPreviousPage: () {
+          _pageController.previousPage(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+        },
+        onSkip: _onSkip,
+      ),
+
+      ImpostazioniPageTutorial(
+        onPreviousPage: () {
+          _pageController.previousPage(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+        },
+        onSkip: _onSkip,
+      ),
     ];
 
     return Scaffold(
@@ -357,6 +387,102 @@ class RecipePage2 extends StatelessWidget {
                 image: DecorationImage(
                   image: AssetImage(
                     'assets/foto_tutorial/NewRecipePart2.png',
+                  ),
+                  fit: BoxFit.contain, // Ridimensiona l'immagine per essere visibile interamente
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ImpostazioniPageTutorial extends StatelessWidget {
+  final VoidCallback onPreviousPage;
+  final VoidCallback onSkip;
+
+  ImpostazioniPageTutorial({required this.onPreviousPage, required this.onSkip});
+
+ @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 0, left: 4), // Aggiungi padding qui come fosse una AppBar
+          child: Center(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/foto_tutorial/ImpostazioniComp.png',
+                  ),
+                  fit: BoxFit.contain, // Ridimensiona l'immagine per essere visibile interamente
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CarrelloPageTutorial extends StatelessWidget {
+  final VoidCallback onPreviousPage;
+  final VoidCallback onSkip;
+
+  CarrelloPageTutorial({required this.onPreviousPage, required this.onSkip});
+
+ @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 0, left: 4), // Aggiungi padding qui come fosse una AppBar
+          child: Center(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/foto_tutorial/CarrelloComp.png',
+                  ),
+                  fit: BoxFit.contain, // Ridimensiona l'immagine per essere visibile interamente
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PreferitiPageTutorial extends StatelessWidget {
+  final VoidCallback onPreviousPage;
+  final VoidCallback onSkip;
+
+  PreferitiPageTutorial({required this.onPreviousPage, required this.onSkip});
+
+ @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 0, left: 4), // Aggiungi padding qui come fosse una AppBar
+          child: Center(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/foto_tutorial/PreferitiComp.png',
                   ),
                   fit: BoxFit.contain, // Ridimensiona l'immagine per essere visibile interamente
                 ),

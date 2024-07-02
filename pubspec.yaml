@@ -98,6 +98,10 @@ flutter:
     - assets/foto_tutorial/NewRecipePart1.png
     - assets/foto_tutorial/NewRecipePart2.png
     - assets/foto_tutorial/SearchPageComplete.png
+    - assets/foto_tutorial/ImpostazioniComp.png
+    - assets/foto_tutorial/PreferitiComp.png
+    - assets/foto_tutorial/CarrelloComp.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

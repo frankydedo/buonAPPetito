@@ -1,4 +1,3 @@
-import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/NuovaRicettaPageCompleta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
@@ -88,7 +87,7 @@ class _RicettaPageState extends State<RicettaPage> {
                     }
 
                   },
-                  child: Padding(
+                  icon: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.coloreSecondario),
                   ),
@@ -103,7 +102,7 @@ class _RicettaPageState extends State<RicettaPage> {
                     });
 
                 }, 
-                icon: Icon(Icons.edit_rounded, size: 35, color: colorsModel.getColoreSecondario()),
+                icon: Icon(Icons.edit_rounded, size: 35, color: colorsModel.coloreSecondario),
                 ),
                 // tasto rimuovi dai preferiti
                 IconButton(
@@ -121,7 +120,7 @@ class _RicettaPageState extends State<RicettaPage> {
                     }
 
                   },
-                  child: Padding(
+                  icon: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: widget.recipe.isFavourite ?  Icon(Icons.favorite_rounded, size: 35, color: colorsModel.coloreSecondario) : Icon(Icons.favorite_border_rounded, size: 35, color: colorsModel.coloreSecondario),
                   ),

@@ -67,7 +67,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Provider.of<ColorsProvider>(context, listen: false).getColoreSecondario()
+                backgroundColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario
               ),
               child: Text("Aggiungi", style: TextStyle(color: Colors.white),),
             ),
@@ -98,7 +98,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                       Center(
                         child: Icon(
                           Icons.checklist_rounded,
-                          color: colorsModel.getColoreSecondario(),
+                          color: colorsModel.coloreSecondario,
                           size: 70,
                         ),
                       ),
@@ -111,7 +111,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Icon(Icons.arrow_back_ios, color:colorsModel.getColoreSecondario()),
+                              child: Icon(Icons.arrow_back_ios, color:colorsModel.coloreSecondario),
                             )
                           ),
                           Spacer(),
@@ -122,7 +122,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                               onPressed: () => _showAddCategoryDialog(ricetteModel),
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: colorsModel.getColoreSecondario(),
+                                backgroundColor: colorsModel.coloreSecondario,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -148,7 +148,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                               bool isSelected = widget.selezioneCategorie[categoria]!;
                               print(isSelected);
                               return CheckboxListTile(
-                                activeColor: colorsModel.getColoreSecondario(),
+                                activeColor: colorsModel.coloreSecondario,
                                 title: Text(
                                   categoria.nome,
                                   style: GoogleFonts.encodeSans(
@@ -190,7 +190,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white, 
-                          backgroundColor: colorsModel.getColoreSecondario(),
+                          backgroundColor: colorsModel.coloreSecondario,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -214,7 +214,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
                         }, 
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white, 
-                          backgroundColor: colorsModel.getColoreSecondario(),
+                          backgroundColor: colorsModel.coloreSecondario,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

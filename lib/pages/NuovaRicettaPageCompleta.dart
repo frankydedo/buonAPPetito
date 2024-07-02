@@ -8,7 +8,6 @@ import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/ConfermaDialog.dart';
-import 'package:buonappetito/utils/MyCategoriaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog2.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
 import 'package:buonappetito/utils/NuovoPassaggioDialog.dart';
@@ -247,7 +246,7 @@ Future showConfermaDialog ()
                         "Modifica ricetta",
                         style: GoogleFonts.encodeSans(
                           textStyle: TextStyle(
-                            color: colorsModel.getColoreTitoli(context),
+                            color: colorsModel.coloreTitoli,
                             fontSize: 35,
                             fontWeight: FontWeight.w800,
                           ),
@@ -416,7 +415,7 @@ Future showConfermaDialog ()
                                             unfocus();
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorsModel.getColoreSecondario(),
+                                            backgroundColor: colorsModel.coloreSecondario,
                                           ),
                                           child: Icon(Icons.add, color: Colors.white, size: 25),
                                         ),
@@ -538,7 +537,7 @@ Future showConfermaDialog ()
                                             unfocus();
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorsModel.getColoreSecondario(),
+                                            backgroundColor: colorsModel.coloreSecondario,
                                           ),
                                           child: Icon(Icons.add, color: Colors.white, size: 25),
                                         ),
@@ -662,7 +661,7 @@ Future showConfermaDialog ()
                                             unfocus();
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorsModel.getColoreSecondario(),
+                                            backgroundColor: colorsModel.coloreSecondario,
                                           ),
                                           child: Icon(Icons.add, color: Colors.white, size: 25),
                                         ),
@@ -861,7 +860,7 @@ Future showConfermaDialog ()
                                     },
                                     style: ElevatedButton.styleFrom(
                                       elevation: (minutiPreparazione!=null && passaggiInseriti.isNotEmpty) ? 1 : 0,
-                                      backgroundColor: (minutiPreparazione!=null && passaggiInseriti.isNotEmpty) ? colorsModel.getColoreSecondario() : colorsModel.getColoreSecondario().withOpacity(.5) ,
+                                      backgroundColor: (minutiPreparazione!=null && passaggiInseriti.isNotEmpty) ? colorsModel.coloreSecondario : colorsModel.coloreSecondario.withOpacity(.5) ,
                                     ),
                                     child: Icon(Icons.auto_awesome_rounded , color: Colors.white, size: 25),
                                   ),
@@ -899,7 +898,7 @@ Future showConfermaDialog ()
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 1 ? colorsModel.getColoreSecondario() : Colors.transparent
+                                              color: difficolta == 1 ? colorsModel.coloreSecondario : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -938,7 +937,7 @@ Future showConfermaDialog ()
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 2 ? colorsModel.getColoreSecondario() : Colors.transparent
+                                              color: difficolta == 2 ? colorsModel.coloreSecondario : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -978,7 +977,7 @@ Future showConfermaDialog ()
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 3 ? colorsModel.getColoreSecondario() : Colors.transparent
+                                              color: difficolta == 3 ? colorsModel.coloreSecondario : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -1019,7 +1018,7 @@ Future showConfermaDialog ()
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 4 ? colorsModel.getColoreSecondario() : Colors.transparent
+                                              color: difficolta == 4 ? colorsModel.coloreSecondario : Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -1061,7 +1060,7 @@ Future showConfermaDialog ()
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
-                                              color: difficolta == 5 ? colorsModel.getColoreSecondario() : Colors.transparent
+                                              color: difficolta == 5 ? colorsModel.coloreSecondario: Colors.transparent
                                             )
                                           ),
                                           child: ListTile(
@@ -1126,7 +1125,7 @@ Future showConfermaDialog ()
                                           ElevatedButton(
                                             onPressed: () => pickImageFromCamera(),
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: colorsModel.getColoreSecondario(),
+                                              backgroundColor: colorsModel.coloreSecondario,
                                             ),
                                             child: Icon(Icons.camera_alt_rounded, color: Colors.white, size: 25),
                                           ),
@@ -1136,7 +1135,7 @@ Future showConfermaDialog ()
                                           ElevatedButton(
                                             onPressed: () => pickImageFromGallery(),
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: colorsModel.getColoreSecondario(),
+                                              backgroundColor: colorsModel.coloreSecondario,
                                             ),
                                             child: Icon(Icons.photo_library_rounded, color: Colors.white, size: 25),
                                           ),
@@ -1237,7 +1236,7 @@ Future showConfermaDialog ()
                                 };
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: colorsModel.getColoreSecondario()
+                                backgroundColor: colorsModel.coloreSecondario
                               ),
                               child: Padding(
                               padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),

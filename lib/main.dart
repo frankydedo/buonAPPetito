@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
+import 'package:buonappetito/firebase_options.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/FirstPage.dart';
@@ -12,10 +13,15 @@ import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     MultiProvider(
       providers: [

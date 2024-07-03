@@ -27,7 +27,10 @@ class _CategoriaPageState extends State<CategoriaPage> {
           backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
             backgroundColor: colorsModel.backgroudColor,
-            elevation: 0,
+            iconTheme: IconThemeData(
+              color: colorsModel.coloreSecondario,
+              size: 28.0,
+            ),
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: colorsModel.coloreTitoli),
               onPressed: () {
@@ -53,12 +56,12 @@ class _CategoriaPageState extends State<CategoriaPage> {
                           final categoria = categorie[index];
                           final int numeroRicette = conteggioCategorie[categoria.nome] ?? 0;
                           return Padding(
-                            padding: const EdgeInsets.fromLTRB(12.0, 24, 12, 0),
+                            padding: const EdgeInsets.only(bottom: 10, right: 0, left: 4, top: 5),
                             child: Container(
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: Colors.white, // Sfondo bianco
-                                borderRadius: BorderRadius.circular(12),
+                                color: colorsModel.tileBackGroudColor, // Sfondo bianco
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +187,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
                 // Aggiungi logica per salvare la nuova categoria
                 final String nuovoNomeCategoria = _textFieldController.text;
                 Provider.of<RicetteProvider>(context, listen: false)
-                    .aggiungiNuovaCategoria(Categoria(nome: nuovoNomeCategoria));
+                    .aggiungiNuovaCategoria(Categoria(nome: nuovoNomeCategoria, ricette: []));
                 Navigator.pop(context);
                 setState(() {}); // Aggiorna l'UI per riflettere la nuova categoria
                 Navigator.push(

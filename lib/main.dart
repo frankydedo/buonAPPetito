@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
+import 'package:buonappetito/api/firebase_api.dart';
 import 'package:buonappetito/firebase_options.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
@@ -22,6 +23,7 @@ import 'package:provider/provider.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseApi().initNotification();
   runApp(
     MultiProvider(
       providers: [

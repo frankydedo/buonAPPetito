@@ -8,7 +8,6 @@ import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
-import 'package:buonappetito/utils/MyCategoriaDialog2.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
 import 'package:buonappetito/utils/NuovoPassaggioDialog.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +107,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
   Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie),
+      builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie, canAddNewCategory: true),
     );
   }
 
@@ -151,7 +150,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
   }
    @override
   void dispose() {
-    // pulire il controller quando il widget viene smontato
     _titolocontroller.dispose();
     super.dispose();
   }

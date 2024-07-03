@@ -131,11 +131,11 @@ class _AggiuntiDiRecenteTileState extends State<AggiuntiDiRecenteTile> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           // diccifoltà
-                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta!>0 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
-                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta!>1 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
-                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta!>2 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
-                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta!>3 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
-                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta!>4 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
+                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta>=0 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
+                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta>=1 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
+                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta>=2 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
+                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta>=3 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
+                          Icon(Icons.restaurant_menu_rounded, color: widget.ricetta.difficolta>=4 ? colorsModel.coloreSecondario : Colors.grey.withOpacity(0.35), size: 25),
                         ],
                       ),
                     ),

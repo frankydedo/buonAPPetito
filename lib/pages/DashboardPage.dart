@@ -45,9 +45,9 @@ class _DashboardPageState extends State<DashboardPage> {
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       if (_controllerCarosello.page == ricetteCarosello.length-1) {
-        _controllerCarosello.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+        _controllerCarosello.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
       } else {
-        _controllerCarosello.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+        _controllerCarosello.nextPage(duration: Duration(milliseconds: 500), curve: Curves.easeInOutCubic);
       }
     });
   }

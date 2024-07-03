@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 class Ricetta {
   String percorsoImmagine;
   String titolo;
@@ -7,7 +5,7 @@ class Ricetta {
   Map<String, String> ingredienti; // si tiene traccia del nome dell'ingrediente e della quantità
   List<String> categorie;
   List<String> passaggi;
-  int? difficolta;
+  int difficolta;
   int minutiPreparazione;
   DateTime dataAggiunta;
   bool isFavourite = false;
@@ -100,10 +98,10 @@ class Ricetta {
 
   String getDifficoltaAsString(){
     switch (this.difficolta) {
-      case 1: return "Principiante";
-      case 2: return "Amatoriale";
-      case 3: return "Intermedio";
-      case 4: return "Chef";
+      case 0: return "Principiante";
+      case 1: return "Amatoriale";
+      case 2: return "Intermedio";
+      case 3: return "Chef";
       default: return "Chef Stellato";
     }
   }

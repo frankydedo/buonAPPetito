@@ -11,6 +11,7 @@ import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog2.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
 import 'package:buonappetito/utils/NuovoPassaggioDialog.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,21 +20,20 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-class NuovaRicettaPageCompleta extends StatefulWidget {
+class ModificaRicettaPage extends StatefulWidget {
   final Ricetta recipe;
-  const NuovaRicettaPageCompleta({super.key, required this.recipe});
+  const ModificaRicettaPage({super.key, required this.recipe});
 
   @override
-  State<NuovaRicettaPageCompleta> createState() => _NuovaRicettaPageStateCompleta();
+  State<ModificaRicettaPage> createState() => _ModificaRicettaPageState();
 }
 
-class _NuovaRicettaPageStateCompleta extends State<NuovaRicettaPageCompleta> {
+class _ModificaRicettaPageState extends State<ModificaRicettaPage> {
 
 @override
   void initState()
   {
     super.initState();
-    print(widget.recipe);
     riempiPagina();    
   }
 
@@ -75,8 +75,9 @@ class _NuovaRicettaPageStateCompleta extends State<NuovaRicettaPageCompleta> {
   void riempiPagina()
   {
     percorsoImmagine= widget.recipe.percorsoImmagine;
-    ingredientiInseriti=widget.recipe.ingredienti;
-    passaggiInseriti=widget.recipe.passaggi;
+    ingredientiInseriti=Map<String, String>.from(widget.recipe.ingredienti);
+    passaggiInseriti=List<String>.from(widget.recipe.passaggi);
+    categorie=List<String>.from(widget.recipe.categorie);
     difficolta=widget.recipe.difficolta;
     dataAggiunta=widget.recipe.dataAggiunta;
     _titolocontroller = TextEditingController(text: widget.recipe.titolo);
@@ -87,16 +88,14 @@ class _NuovaRicettaPageStateCompleta extends State<NuovaRicettaPageCompleta> {
     minutiPreparazione=widget.recipe.minutiPreparazione;
 
     List <Categoria>ListaCategorie = Provider.of<RicetteProvider>(context, listen: false).categorie;
-    categorie=widget.recipe.categorie;
-    print(categorie.toString());
     for (Categoria categoria in ListaCategorie) {
       if(categorie.contains(categoria.nome))
       {
-       selezioneCategorie[Categoria(nome: categoria.nome)] = true;
+       selezioneCategorie[Categoria(nome: categoria.nome, ricette: categoria.ricette)] = true;
       }
       else
       {
-        selezioneCategorie[Categoria(nome: categoria.nome)] = false;
+        selezioneCategorie[Categoria(nome: categoria.nome,  ricette: categoria.ricette)] = false;
       }
     }
   }
@@ -144,8 +143,6 @@ class _NuovaRicettaPageStateCompleta extends State<NuovaRicettaPageCompleta> {
   }
 
 Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) async {
-  print("sono in show categorie dialog\n");
-  print(selezioneCategorie.toString());
   return showDialog<Map<Categoria, bool>>(
     context: context,
     builder: (context) => MyCategoriaDialog2(selezioneCategorie: selezioneCategorie),
@@ -204,6 +201,35 @@ Future showConfermaDialog ()
     super.dispose();
   }
 
+  bool hasBeenModified(){
+    if(percorsoImmagine != widget.recipe.percorsoImmagine){
+      return true;
+    }
+    if(titolo != widget.recipe.titolo){
+      return true;
+    }
+    if(descrizione != widget.recipe.descrizione){
+      return true;
+    }
+    if(!MapEquality().equals(ingredientiInseriti, widget.recipe.ingredienti)){
+      return true;
+    }
+    if(!ListEquality().equals(categorie, widget.recipe.categorie)){
+      return true;
+    }
+    if(!ListEquality().equals(passaggiInseriti, widget.recipe.passaggi)){
+      return true;
+    }
+    if(difficolta != widget.recipe.difficolta){
+      return true;
+    }
+    if(minutiPreparazione != widget.recipe.minutiPreparazione){
+      return true;
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -216,13 +242,18 @@ Future showConfermaDialog ()
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return Scaffold(
+          backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
+            backgroundColor: colorsModel.backgroudColor,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_rounded),
+              icon: Icon(Icons.arrow_back_ios_new_rounded, color: colorsModel.coloreSecondario, size: 29),
               onPressed: () async {
-                bool conferma = await showConfermaDialog();
-                if(conferma)
-                {
+                if(hasBeenModified()){
+                  bool conferma = await showConfermaDialog();
+                  if(conferma){
+                    Navigator.pop(context);
+                  }
+                }else{
                   Navigator.pop(context);
                 }
               },
@@ -246,7 +277,7 @@ Future showConfermaDialog ()
                         "Modifica ricetta",
                         style: GoogleFonts.encodeSans(
                           textStyle: TextStyle(
-                            color: colorsModel.coloreTitoli,
+                            color: colorsModel.isLightMode? colorsModel.coloreTitoli : colorsModel.coloreSecondario,
                             fontSize: 35,
                             fontWeight: FontWeight.w800,
                           ),
@@ -406,10 +437,9 @@ Future showConfermaDialog ()
                                                 }
                                               }
                                               setState(() {
-                                                print("ci sono");                                               
                                                 categorie.clear();
                                                 categorie.addAll(categorieSelezionate);
-                                                print(categorie.toString());
+                                                print("categs: "+widget.recipe.categorie.toString());
                                               });
                                             }
                                             unfocus();

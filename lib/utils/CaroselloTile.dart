@@ -20,6 +20,7 @@ class _CaroselloTileState extends State<CaroselloTile> {
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    
     return Consumer2<ColorsProvider, RicetteProvider>(builder: (context, colorsModel, ricetteModel, _) {
       return Card(
         shape: RoundedRectangleBorder(
@@ -125,11 +126,11 @@ class _CaroselloTileState extends State<CaroselloTile> {
                       child: Row(
                         children: [
                           // diccifoltà
-                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta!>0 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
-                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta!>1 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
-                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta!>2 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
-                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta!>3 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
-                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta!>4 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
+                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta>=0 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
+                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta>=1 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
+                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta>=2 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
+                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta>=3 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
+                          Icon(Icons.restaurant_menu_rounded, shadows: [Shadow(blurRadius: 120.0,color: Colors.black,offset: Offset(0, 0),),], color: widget.ricetta.difficolta>=4 ? colorsModel.coloreSecondario : Colors.white.withOpacity(0.5), size: 30),
                 
                           Spacer(),
                           // tempo

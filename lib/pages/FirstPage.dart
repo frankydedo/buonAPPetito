@@ -6,6 +6,8 @@ import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/CarrelloIcon.dart';
+import 'package:buonappetito/utils/CategoriaIcon.dart';
+import '';
 import 'package:buonappetito/utils/IconButtonCircolareFoto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,9 +34,8 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Consumer2<ColorsProvider, RicetteProvider>(
         builder: (context, colorsModel, ricetteModel, _) {
-      int cartItemsNumber =
-          Provider.of<RicetteProvider>(context, listen: false).carrello.length;
-
+      int cartItemsNumber =Provider.of<RicetteProvider>(context, listen: false).carrello.length;
+      int numberOfCategory = Provider.of<RicetteProvider>(context, listen:false).categorie.length;
       return Scaffold(
         appBar: AppBar(
           backgroundColor: colorsModel.backgroudColor,
@@ -61,7 +62,16 @@ class _FirstPageState extends State<FirstPage> {
                       });
                     });
                   },
-                  showNumber: cartItemsNumber)
+                  showNumber: cartItemsNumber),
+              CategoriaIcon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/categoriapage').then((_){
+                    setState((){
+                      numberOfCategory=ricetteModel.categorie.length;
+                    });
+                  });
+                }, showNumber: numberOfCategory,
+              )
             ],
           ),
         ),

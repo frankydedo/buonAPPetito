@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
 import 'package:buonappetito/pages/CarrelloPage.dart';
+import 'package:buonappetito/pages/CategoriaPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/FirstPage.dart';
 import 'package:buonappetito/pages/ImpostazioniPage.dart';
@@ -189,6 +190,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/impostazionipage': (context) => ImpostazioniPage(),
           '/nuovaricettapage': (context) => NuovaRicettaPage(),
           '/carrellopage': (context) => CarrelloPage(),
+          '/categoriapage': (context) => CategoriaPage(),
         },
       );
     });

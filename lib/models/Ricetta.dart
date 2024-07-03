@@ -65,6 +65,11 @@ class Ricetta {
     this.categorie = listaCategorie;
   }
 
+  void aggiungiNuovaCategoria (String nuovaCategoria)
+  {
+    categorie.add(nuovaCategoria);
+  }
+
   void setDescrizione(String descrizioneNuova) {
     this.descrizione = descrizioneNuova;
   }

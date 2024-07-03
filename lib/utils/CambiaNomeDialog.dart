@@ -21,7 +21,7 @@ class _CambiaNomeDialogState extends State<CambiaNomeDialog> {
     return Consumer2<ColorsProvider, RicetteProvider>(
       builder: (context, colorsModel, ricetteModel, _) {
         return AlertDialog(
-          backgroundColor: colorsModel.backgroudColor,
+          backgroundColor: colorsModel.dialogBackgroudColor,
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -20,6 +20,7 @@ class _CaroselloTileState extends State<CaroselloTile> {
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    
     return Consumer2<ColorsProvider, RicetteProvider>(builder: (context, colorsModel, ricetteModel, _) {
       return Card(
         shape: RoundedRectangleBorder(

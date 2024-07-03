@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/CambiaNomeDialog.dart';
+import 'package:buonappetito/utils/FotoProfiloDialog.dart';
 import 'package:buonappetito/utils/IconButtonCircolareFoto.dart';
 import 'package:buonappetito/utils/SelettoreTemaDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path;
@@ -66,22 +66,11 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
       );
     }
 
-    Future<void> pickImageFromCamera() async {
-      final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-      if (image == null) return;
-
-      String imagePath = await saveImage(image.path);
-      Provider.of<RicetteProvider>(context, listen: false).cambiaFotoProfilo(imagePath);
-    }
-
-    Future<void> pickImageFromGallery() async {
-      final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (image == null) return;
-
-      String imagePath = await saveImage(image.path);
-      Provider.of<RicetteProvider>(context, listen: false).cambiaFotoProfilo(imagePath);
+    Future<void> showFotoProfiloDialog(BuildContext context) {
+      return showDialog(
+        context: context,
+        builder: (context) => FotoProfiloDialog(),
+      );
     }
 
     return Consumer2<ColorsProvider, RicetteProvider>(
@@ -140,11 +129,14 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
                       //foto profilo
             
                       IconButtonCircolareFoto(
-                        onPressed: (){
-                          pickImageFromGallery();
-                        }, 
-                        onLongPress: () {
-                          pickImageFromCamera();
+                        // onPressed: (){
+                        //   pickImageFromGallery();
+                        // }, 
+                        // onLongPress: () {
+                        //   pickImageFromCamera();
+                        // },
+                        onPressed: () {
+                          showFotoProfiloDialog(context);
                         },
                         coloreBordo: colorsModel.coloreSecondario,
                         percorsoImmagine: ricetteModel.percorsoFotoProfilo, 

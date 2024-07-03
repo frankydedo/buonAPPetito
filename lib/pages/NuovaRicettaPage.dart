@@ -150,7 +150,6 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
   }
    @override
   void dispose() {
-    // pulire il controller quando il widget viene smontato
     _titolocontroller.dispose();
     super.dispose();
   }

@@ -91,11 +91,11 @@ class _ModificaRicettaPageState extends State<ModificaRicettaPage> {
     for (Categoria categoria in ListaCategorie) {
       if(categorie.contains(categoria.nome))
       {
-       selezioneCategorie[Categoria(nome: categoria.nome)] = true;
+       selezioneCategorie[Categoria(nome: categoria.nome, ricette: categoria.ricette)] = true;
       }
       else
       {
-        selezioneCategorie[Categoria(nome: categoria.nome)] = false;
+        selezioneCategorie[Categoria(nome: categoria.nome,  ricette: categoria.ricette)] = false;
       }
     }
   }

@@ -107,7 +107,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
   Future<Map<Categoria, bool>?> showCategorieDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie),
+      builder: (context) => MyCategoriaDialog(selezioneCategorie: selezioneCategorie, canAddNewCategory: true),
     );
   }
 

@@ -11,9 +11,10 @@ import 'package:provider/provider.dart';
 
 class MyCategoriaDialog extends StatefulWidget {
   Map<Categoria, bool> selezioneCategorie;
+  bool canAddNewCategory;
   
 
-  MyCategoriaDialog({super.key, required this.selezioneCategorie});
+  MyCategoriaDialog({super.key, required this.selezioneCategorie, required this.canAddNewCategory});
 
   @override
   State<MyCategoriaDialog> createState() => _MyCategoriaDialogState();
@@ -41,7 +42,14 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
         ColorsProvider colorsModel = Provider.of<ColorsProvider>(context, listen: false);
         return AlertDialog(
           backgroundColor: colorsModel.backgroudColor,
-          title: Text("Aggiungi Categoria", style: TextStyle(color: colorsModel.textColor),),
+          title: Text(
+            "Aggiungi Categoria",
+            style: TextStyle(
+              color: colorsModel.textColor,
+              fontSize: 22,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
           content: TextField(
             controller: categoriaController,
             decoration: InputDecoration(
@@ -53,34 +61,25 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Annulla", style: TextStyle(color: colorsModel.coloreSecondario)),
+              child: Text(
+                "Annulla",
+                style: TextStyle(
+                  color: colorsModel.isLightMode ? colorsModel.coloreSecondario : Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     String newCategoriaNome = categoriaController.text.trim();
-            //     if (newCategoriaNome.isNotEmpty) {
-            //       Categoria newCategoria = Categoria(nome: newCategoriaNome);
-            //       setState(() {
-            //         ricetteModel.aggiungiNuovaCategoria(newCategoria);
-            //         widget.selezioneCategorie[newCategoria] = false;
-            //       });
-            //       Navigator.pop(context);
-            //     }
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
-                
-            //   ),
-            //   child: Text("Aggiungi", style: TextStyle(color: Colors.white),),
-            // ),
+
             ElevatedButton(
               onPressed: () {
                 String newCategoriaNome = categoriaController.text.trim();
+                newCategoriaNome = newCategoriaNome[0].toUpperCase()+newCategoriaNome.substring(1).toLowerCase(); // formatto la stringa con solo la prima lettera maiuscola
                 if (newCategoriaNome.isNotEmpty) {
-                  Categoria newCategoria = Categoria(nome: newCategoriaNome);
+                  Categoria newCategoria = Categoria(nome: newCategoriaNome, ricette: []);
                   setState(() {
                     ricetteModel.aggiungiNuovaCategoria(newCategoria);
-                    widget.selezioneCategorie[newCategoria] = false;
+                    widget.selezioneCategorie[newCategoria] = true;
                   });
                   Navigator.pop(context);
                 }
@@ -147,7 +146,11 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                             )
                           ),
                           Spacer(),
+
                           //tasto aggiugni categoria
+
+                          widget.canAddNewCategory ?
+
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
@@ -164,7 +167,11 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
                               ),
                               child: Icon(Icons.add, color: Colors.white),
                             ),
-                          ),
+                          )
+
+                          :
+
+                          SizedBox()
                         ],
                       )
                     ]

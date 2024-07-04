@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'buonappetito-c14e7.appspot.com',
     measurementId: 'G-9DBBVS66MD',
   );
+
 }

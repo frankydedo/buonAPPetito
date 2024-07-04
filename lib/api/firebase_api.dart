@@ -1,22 +1,31 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseApi {
-
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initNotification() async {
-    //richiediamo all utente il permesso per le notifiche
-    await _firebaseMessaging.requestPermission();
+    // Richiediamo all'utente il permesso per le notifiche
+    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
 
     final fcmToken = await _firebaseMessaging.getToken();
+    print('FCM Token: $fcmToken');
 
-    print('Token: ' + fcmToken.toString());
-  }
+    final apnsToken = await _firebaseMessaging.getAPNSToken();
+    print('APNS Token: $apnsToken');
 
-  void handleMessage(RemoteMessage? message){
-    if(message == null) return;
-
-    print(message.toString());
+    await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
   }
 }

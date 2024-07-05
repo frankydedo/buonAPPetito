@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
@@ -39,73 +41,77 @@ class _CategoriaPageState extends State<CategoriaPage> {
             ),
           ),
           body: categorie.isNotEmpty
-              ? Column(
-                  children: [
-                    Text(
-                      'LISTA DI CATEGORIE',
-                      style: GoogleFonts.encodeSans(
-                        color: colorsModel.coloreTitoli,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
+              ? Padding(               
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                child: Column(
+                    children: [
+                      Text(
+                        'LISTA DI CATEGORIE',
+                        style: GoogleFonts.encodeSans(
+                          color: colorsModel.coloreTitoli,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: categorie.length,
-                        itemBuilder: (context, index) {
-                          final categoria = categorie[index];
-                          final int numeroRicette = conteggioCategorie[categoria.nome] ?? 0;
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10, right: 0, left: 4, top: 5),
-                            child: InkWell(
-                              onTap: () {
-                                print(categoria.nome);
-                                Navigator.pushNamed(context,'/ricettepercategoriepage',arguments: categoria.nome,);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: colorsModel.tileBackGroudColor,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.list_rounded,
-                                          color: colorsModel.coloreSecondario,
-                                        ),
-                                        SizedBox(width: 10),
-                                        Text(
-                                          categoria.nome,
-                                          style: GoogleFonts.encodeSans(
-                                            color: colorsModel.coloreTitoli,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: categorie.length,
+                          itemBuilder: (context, index) {
+                            final categoria = categorie[index];
+                            final int numeroRicette = conteggioCategorie[categoria.nome] ?? 0;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10, right: 0, left: 4, top: 5),
+                              child: InkWell(
+                                onTap: () {
+                                  print(categoria.nome);
+                                  Navigator.pushNamed(context,'/ricettepercategoriepage',arguments: categoria.nome,);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: colorsModel.tileBackGroudColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.list_rounded,
+                                            color: colorsModel.coloreSecondario,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      '$numeroRicette ricette',
-                                      style: GoogleFonts.encodeSans(
-                                        color: colorsModel.coloreTitoli,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
+                                          SizedBox(width: 10),
+                                          Text(
+                                            categoria.nome,
+                                            style: GoogleFonts.encodeSans(
+                                              color: colorsModel.coloreTitoli,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        '$numeroRicette ricette',
+                                        style: GoogleFonts.encodeSans(
+                                          color: colorsModel.coloreTitoli,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                )
+                    ],
+                  ),
+              )
               : Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

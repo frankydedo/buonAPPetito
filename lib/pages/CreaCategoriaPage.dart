@@ -142,7 +142,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             child: Column(
               children: <Widget>[
                 TextField(
@@ -169,8 +169,8 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                      height: screenHeight * 0.1,
-                      width: screenWidth * 0.40,
+                      height: screenHeight * 0.07,
+                      width: screenWidth * 0.30,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -183,9 +183,9 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                           shadowColor: Colors.black,
                         ),
                         child: Text(
-                          'Aggiungi Ricetta Esistente',
+                          'Aggiungi Ricetta \n       Esistente',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -196,8 +196,8 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                       ),
                     ),
                     SizedBox(
-                      height: screenHeight * 0.1,
-                      width: screenWidth * 0.40,
+                      height: screenHeight * 0.07,
+                      width: screenWidth * 0.30,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -210,9 +210,9 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                           shadowColor: Colors.black,
                         ),
                         child: Text(
-                          'Crea Nuova Ricetta',
+                          'Crea Nuova \n    Ricetta',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -294,7 +294,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                       ),
                 SizedBox(height: 20),
                 SizedBox(
-                  width: double.infinity,
+                  width: screenWidth*0.2,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

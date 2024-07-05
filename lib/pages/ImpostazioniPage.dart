@@ -106,6 +106,23 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
                   ),
                 ),
                 Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8),
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/categoriapage');
+                    },
+                    leading: Icon(Icons.list_outlined,
+                    size: 24,
+                    color: colorsModel.coloreSecondario),
+                    title: Text(
+                      "CATEGORIE",
+                      style: TextStyle(
+                          color: colorsModel.coloreSecondario,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: ListTile(
                     onTap:() {Navigator.pushNamed(context, '/impostazionipage');},

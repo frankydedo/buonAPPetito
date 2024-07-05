@@ -20,9 +20,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class CreaCategoriaPage extends StatefulWidget {
-  final String categoriaNome;
   final Function onUpdate;
-  const CreaCategoriaPage({super.key, required this.categoriaNome, required this.onUpdate});
+  const CreaCategoriaPage({super.key, required this.onUpdate});
 
   @override
   State<CreaCategoriaPage> createState() => _CreaCategoriaPageState();
@@ -191,7 +190,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                         ),
                         onPressed: () {
                           // Naviga alla schermata per aggiungere una ricetta esistente
-                          _showSelectRicettaDialog(context, widget.onUpdate, widget.categoriaNome, ricetteSelezionate);
+                          _showSelectRicettaDialog(context, widget.onUpdate, controller.text.trim(), ricetteSelezionate);
                         },
                       ),
                     ),
@@ -220,6 +219,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                           // Naviga alla schermata per creare una nuova ricetta e aspetta il risultato
                           final nuovaRicetta = await Navigator.pushNamed(context, '/nuovaricettapage');
                           if (nuovaRicetta != null && nuovaRicetta is Ricetta) {
+                            print("Sono qui");
                             setState(() {
                               ricetteSelezionate.add(nuovaRicetta);
                             });
@@ -390,11 +390,11 @@ void _showSelectRicettaDialog(BuildContext context, Function onUpdate, String ca
                   ricetteSelezionate.addAll(temporarySelectedRicette);
 
                   // Aggiungi le categorie selezionate alla ricetta
-                  for (Ricetta ricetta in ricetteSelezionate) {
-                    if (!ricetta.getCategorie().contains(categoriaNome)) {
-                      ricetta.aggiungiNuovaCategoria(categoriaNome);
-                    }
-                  }
+                  // for (Ricetta ricetta in ricetteSelezionate) {
+                  //   if (!ricetta.getCategorie().contains(categoriaNome)) {
+                  //     ricetta.aggiungiNuovaCategoria(categoriaNome);
+                  //   }
+                  // }
                   onUpdate();
                   Navigator.pop(context);
                 },

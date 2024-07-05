@@ -151,10 +151,8 @@ class _CategoriaPageState extends State<CategoriaPage> {
             backgroundColor: colorsModel.coloreSecondario,
             child: Icon(Icons.add, color: Colors.white, size: 35),
             onPressed: () {
-              //_showAddCategoriaDialog(context);
               Navigator.pushNamed(context,'/creacategoriapage',
                 arguments: {
-                  'categoriaNome': 'NomeCategoria', // Sostituisci con il nome della categoria desiderata
                   'onUpdate': () {
                     _aggiornaConteggioCategorie();
                     print('Aggiornamento eseguito dopo la creazione della categoria');

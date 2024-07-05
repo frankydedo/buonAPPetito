@@ -1204,7 +1204,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       );
                                     }else{
                                       ricetteModel.aggiungiNuovaRicetta(nuovaRicetta);
-                                      Navigator.pop(context);
+                                      Navigator.pop(context, nuovaRicetta);
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                                       );

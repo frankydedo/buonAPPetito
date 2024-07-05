@@ -196,7 +196,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/creacategoriapage': (context) {
           final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
           return CreaCategoriaPage(
-            categoriaNome: args['categoriaNome'],
             onUpdate: args['onUpdate'],
           );
           },

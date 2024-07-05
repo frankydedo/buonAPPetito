@@ -57,41 +57,47 @@ class _CategoriaPageState extends State<CategoriaPage> {
                           final int numeroRicette = conteggioCategorie[categoria.nome] ?? 0;
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10, right: 0, left: 4, top: 5),
-                            child: Container(
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: colorsModel.tileBackGroudColor, // Sfondo bianco
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.list_rounded,
-                                        color: colorsModel.coloreSecondario, // Icona blu
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        categoria.nome,
-                                        style: GoogleFonts.encodeSans(
-                                          color: colorsModel.coloreTitoli, // Testo blu
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
+                            child: InkWell(
+                              onTap: () {
+                                print(categoria.nome);
+                                Navigator.pushNamed(context,'/ricettepercategoriepage',arguments: categoria.nome,);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: colorsModel.tileBackGroudColor,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.list_rounded,
+                                          color: colorsModel.coloreSecondario,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    '$numeroRicette ricette',
-                                    style: GoogleFonts.encodeSans(
-                                      color: colorsModel.coloreTitoli,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
+                                        SizedBox(width: 10),
+                                        Text(
+                                          categoria.nome,
+                                          style: GoogleFonts.encodeSans(
+                                            color: colorsModel.coloreTitoli,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      '$numeroRicette ricette',
+                                      style: GoogleFonts.encodeSans(
+                                        color: colorsModel.coloreTitoli,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -139,14 +145,23 @@ class _CategoriaPageState extends State<CategoriaPage> {
             backgroundColor: colorsModel.coloreSecondario,
             child: Icon(Icons.add, color: Colors.white, size: 35),
             onPressed: () {
-              _showAddCategoriaDialog(context);
+              //_showAddCategoriaDialog(context);
+              Navigator.pushNamed(context,'/creacategoriapage',
+                arguments: {
+                  'categoriaNome': 'NomeCategoria', // Sostituisci con il nome della categoria desiderata
+                  'onUpdate': () {
+                    _aggiornaConteggioCategorie();
+                    print('Aggiornamento eseguito dopo la creazione della categoria');
+                  },
+                },
+              );
             },
           ),
         );
       },
     );
   }
-
+ /*
   void _showAddCategoriaDialog(BuildContext context) {
     final TextEditingController _textFieldController = TextEditingController();
     showDialog(
@@ -154,21 +169,21 @@ class _CategoriaPageState extends State<CategoriaPage> {
       builder: (context) {
         ColorsProvider colorsModel = Provider.of<ColorsProvider>(context, listen: false);
         return AlertDialog(
-          title: Text('Aggiungi nuova categoria',style: TextStyle(color: colorsModel.textColor),),
+          title: Text('Aggiungi nuova categoria', style: TextStyle(color: colorsModel.textColor)),
           content: TextField(
             controller: _textFieldController,
             decoration: InputDecoration(hintText: "Nome categoria"),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Annulla',style: TextStyle(color: colorsModel.coloreSecondario)),
+              child: Text('Annulla', style: TextStyle(color: colorsModel.coloreSecondario)),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             ElevatedButton(
-               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, 
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
                 backgroundColor: colorsModel.coloreSecondario,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -176,15 +191,15 @@ class _CategoriaPageState extends State<CategoriaPage> {
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 elevation: 5,
                 shadowColor: Colors.black,
-              ),                          
-              child: Text('Aggiungi',
-              style: TextStyle(
+              ),
+              child: Text(
+                'Aggiungi',
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               onPressed: () {
-                // Aggiungi logica per salvare la nuova categoria
                 final String nuovoNomeCategoria = _textFieldController.text;
                 Provider.of<RicetteProvider>(context, listen: false)
                     .aggiungiNuovaCategoria(Categoria(nome: nuovoNomeCategoria, ricette: []));
@@ -206,7 +221,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
       },
     );
   }
-
+*/
   void _aggiornaConteggioCategorie() {
     setState(() {});
   }

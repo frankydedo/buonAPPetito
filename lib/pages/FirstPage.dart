@@ -7,7 +7,6 @@ import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/CarrelloIcon.dart';
 import 'package:buonappetito/utils/CategoriaIcon.dart';
-import '';
 import 'package:buonappetito/utils/IconButtonCircolareFoto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

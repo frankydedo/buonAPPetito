@@ -2,12 +2,14 @@
 
 import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/CategoriaPage.dart';
+import 'package:buonappetito/pages/CreaCategoriaPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/FirstPage.dart';
 import 'package:buonappetito/pages/ImpostazioniPage.dart';
 import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/RicettaPage.dart';
+import 'package:buonappetito/pages/RicettePerCategoriePage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
@@ -191,6 +193,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/nuovaricettapage': (context) => NuovaRicettaPage(),
           '/carrellopage': (context) => CarrelloPage(),
           '/categoriapage': (context) => CategoriaPage(),
+          '/creacategoriapage': (context) {
+          final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          return CreaCategoriaPage(
+            categoriaNome: args['categoriaNome'],
+            onUpdate: args['onUpdate'],
+          );
+          },
+          '/ricettepercategoriepage': (context) => RicettePerCategoriePage(nomeCategorie: ModalRoute.of(context)!.settings.arguments as String),
         },
       );
     });

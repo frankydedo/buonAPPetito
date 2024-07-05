@@ -34,7 +34,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
               size: 28.0,
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: colorsModel.coloreTitoli),
+              icon: Icon(Icons.arrow_back, color: colorsModel.coloreSecondario),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -42,7 +42,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
           ),
           body: categorie.isNotEmpty
               ? Padding(               
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                 child: Column(
                     children: [
                       Text(
@@ -79,7 +79,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
                                       Row(
                                         children: [
                                           Icon(
-                                            Icons.list_rounded,
+                                            Icons.checklist_rounded,
                                             color: colorsModel.coloreSecondario,
                                           ),
                                           SizedBox(width: 10),
@@ -167,67 +167,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
       },
     );
   }
- /*
-  void _showAddCategoriaDialog(BuildContext context) {
-    final TextEditingController _textFieldController = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) {
-        ColorsProvider colorsModel = Provider.of<ColorsProvider>(context, listen: false);
-        return AlertDialog(
-          title: Text('Aggiungi nuova categoria', style: TextStyle(color: colorsModel.textColor)),
-          content: TextField(
-            controller: _textFieldController,
-            decoration: InputDecoration(hintText: "Nome categoria"),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Annulla', style: TextStyle(color: colorsModel.coloreSecondario)),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: colorsModel.coloreSecondario,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                elevation: 5,
-                shadowColor: Colors.black,
-              ),
-              child: Text(
-                'Aggiungi',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              onPressed: () {
-                final String nuovoNomeCategoria = _textFieldController.text;
-                Provider.of<RicetteProvider>(context, listen: false)
-                    .aggiungiNuovaCategoria(Categoria(nome: nuovoNomeCategoria, ricette: []));
-                Navigator.pop(context);
-                setState(() {}); // Aggiorna l'UI per riflettere la nuova categoria
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AggiungiRicettaScreen(
-                      categoriaNome: nuovoNomeCategoria,
-                      onUpdate: _aggiornaConteggioCategorie,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-*/
+
   void _aggiornaConteggioCategorie() {
     setState(() {});
   }

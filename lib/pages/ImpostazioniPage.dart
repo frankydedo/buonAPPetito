@@ -111,7 +111,7 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
                     onTap: () {
                       Navigator.pushNamed(context, '/categoriapage');
                     },
-                    leading: Icon(Icons.list_outlined,
+                    leading: Icon(Icons.checklist_rounded,
                     size: 24,
                     color: colorsModel.coloreSecondario),
                     title: Text(

@@ -1,8 +1,10 @@
+// import 'dart:convert';
+
 class Ricetta {
   String percorsoImmagine;
   String titolo;
   String descrizione;
-  Map<String, String> ingredienti; // si tiene traccia del nome dell'ingrediente e della quantità
+  Map<String, String> ingredienti;
   List<String> categorie;
   List<String> passaggi;
   int difficolta;
@@ -21,14 +23,44 @@ class Ricetta {
     required this.difficolta,
     required this.dataAggiunta,
   });
+/* // Metodo per creare una Ricetta da un map ricevuto dal database
+  factory Ricetta.fromMap(Map<String, dynamic> map) {
+    return Ricetta(
+      percorsoImmagine: map['percorsoImmagine'],
+      titolo: map['titolo'],
+      descrizione: map['descrizione'],
+      ingredienti: jsonDecode(map['ingredienti']),
+      categorie: map['categorie'].split(','),
+      passaggi: jsonDecode(map['passaggi']),
+      difficolta: map['difficolta'],
+      minutiPreparazione: map['minutiPreparazione'],
+      dataAggiunta: DateTime.parse(map['dataAggiunta']),
+    );
+  }
 
+  get id => null;
 
+   // Metodo per convertire Ricetta in un map per il database
+  Map<String, dynamic> toMap() {
+    return {
+      'percorsoImmagine': percorsoImmagine,
+      'titolo': titolo,
+      'descrizione': descrizione,
+      'ingredienti': jsonEncode(ingredienti),
+      'categorie': categorie.join(','),
+      'passaggi': jsonEncode(passaggi),
+      'difficolta': difficolta,
+      'minutiPreparazione': minutiPreparazione,
+      'dataAggiunta': dataAggiunta.toIso8601String(),
+    };
+  }
+*/
   String getCategorie() {
     String c = "";
     for (int i = 0; i < categorie.length; i++) {
       if (i == 0) {
-        c += categorie[i]; 
-      }  else {
+        c += categorie[i];
+      } else {
         c += ' | ' + categorie[i];
       }
     }
@@ -40,7 +72,7 @@ class Ricetta {
   }
 
   void setImmagine(String immagine) {
-    percorsoImmagine= immagine ;
+    percorsoImmagine = immagine;
   }
 
   void resetPreferita() {
@@ -51,7 +83,7 @@ class Ricetta {
     this.ingredienti = listaIngredienti;
   }
 
-  void setPassaggi(List <String> listaPassaggi) {
+  void setPassaggi(List<String> listaPassaggi) {
     this.passaggi = listaPassaggi;
   }
 
@@ -59,7 +91,7 @@ class Ricetta {
     this.titolo = titoloNuovo;
   }
 
-  void setCategorie(List <String> listaCategorie) {
+  void setCategorie(List<String> listaCategorie) {
     this.categorie = listaCategorie;
   }
 
@@ -91,13 +123,18 @@ class Ricetta {
     minutiPreparazione = minuti;
   }
 
-  String getDifficoltaAsString(){
+  String getDifficoltaAsString() {
     switch (this.difficolta) {
-      case 0: return "Principiante";
-      case 1: return "Amatoriale";
-      case 2: return "Intermedio";
-      case 3: return "Chef";
-      default: return "Chef Stellato";
+      case 0:
+        return "Principiante";
+      case 1:
+        return "Amatoriale";
+      case 2:
+        return "Intermedio";
+      case 3:
+        return "Chef";
+      default:
+        return "Chef Stellato";
     }
   }
 
@@ -131,3 +168,5 @@ class Ricetta {
     return true;
   }
 }
+
+

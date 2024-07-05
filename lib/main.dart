@@ -2,6 +2,7 @@
 
 import 'package:buonappetito/api/firebase_api.dart';
 import 'package:buonappetito/firebase_options.dart';
+import 'package:buonappetito/models/DataModel.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/FirstPage.dart';
@@ -18,11 +19,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+   await Hive.initFlutter();
+  
+  await Hive.initFlutter();
+
+  // Registra gli adapter
+  Hive.registerAdapter(RicettaAdapter());
+  Hive.registerAdapter(ItemCarrelloAdapter());
+
+  // Apertura delle Box
+  await Hive.openBox<Ricetta>('ricette');
+  await Hive.openBox<ItemCarrello>('carrello');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseApi().initNotification();
   runApp(

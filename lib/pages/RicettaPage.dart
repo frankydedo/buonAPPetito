@@ -1,11 +1,12 @@
-import 'package:buonappetito/pages/ModificaRicettaPage.dart';
-import 'package:buonappetito/providers/ColorsProvider.dart';
-import 'package:buonappetito/providers/RicetteProvider.dart';
-import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:buonappetito/models/Ricetta.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/providers/ColorsProvider.dart';
+import 'package:buonappetito/utils/ConfermaDialog.dart';
+import 'package:buonappetito/pages/ModificaRicettaPage.dart';
+import 'package:hive/hive.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RicettaPage extends StatefulWidget {
   final Ricetta recipe;
@@ -28,26 +29,27 @@ class _RicettaPageState extends State<RicettaPage> {
   }
 
   @override
-  void initState()
-  {
+  void initState() {
     super.initState();
-    if(!controlloCarrello())
-    {
-      ingredientButtonText = "Aggiungi tutti";
-    }
-    else
-    {
-      ingredientButtonText = "Rimuovi tutti";
+    updateIngredientButtonText();
+  }
+
+  void updateIngredientButtonText() {
+    if (!controlloCarrello()) {
+      setState(() {
+        ingredientButtonText = "Aggiungi tutti";
+      });
+    } else {
+      setState(() {
+        ingredientButtonText = "Rimuovi tutti";
+      });
     }
   }
 
-  bool controlloCarrello()
-  {
-    List <String> carrello = Provider.of<RicetteProvider>(context, listen: false).carrello;
-    for (String ingrediente in widget.recipe.ingredienti.keys)
-    {
-      if(!carrello.contains(ingrediente))
-      {
+  bool controlloCarrello() {
+    List<String> carrello = Provider.of<RicetteProvider>(context, listen: false).carrello;
+    for (String ingrediente in widget.recipe.ingredienti.keys) {
+      if (!carrello.contains(ingrediente)) {
         return false;
       }
     }
@@ -56,7 +58,6 @@ class _RicettaPageState extends State<RicettaPage> {
 
   @override
   Widget build(BuildContext context) {
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -73,56 +74,68 @@ class _RicettaPageState extends State<RicettaPage> {
             title: Row(
               children: [
                 Spacer(),
-
-                //tasto cancella
                 IconButton(
-                onPressed: () async{                
-                  bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
-                    if (cancellare){
+                  onPressed: () async {
+                    bool cancellare = await showConfermaDialog(context, "Sei sicuro di cancellare la ricetta definitivamente?") as bool;
+                    if (cancellare) {
                       Navigator.pop(context);
                       ricetteModel.rimuoviRicetta(widget.recipe);
+
+                      // Rimuovi la ricetta dalla box di Hive
+                      final ricetteBox = Hive.box<Ricetta>('ricette');
+                      ricetteBox.delete(widget.recipe.titolo); // Assumi che ci sia un campo 'key' nella classe Ricetta
+                      
                       ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                        const SnackBar(
+                          content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18)),
+                          backgroundColor: Color.fromRGBO(26, 35, 126, 1),
+                        ),
                       );
                     }
-
                   },
                   icon: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child:Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.coloreSecondario),
+                    child: Icon(Icons.delete_outline_rounded, size: 35, color: colorsModel.coloreSecondario),
                   ),
                 ),
-                //tasto modifica ricetta
                 IconButton(
-                onPressed: () async{                
-                    Navigator.push(context,MaterialPageRoute(builder: (context) =>ModificaRicettaPage(recipe: widget.recipe,))).then((_){
+                  onPressed: () async {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ModificaRicettaPage(recipe: widget.recipe))).then((_) {
                       setState(() {
-                        
+                        // Aggiorna la ricetta dopo la modifica
+                        updateIngredientButtonText();
+
+                        // Salvare la ricetta modificata nella box di Hive
+                        final ricetteBox = Hive.box<Ricetta>('ricette');
+                        ricetteBox.put(widget.recipe.titolo, widget.recipe); // Assumi che ci sia un campo 'key' nella classe Ricetta
                       });
                     });
-
-                }, 
-                icon: Icon(Icons.edit_rounded, size: 35, color: colorsModel.coloreSecondario),
+                  },
+                  icon: Icon(Icons.edit_rounded, size: 35, color: colorsModel.coloreSecondario),
                 ),
-                // tasto rimuovi dai preferiti
                 IconButton(
-                onPressed: () async{                
-                  if(widget.recipe.isFavourite){
-                    ricetteModel.rimuoviDaiPreferiti(widget.recipe);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Ricetta rimossa dai preferiti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
-                    );
-                  } else {
+                  onPressed: () async {
+                    if (widget.recipe.isFavourite) {
+                      ricetteModel.rimuoviDaiPreferiti(widget.recipe);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Ricetta rimossa dai preferiti", style: TextStyle(color: Colors.white, fontSize: 18)),
+                          backgroundColor: Color.fromRGBO(26, 35, 126, 1),
+                        ),
+                      );
+                    } else {
                       ricetteModel.aggiungiAiPreferiti(widget.recipe);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Ricetta aggiunta ai preferiti", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                        const SnackBar(
+                          content: Text("Ricetta aggiunta ai preferiti", style: TextStyle(color: Colors.white, fontSize: 18)),
+                          backgroundColor: Color.fromRGBO(26, 35, 126, 1),
+                        ),
                       );
                     }
-
                   },
                   icon: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: widget.recipe.isFavourite ?  Icon(Icons.favorite_rounded, size: 35, color: colorsModel.coloreSecondario) : Icon(Icons.favorite_border_rounded, size: 35, color: colorsModel.coloreSecondario),
+                    child: widget.recipe.isFavourite ? Icon(Icons.favorite_rounded, size: 35, color: colorsModel.coloreSecondario) : Icon(Icons.favorite_border_rounded, size: 35, color: colorsModel.coloreSecondario),
                   ),
                 )
               ],
@@ -177,7 +190,6 @@ class _RicettaPageState extends State<RicettaPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Difficoltà
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -203,7 +215,6 @@ class _RicettaPageState extends State<RicettaPage> {
                                 ],
                               ),
                             ),
-                            // Tempo di preparazione
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -235,54 +246,6 @@ class _RicettaPageState extends State<RicettaPage> {
                     ),
                   ),
                   SizedBox(height: 20),
-
-                  // descrizione
-
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: screenWidth,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "DESCRIZIONE",
-                                    style: GoogleFonts.encodeSans(
-                                      color: colorsModel.coloreTitoli,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                  Spacer(),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Text(
-                            widget.recipe.descrizione,
-                            style: GoogleFonts.encodeSans(
-                              color: colorsModel.textColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  //ingredienti
-
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
@@ -307,31 +270,28 @@ class _RicettaPageState extends State<RicettaPage> {
                                     ),
                                   ),
                                   Spacer(),
-
-                                  // tasto aggiungi tutti
-
                                   GestureDetector(
-                                    onTap: (){
-                                      if(ingredientButtonText == "Aggiungi tutti"){
+                                    onTap: () {
+                                      if (ingredientButtonText == "Aggiungi tutti") {
                                         for (String ingrediente in widget.recipe.ingredienti.keys){
                                           if (!ricetteModel.carrello.contains(ingrediente)){
                                             ricetteModel.aggiungiIngredienteAlCarrello(ingrediente);
                                           }
                                         }
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text("Tutti gli ingredienti sono stati aggiunti al carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                          const SnackBar(content: Text("Tutti gli ingredienti sono stati aggiunti al carrello", style: TextStyle(color: Colors.white, fontSize: 18))),
                                         );
                                         setState(() {
                                           ingredientButtonText = "Rimuovi tutti";
                                         });
-                                      }else{
+                                      } else {
                                         for(String ingrediente in widget.recipe.ingredienti.keys){
                                           if (ricetteModel.carrello.contains(ingrediente)){
                                             ricetteModel.rimuoviIngredienteDalCarrello(ingrediente);
                                           }
                                         }
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text("Tutti gli ingredienti sono stati rimossi dal carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                          const SnackBar(content: Text("Tutti gli ingredienti sono stati rimossi dal carrello", style: TextStyle(color: Colors.white, fontSize: 18))),
                                         );
                                         setState(() {
                                           ingredientButtonText = "Aggiungi tutti";
@@ -351,7 +311,6 @@ class _RicettaPageState extends State<RicettaPage> {
                               ),
                             ),
                           ),
-
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0, right: 8),
                             child: ListView.builder(
@@ -385,15 +344,18 @@ class _RicettaPageState extends State<RicettaPage> {
                                         if(ricetteModel.carrello.contains(ingredienti.keys.elementAt(index))){
                                           ricetteModel.rimuoviIngredienteDalCarrello(ingredienti.keys.elementAt(index));
                                           ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text("L'ingrediente è stato rimosso dal carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                            const SnackBar(content: Text("L'ingrediente è stato rimosso dal carrello", style: TextStyle(color: Colors.white, fontSize: 18))),
                                           );
                                         }else{
                                           ricetteModel.aggiungiIngredienteAlCarrello(ingredienti.keys.elementAt(index));
                                           ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text("L'ingrediente è stato aggiunto al carrello", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
+                                            const SnackBar(content: Text("L'ingrediente è stato aggiunto al carrello", style: TextStyle(color: Colors.white, fontSize: 18))),
                                           );
                                         }
-                                      }, 
+                                        setState(() {
+                                          updateIngredientButtonText();
+                                        });
+                                      },
                                       icon: !ricetteModel.carrello.contains(ingredienti.keys.elementAt(index)) ?
                                         Icon(Icons.add_shopping_cart_rounded, color: colorsModel.coloreSecondario, size: 35)
                                         :
@@ -408,9 +370,6 @@ class _RicettaPageState extends State<RicettaPage> {
                       ),
                     ),
                   ),
-
-                  //passaggi
-
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
@@ -439,7 +398,6 @@ class _RicettaPageState extends State<RicettaPage> {
                               ),
                             ),
                           ),
-
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0, right: 8),
                             child: ListView.builder(
@@ -473,8 +431,6 @@ class _RicettaPageState extends State<RicettaPage> {
                       ),
                     ),
                   ),
-
-                  
                 ],
               ),
             ),

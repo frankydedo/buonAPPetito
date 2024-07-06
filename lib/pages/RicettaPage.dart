@@ -79,13 +79,13 @@ class _RicettaPageState extends State<RicettaPage> {
                 onPressed: () async{                
                   bool cancellare = await showConfermaDialog(context, "Sei sicuro di canellare la ricetta definitivamente?") as bool;
                     if (cancellare){
-                      Navigator.pop(context);
                       ricetteModel.rimuoviRicetta(widget.recipe);
                       ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
                     }
-
+                    print("deleted");
+                    Navigator.pop(context);
                   },
                   icon: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -96,9 +96,7 @@ class _RicettaPageState extends State<RicettaPage> {
                 IconButton(
                 onPressed: () async{                
                     Navigator.push(context,MaterialPageRoute(builder: (context) =>ModificaRicettaPage(recipe: widget.recipe,))).then((_){
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     });
 
                 }, 

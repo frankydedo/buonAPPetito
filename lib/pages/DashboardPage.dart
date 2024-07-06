@@ -143,11 +143,12 @@ class _DashboardPageState extends State<DashboardPage> {
                           },
                           itemCount: ricetteCarosello.length,
                           itemBuilder: (context, index) {
+                            Ricetta ric = ricetteCarosello[index];
                             return GestureDetector(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ricetteCarosello[index]);})).then((_){
+                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ric);})).then((_){
                                   setState(() {
-                                      aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+                                      // aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
                                     });
                                 });
                               },

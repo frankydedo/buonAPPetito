@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, prefer_const_constructors_in_immutables
 
+import 'package:buonappetito/data/RicetteDB.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
@@ -7,9 +8,11 @@ import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/CarrelloIcon.dart';
 import 'package:buonappetito/utils/CategoriaIcon.dart';
-import '';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:buonappetito/utils/IconButtonCircolareFoto.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 class FirstPage extends StatefulWidget {
@@ -21,6 +24,20 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   int _selectedIndex = 0;
+  final _RicetteBox = Hive.box('Recipies');
+  RicetteListDB db = RicetteListDB();
+
+  @override
+  void initState(){
+    if(_RicetteBox.get('RecipiesList') == null) {
+      db.createInitialData;
+    } else{
+      //data already exists
+      db.loadData();
+    }
+
+    super.initState();
+  }
 
   void _navigateBottomBar(int index) {
     setState(() {

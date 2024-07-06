@@ -14,9 +14,21 @@ import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  final appDocsDir = await getApplicationDocumentsDirectory();
+  await Hive.initFlutter(appDocsDir.path);
+ // Hive.registerAdapter(CategoriaAdapter());
+ // Hive.registerAdapter(RicettaAdapter());
+
+  await Hive.openBox('Recipes');
+  await Hive.openBox('Colors');
+
   runApp(
     MultiProvider(
       providers: [

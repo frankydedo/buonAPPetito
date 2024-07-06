@@ -2,14 +2,11 @@
 
 import 'dart:math';
 
+import 'package:buonappetito/data/RicetteDB.dart';
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:flutter/material.dart';
-
-import 'dart:math';
-import 'package:buonappetito/models/Categoria.dart';
-import 'package:buonappetito/models/Ricetta.dart';
-import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class RicetteProvider extends ChangeNotifier {
 
@@ -21,7 +18,8 @@ class RicetteProvider extends ChangeNotifier {
   List<String> carrello =[];
   List<String> get carrelloInvertito => carrello.reversed.toList();
   List<String> elementiCancellatiCarrello = [];
-
+  // final _RicetteBox = Hive.box('Recipes');
+  // RicetteListDB db = RicetteListDB();
 
   List<Categoria> categorie = [
     Categoria(nome: "Primi",
@@ -329,7 +327,8 @@ class RicetteProvider extends ChangeNotifier {
       categoria?.aggiungiRicetta(r);
     }
     categorie.removeWhere((c) => c.ricette.isEmpty);
-
+    
+    //db.updateDatabase;
     notifyListeners();
   }
 
@@ -344,6 +343,7 @@ class RicetteProvider extends ChangeNotifier {
     categorie.removeWhere((c) => c.ricette.isEmpty);
 
     ricette.remove(r);
+    //db.updateDatabase;
     notifyListeners();
   }
 

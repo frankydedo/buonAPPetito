@@ -2,14 +2,12 @@
 
 import 'dart:math';
 
+import 'package:buonappetito/data/RicetteDB.dart';
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-
-import 'dart:math';
-import 'package:buonappetito/models/Categoria.dart';
-import 'package:buonappetito/models/Ricetta.dart';
-import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class RicetteProvider extends ChangeNotifier {
 
@@ -21,7 +19,12 @@ class RicetteProvider extends ChangeNotifier {
   List<String> carrello =[];
   List<String> get carrelloInvertito => carrello.reversed.toList();
   List<String> elementiCancellatiCarrello = [];
-
+   final _RicetteBox = Hive.box('Recipes');
+   RicetteListDB _db = RicetteListDB();
+ 
+  RicetteProvider() {
+    _loadData();
+  }
 
   List<Categoria> categorie = [
     Categoria(nome: "Primi",
@@ -322,30 +325,33 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
   
-  void aggiungiNuovaRicetta(Ricetta r){
-    ricette.add(r);
-    for (String nomeCategoria in r.categorie){
-      Categoria? categoria = categorie.where((c) => c.nome == nomeCategoria).firstOrNull;
-      categoria?.aggiungiRicetta(r);
-    }
-    categorie.removeWhere((c) => c.ricette.isEmpty);
-
-    notifyListeners();
+ void aggiungiNuovaRicetta(Ricetta r) {
+  ricette.add(r);
+  for (String nomeCategoria in r.categorie) {
+    Categoria? categoria =
+        categorie.firstWhereOrNull((c) => c.nome == nomeCategoria);
+    categoria?.aggiungiRicetta(r);
   }
+  categorie.removeWhere((c) => c.ricette.isEmpty);
+  _saveData();
+  notifyListeners();
+}
 
-  void rimuoviRicetta(Ricetta r){
-    for (String nomeCategoria in r.categorie){
-      Categoria? categoria = categorie.where((c) => c.nome == nomeCategoria).firstOrNull;
-      categoria?.riumoviRicetta(r);
-    }
-    if(preferiti.contains(r)){
-      rimuoviDaiPreferiti(r);
-    }
-    categorie.removeWhere((c) => c.ricette.isEmpty);
-
-    ricette.remove(r);
-    notifyListeners();
+void rimuoviRicetta(Ricetta r) {
+  for (String nomeCategoria in r.categorie) {
+    Categoria? categoria =
+        categorie.firstWhereOrNull((c) => c.nome == nomeCategoria);
+    categoria?.rimuoviRicetta(r);
   }
+  if (preferiti.contains(r)) {
+    rimuoviDaiPreferiti(r);
+  }
+  categorie.removeWhere((c) => c.ricette.isEmpty);
+  ricette.remove(r);
+  _saveData();
+  notifyListeners();
+}
+
 
 
   List<Ricetta> generaAggiuntiDiRecente(){
@@ -370,4 +376,37 @@ class RicetteProvider extends ChangeNotifier {
       return ric;
     }
   }
+
+ Future<void> _loadData() async {
+  try {
+    // Carica i dati dal tuo database (Hive box 'Recipes')
+    final recipesBox = Hive.box('Recipes');
+    var recipesList = recipesBox.get('RecipesList');
+
+    // Se non ci sono dati nel box, crea dati iniziali
+    if (recipesList == null) {
+      _db.createInitialData();
+      recipesList = _db.RecipesList!;
+      recipesBox.put('RecipesList', recipesList);
+    }
+
+    // Assegna i dati caricati alla lista di ricette nel provider
+    ricette = List<Ricetta>.from(recipesList);
+    notifyListeners();
+  } catch (e) {
+    print('Errore durante il caricamento dei dati da Hive: $e');
+  }
+}
+
+
+ Future<void> _saveData() async {
+  try {
+    final recipesBox = Hive.box('Recipes');
+    recipesBox.put('RecipesList', ricette);
+    notifyListeners();
+  } catch (e) {
+    print('Errore durante il salvataggio dei dati in Hive: $e');
+  }
+}
+
 }

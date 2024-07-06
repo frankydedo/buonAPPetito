@@ -13,7 +13,7 @@ class Categoria{
   void aggiungiRicetta (Ricetta r){
     ricette.add(r);
   }
-  void riumoviRicetta (Ricetta r){
+  void rimuoviRicetta (Ricetta r){
     ricette.remove(r);
   }
 

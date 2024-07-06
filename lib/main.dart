@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
+import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/CategoriaPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
@@ -26,7 +27,7 @@ void main() async {
  // Hive.registerAdapter(CategoriaAdapter());
  // Hive.registerAdapter(RicettaAdapter());
 
-  await Hive.openBox('Recipes');
+  await Hive.openBox<Ricetta>('Recipes');
   await Hive.openBox('Colors');
 
   runApp(

@@ -24,20 +24,8 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   int _selectedIndex = 0;
-  final _RicetteBox = Hive.box('Recipies');
+  // final _RicetteBox = Hive.box('Recipies');
   RicetteListDB db = RicetteListDB();
-
-  @override
-  void initState(){
-    if(_RicetteBox.get('RecipiesList') == null) {
-      db.createInitialData;
-    } else{
-      //data already exists
-      db.loadData();
-    }
-
-    super.initState();
-  }
 
   void _navigateBottomBar(int index) {
     setState(() {

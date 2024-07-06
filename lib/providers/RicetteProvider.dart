@@ -18,8 +18,12 @@ class RicetteProvider extends ChangeNotifier {
   List<String> carrello =[];
   List<String> get carrelloInvertito => carrello.reversed.toList();
   List<String> elementiCancellatiCarrello = [];
-  // final _RicetteBox = Hive.box('Recipes');
-  // RicetteListDB db = RicetteListDB();
+   final _RicetteBox = Hive.box('Recipes');
+   RicetteListDB _db = RicetteListDB();
+ 
+  RicetteProvider() {
+    _loadData();
+  }
 
   List<Categoria> categorie = [
     Categoria(nome: "Primi",
@@ -327,8 +331,7 @@ class RicetteProvider extends ChangeNotifier {
       categoria?.aggiungiRicetta(r);
     }
     categorie.removeWhere((c) => c.ricette.isEmpty);
-    
-    //db.updateDatabase;
+    _saveData();
     notifyListeners();
   }
 
@@ -343,7 +346,7 @@ class RicetteProvider extends ChangeNotifier {
     categorie.removeWhere((c) => c.ricette.isEmpty);
 
     ricette.remove(r);
-    //db.updateDatabase;
+    _saveData();
     notifyListeners();
   }
 
@@ -370,4 +373,28 @@ class RicetteProvider extends ChangeNotifier {
       return ric;
     }
   }
+
+  Future<void> _loadData() async {
+    // Apri il box specifico per il profilo
+    await Hive.box('Recipes');
+    _db.loadData();
+
+    if(_db.RecipesList == null ){
+      _db.createInitialData();
+    }
+    ricette = _db.RecipesList!;
+    notifyListeners();
+  }
+
+  Future<void> _saveData() async {
+   _db.RecipesList = ricette;
+
+    _db.updateDatabase();
+    notifyListeners();
+  }
+
+
+
+
+
 }

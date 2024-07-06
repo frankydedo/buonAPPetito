@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 class RicetteListDB {
 
-  List<Ricetta> RecipesList = [];
+  List<Ricetta>? RecipesList;
 
   final _RicetteBox = Hive.box('Recipies');
 

@@ -29,12 +29,20 @@ class _CategoriaPageState extends State<CategoriaPage> {
           backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
             backgroundColor: colorsModel.backgroudColor,
+            title: Text(
+              'LISTA DI CATEGORIE',
+              style: GoogleFonts.encodeSans(
+                color: colorsModel.coloreTitoli,
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
             iconTheme: IconThemeData(
               color: colorsModel.coloreSecondario,
               size: 28.0,
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: colorsModel.coloreSecondario),
+              icon: Icon(Icons.arrow_back_ios_new_rounded, color: colorsModel.coloreSecondario),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -45,14 +53,14 @@ class _CategoriaPageState extends State<CategoriaPage> {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                 child: Column(
                     children: [
-                      Text(
-                        'LISTA DI CATEGORIE',
-                        style: GoogleFonts.encodeSans(
-                          color: colorsModel.coloreTitoli,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
+                      // Text(
+                      //   'LISTA DI CATEGORIE',
+                      //   style: GoogleFonts.encodeSans(
+                      //     color: colorsModel.coloreTitoli,
+                      //     fontSize: 22,
+                      //     fontWeight: FontWeight.w800,
+                      //   ),
+                      // ),
                       SizedBox(height: 20),
                       Expanded(
                         child: ListView.builder(
@@ -61,7 +69,7 @@ class _CategoriaPageState extends State<CategoriaPage> {
                             final categoria = categorie[index];
                             final int numeroRicette = conteggioCategorie[categoria.nome] ?? 0;
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 10, right: 0, left: 4, top: 5),
+                              padding: const EdgeInsets.only(bottom: 12),
                               child: InkWell(
                                 onTap: () {
                                   print(categoria.nome);
@@ -117,13 +125,13 @@ class _CategoriaPageState extends State<CategoriaPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.heart_broken_rounded,
+                        Icons.checklist_rounded,
                         color: Colors.grey,
                         size: 80,
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'Non vi sono categorie presenti',
+                        'Nulla da vedere qui',
                         style: GoogleFonts.encodeSans(
                           textStyle: TextStyle(
                             color: Colors.grey,
@@ -151,13 +159,10 @@ class _CategoriaPageState extends State<CategoriaPage> {
             backgroundColor: colorsModel.coloreSecondario,
             child: Icon(Icons.add, color: Colors.white, size: 35),
             onPressed: () {
-              //_showAddCategoriaDialog(context);
               Navigator.pushNamed(context,'/creacategoriapage',
                 arguments: {
-                  'categoriaNome': 'NomeCategoria', // Sostituisci con il nome della categoria desiderata
                   'onUpdate': () {
                     _aggiornaConteggioCategorie();
-                    print('Aggiornamento eseguito dopo la creazione della categoria');
                   },
                 },
               );

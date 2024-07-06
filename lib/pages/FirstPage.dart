@@ -6,7 +6,6 @@ import 'package:buonappetito/pages/SearchPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:buonappetito/utils/CarrelloIcon.dart';
-import 'package:buonappetito/utils/CategoriaIcon.dart';
 import 'package:buonappetito/utils/IconButtonCircolareFoto.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,14 +44,14 @@ class _FirstPageState extends State<FirstPage> {
           title: Row(
             children: [
               Spacer(),
-              IconButtonCircolareFoto(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/impostazionipage');
-                },
-                coloreBordo: colorsModel.coloreSecondario,
-                percorsoImmagine: ricetteModel.percorsoFotoProfilo,
-                raggio: 43
-              ),
+              // IconButtonCircolareFoto(
+              //   onPressed: (){
+              //     Navigator.pushNamed(context, '/impostazionipage');
+              //   },
+              //   coloreBordo: colorsModel.coloreSecondario,
+              //   percorsoImmagine: ricetteModel.percorsoFotoProfilo,
+              //   raggio: 43
+              // ),
               CarrelloIcon(
                   onPressed: () {
                     Navigator.pushNamed(context, '/carrellopage').then((_) {
@@ -62,15 +61,23 @@ class _FirstPageState extends State<FirstPage> {
                     });
                   },
                   showNumber: cartItemsNumber),
-              CategoriaIcon(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/categoriapage').then((_){
-                    setState((){
-                      numberOfCategory=ricetteModel.categorie.length;
-                    });
-                  });
-                }, showNumber: numberOfCategory,
-              )
+              IconButtonCircolareFoto(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/impostazionipage');
+                },
+                coloreBordo: colorsModel.coloreSecondario,
+                percorsoImmagine: ricetteModel.percorsoFotoProfilo,
+                raggio: 43
+              ),
+              // CategoriaIcon(
+              //   onPressed: () {
+              //     Navigator.pushNamed(context, '/categoriapage').then((_){
+              //       setState((){
+              //         numberOfCategory=ricetteModel.categorie.length;
+              //       });
+              //     });
+              //   }, showNumber: numberOfCategory,
+              // )
             ],
           ),
         ),
@@ -97,7 +104,7 @@ class _FirstPageState extends State<FirstPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 8),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: ListTile(
                   onTap: () {
                     Navigator.pushNamed(context, '/categoriapage');

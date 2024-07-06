@@ -79,6 +79,12 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
           backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
             backgroundColor: colorsModel.backgroudColor,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new_rounded, color: colorsModel.coloreSecondario),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             iconTheme: IconThemeData(
             color: colorsModel.coloreSecondario,
             size: 28.0,

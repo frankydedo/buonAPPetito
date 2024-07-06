@@ -5,8 +5,10 @@ import 'dart:math';
 
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
+import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
 import 'package:buonappetito/utils/NuovoPassaggioDialog.dart';
@@ -20,9 +22,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class CreaCategoriaPage extends StatefulWidget {
-  final String categoriaNome;
   final Function onUpdate;
-  const CreaCategoriaPage({super.key, required this.categoriaNome, required this.onUpdate});
+  const CreaCategoriaPage({super.key, required this.onUpdate});
 
   @override
   State<CreaCategoriaPage> createState() => _CreaCategoriaPageState();
@@ -35,6 +36,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
   void salvaPressed(List<Ricetta> ricetteSelezionate) {
     // Logica per salvare la categoria e le ricette selezionate
     String categoriaNome = controller.text.trim();
+    categoriaNome = categoriaNome[0].toUpperCase()+categoriaNome.substring(1).toLowerCase(); // formatto la stringa con solo la prima lettera maiuscola
     if (categoriaNome.isEmpty) {
       // Mostra un messaggio di errore se il nome della categoria è vuoto
       ScaffoldMessenger.of(context).showSnackBar(
@@ -100,7 +102,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          backgroundColor: const Color.fromARGB(255, 2, 62, 110),
+          backgroundColor: Color.fromRGBO(26, 35, 126, 1),
         ),
       );
 
@@ -110,6 +112,25 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
       // Naviga indietro
       Navigator.popUntil(context, ModalRoute.withName('/categoriapage'));
     }
+  }
+
+  bool hasBeenModified(){
+    
+    if(controller.text.isNotEmpty){
+      return true;
+    }
+    if(ricetteSelezionate.isNotEmpty){
+      return true;
+    }
+
+    return false;
+  }
+
+  Future showConfermaDialog (){
+  return showDialog(
+      context: context,
+      builder: (context) => ConfermaDialog(domanda: "Sei sicuro di voler uscire?"),
+    );
   }
 
   @override
@@ -127,9 +148,16 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
               size: 28.0,
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: colorsModel.coloreTitoli),
-              onPressed: () {
-                Navigator.pop(context);
+              icon: Icon(Icons.arrow_back_ios_new_rounded, color: colorsModel.coloreSecondario, size: 29),
+              onPressed: () async {
+                if(hasBeenModified()){
+                  bool conferma = await showConfermaDialog();
+                  if(conferma){
+                    Navigator.pop(context);
+                  }
+                }else{
+                  Navigator.pop(context);
+                }
               },
             ),
             title: Text(
@@ -169,8 +197,8 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                      height: screenHeight * 0.07,
-                      width: screenWidth * 0.30,
+                      height: 88,
+                      width: screenWidth * 0.4,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -182,22 +210,35 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                           elevation: 5,
                           shadowColor: Colors.black,
                         ),
-                        child: Text(
-                          'Aggiungi Ricetta \n       Esistente',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Ricetta',
+                              style: GoogleFonts.encodeSans(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700
+                              )
+                            ),
+                            Text(
+                              'Esistente',
+                              style: GoogleFonts.encodeSans(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700
+                              )
+                            ),
+                          ],
                         ),
                         onPressed: () {
                           // Naviga alla schermata per aggiungere una ricetta esistente
-                          _showSelectRicettaDialog(context, widget.onUpdate, widget.categoriaNome, ricetteSelezionate);
+                          _showSelectRicettaDialog(context, widget.onUpdate, controller.text.trim(), ricetteSelezionate);
                         },
                       ),
                     ),
                     SizedBox(
-                      height: screenHeight * 0.07,
-                      width: screenWidth * 0.30,
+                      height: 88,
+                      width: screenWidth * 0.4,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
@@ -209,16 +250,29 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                           elevation: 5,
                           shadowColor: Colors.black,
                         ),
-                        child: Text(
-                          'Crea Nuova \n    Ricetta',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Nuova',
+                              style: GoogleFonts.encodeSans(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700
+                              )
+                            ),
+                            Text(
+                              'Ricetta',
+                              style: GoogleFonts.encodeSans(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700
+                              )
+                            ),
+                          ],
                         ),
                         onPressed: () async {
                           // Naviga alla schermata per creare una nuova ricetta e aspetta il risultato
-                          final nuovaRicetta = await Navigator.pushNamed(context, '/nuovaricettapage');
+                          final nuovaRicetta = await Navigator.push(context, MaterialPageRoute(builder: (context) => NuovaRicettaPage(categorieCanBeEmpty: true)));
                           if (nuovaRicetta != null && nuovaRicetta is Ricetta) {
                             setState(() {
                               ricetteSelezionate.add(nuovaRicetta);
@@ -237,26 +291,58 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                     'Ricette Selezionate',
                     style: GoogleFonts.encodeSans(
                       color: colorsModel.coloreTitoli,
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 SizedBox(height: 10),
                 ricetteSelezionate.isNotEmpty
-                    ? Expanded(
-                        child: ListView.builder(
-                          itemCount: ricetteSelezionate.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: RicettaTileOrizzontale(ricetta: ricetteSelezionate[index]),
-                              ),
-                            );
-                          },
+                    ? Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: SizedBox(
+                        height: ricetteSelezionate.length * 88 <150 ? 150 : min(ricetteSelezionate.length * 125, 470),
+                        width: screenWidth * 0.9,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                            child: ListView.builder(
+                              itemCount: ricetteSelezionate.length,
+                              itemBuilder: (context, index) {
+                                Ricetta ric = ricetteSelezionate[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                      motion: DrawerMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          onPressed: (context) {
+                                            setState(() {
+                                              ricetteSelezionate.remove(ric);
+                                            });
+                                          },
+                                          borderRadius: BorderRadius.circular(20),
+                                          icon: Icons.delete_outline,
+                                          backgroundColor: Colors.red,
+                                        )
+                                      ],
+                                    ),
+                                    child: GestureDetector(
+                                      child: RicettaTileOrizzontale(ricetta: ric),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                      )
+                      ),
+                    )
                     : Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -292,9 +378,12 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                           ],
                         ),
                       ),
-                SizedBox(height: 20),
-                SizedBox(
-                  width: screenWidth*0.2,
+                Spacer(),
+
+                // tasto crea categoria
+
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -302,17 +391,20 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 15),
                       elevation: 5,
                       shadowColor: Colors.black,
                     ),
-                    child: Text(
-                      'Salva',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
+                        child: Text(
+                          "Crea Categoria",
+                          style: GoogleFonts.encodeSans(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w700
+                          ),
+                        ),
                       ),
-                    ),
                     onPressed: () {
                       salvaPressed(ricetteSelezionate);
                     },
@@ -377,28 +469,66 @@ void _showSelectRicettaDialog(BuildContext context, Function onUpdate, String ca
             ),
             actions: [
               TextButton(
-                child: Text('ANNULLA'),
+                child: Text('ANNULLA',
+                 style: GoogleFonts.encodeSans(
+                  color: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700
+                 ),
+                 ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
-              TextButton(
-                child: Text('SALVA'),
-                onPressed: () {
-                  // Update the original selected recipes list
-                  ricetteSelezionate.clear();
-                  ricetteSelezionate.addAll(temporarySelectedRicette);
 
-                  // Aggiungi le categorie selezionate alla ricetta
-                  for (Ricetta ricetta in ricetteSelezionate) {
-                    if (!ricetta.getCategorie().contains(categoriaNome)) {
-                      ricetta.aggiungiNuovaCategoria(categoriaNome);
-                    }
-                  }
-                  onUpdate();
-                  Navigator.pop(context);
-                },
+            ElevatedButton(
+              onPressed: (){
+                ricetteSelezionate.clear();
+                ricetteSelezionate.addAll(temporarySelectedRicette);
+                onUpdate();
+                Navigator.pop(context);
+              }, 
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                elevation: 5,
+                shadowColor: Colors.black,
               ),
+              child: Text('SALVA',
+                 style: GoogleFonts.encodeSans(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700
+                 ),
+               ),
+              )
+              // TextButton(
+              //   child: Text('SALVA',
+              //    style: GoogleFonts.encodeSans(
+              //     color: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
+              //     fontSize: 20,
+              //     fontWeight: FontWeight.w500
+              //    ),
+              //    ),
+              //   onPressed: () {
+              //     // Update the original selected recipes list
+              //     ricetteSelezionate.clear();
+              //     ricetteSelezionate.addAll(temporarySelectedRicette);
+
+              //     // Aggiungi le categorie selezionate alla ricetta
+              //     // for (Ricetta ricetta in ricetteSelezionate) {
+              //     //   if (!ricetta.getCategorie().contains(categoriaNome)) {
+              //     //     ricetta.aggiungiNuovaCategoria(categoriaNome);
+              //     //   }
+              //     // }
+              //     onUpdate();
+              //     Navigator.pop(context);
+              //   },
+              // ),
             ],
           );
         },

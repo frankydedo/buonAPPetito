@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
 import 'package:buonappetito/models/Ricetta.dart';
+import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/CategoriaPage.dart';
 import 'package:buonappetito/pages/DashboardPage.dart';
@@ -22,13 +23,19 @@ import 'package:provider/provider.dart';
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Ottieni la directory dei documenti dell'app
   final appDocsDir = await getApplicationDocumentsDirectory();
-  await Hive.initFlutter(appDocsDir.path);
- // Hive.registerAdapter(CategoriaAdapter());
- // Hive.registerAdapter(RicettaAdapter());
 
-  await Hive.openBox<Ricetta>('Recipes');
-  await Hive.openBox('Colors');
+  // Inizializza Hive e specifica la directory
+  await Hive.initFlutter(appDocsDir.path);
+
+  // Registra gli adattatori
+  Hive.registerAdapter(RicettaAdapter());
+  Hive.registerAdapter(CategoriaAdapter());
+
+  await Hive.openBox('Ricette');
+  await Hive.openBox('ColoriBox');
 
   runApp(
     MultiProvider(

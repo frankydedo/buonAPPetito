@@ -32,7 +32,6 @@ class RicetteProvider extends ChangeNotifier {
 
   Future<void> _loadData() async {
     // Apri il box specifico per il profilo
-    await Hive.openBox<Ricetta>('RicetteBox');
     _db.loadDataRicette();
 
     //se non ci sono dati (prima apertura)
@@ -58,8 +57,6 @@ class RicetteProvider extends ChangeNotifier {
     _db.carrello = carrello;
     _db.preferiti = preferiti;
     _db.updateDatabaseRicette();
-
-    print("data saved");
 
     notifyListeners();
   }

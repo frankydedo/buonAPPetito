@@ -763,9 +763,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                     onChanged: (value) {
                                       try {
                                         minutiPreparazione = int.parse(value);
-                                      } catch (e) {
-                                        print("Errore di parsing: $e");
-                                      }
+                                      } catch (e) {}
                                     },
                                     style: TextStyle(
                                       fontSize: 20,

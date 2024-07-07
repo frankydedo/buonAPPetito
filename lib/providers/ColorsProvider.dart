@@ -1,15 +1,20 @@
+import 'dart:async';
+import 'dart:ui';
 import 'package:buonappetito/data/ColoriDB.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 
 class ColorsProvider extends ChangeNotifier {
-
-  ColorsProvider(){
+  ColorsProvider() {
     _loadData();
   }
 
+  final Completer<void> _initializationCompleter = Completer<void>();
+
+  Future<void> get initializationDone => _initializationCompleter.future;
+
   bool isLightMode = true;
 
-  String _temaAttuale = "Sistema Operativo";
+  String _temaAttuale = "";
 
   String get temaAttuale => _temaAttuale;
 
@@ -27,7 +32,6 @@ class ColorsProvider extends ChangeNotifier {
   Color get textColor => !isLightMode ? Colors.white : Colors.black;
   Color get dialogBackgroudColor => isLightMode ? _colorePrimario : const Color.fromARGB(255, 36, 36, 36);
 
-  //per il database
   final ColoriDB _db = ColoriDB();
 
   Future<void> _loadData() async {
@@ -41,6 +45,7 @@ class ColorsProvider extends ChangeNotifier {
     _coloreSecondario = _db.coloreSecondario;
     _coloreSecondario_dark = _db.coloreSecondario_dark;
 
+    _initializationCompleter.complete();  // Segnala che l'inizializzazione è completa
     notifyListeners();
   }
 
@@ -71,6 +76,8 @@ class ColorsProvider extends ChangeNotifier {
       isLightMode = brightness == Brightness.light;
       _saveData();
       notifyListeners();
+    }else{
+      setTemaAttualeChiaroScuro(context, _temaAttuale);
     }
   }
 

@@ -11,7 +11,7 @@ class ColoriDB {
   Box<dynamic>? _coloriBox;
 
   Future<void> init() async {
-    _coloriBox = await Hive.openBox('ColoriBox');
+    _coloriBox = await Hive.openBox('Colori');
     loadDataColori();
   }
 

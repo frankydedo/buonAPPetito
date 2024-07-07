@@ -35,7 +35,7 @@ void main() async {
   Hive.registerAdapter(CategoriaAdapter());
 
   await Hive.openBox('Ricette');
-  await Hive.openBox('ColoriBox');
+  await Hive.openBox('Colori');
 
   runApp(
     MultiProvider(
@@ -66,8 +66,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    Future.microtask(() {
+    Future.microtask(() async {
       final colorsProvider = Provider.of<ColorsProvider>(context, listen: false);
+      await colorsProvider.initializationDone;  // aspetto che i dati siano in uno stato consistente 
       colorsProvider.initLightMode(context);
     });
   }

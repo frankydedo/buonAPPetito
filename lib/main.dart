@@ -8,10 +8,9 @@ import 'package:buonappetito/pages/FirstPage.dart';
 import 'package:buonappetito/pages/ImpostazioniPage.dart';
 import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
-import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/pages/RicettePerCategoriePage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
-import 'package:buonappetito/pages/TutorialScreen.dart'; // Assicurati di importare la tua pagina di tutorial
+import 'package:buonappetito/pages/TutorialScreen.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
@@ -136,7 +135,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           },
           '/ricettepercategoriepage': (context) => RicettePerCategoriePage(
             nomeCategorie: ModalRoute.of(context)!.settings.arguments as String),
-          '/tutorialscreen': (context) => TutorialScreen(), // Aggiungi la route per la schermata del tutorial
+          '/tutorialscreen': (context) => TutorialScreen(),
         },
       );
     });

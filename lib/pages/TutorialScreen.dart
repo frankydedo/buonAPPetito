@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:buonappetito/providers/ColorsProvider.dart';
+import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/IconButtonCircolareFoto.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buonappetito/pages/FirstPage.dart';// Aggiunto import di UsernamePage
+import 'package:buonappetito/pages/FirstPage.dart'; // Aggiunto import di UsernamePage
 
 class TutorialScreen extends StatefulWidget {
   @override
@@ -51,84 +54,10 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 SnackBar(content: Text('Inserisci nome utente valido')),
               );
             } else {
-              _pageController.nextPage(
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeIn,
-              );
+              _onSkip();
             }
           },
         ),
-      ),
-      TutorialPageDashboard(
-        onNextPage: () {
-          _pageController.nextPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-      ),
-      TutorialPageSearch(
-        onPreviousPage: () {
-          _pageController.previousPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-        onNextPage: () {
-          _pageController.nextPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-      ),
-      RecipePage1(
-        onPreviousPage: () {
-          _pageController.previousPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-        onSkip: _onSkip,
-      ),
-
-      RecipePage2(
-        onPreviousPage: () {
-          _pageController.previousPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-        onSkip: _onSkip,
-      ),
-
-      CarrelloPageTutorial(
-        onPreviousPage: () {
-          _pageController.previousPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-        onSkip: _onSkip,
-      ),
-
-      PreferitiPageTutorial(
-        onPreviousPage: () {
-          _pageController.previousPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-        onSkip: _onSkip,
-      ),
-
-      ImpostazioniPageTutorial(
-        onPreviousPage: () {
-          _pageController.previousPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        },
-        onSkip: _onSkip,
       ),
     ];
 
@@ -151,41 +80,13 @@ class _TutorialScreenState extends State<TutorialScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                if (_currentPage > 0)
-                  ElevatedButton(
-                    onPressed: () {
-                      _pageController.previousPage(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeIn,
-                      );
-                    },
-                    child: Text('Indietro'),
-                  )
+                SizedBox(width: 100.0),
+                if (_currentPage == 0 && (username == null || username!.isEmpty))
+                  SizedBox(width: 100.0) // Disabilita il pulsante "Salta" se il nome utente non è inserito
                 else
-                  SizedBox(width: 100.0), // Spazio vuoto a sinistra (non cliccabile alla prima pagina)
-                if (_currentPage > 0)
-                  ElevatedButton(
-                    onPressed: _currentPage == 0 && (username == null || username!.isEmpty)
-                        ? null
-                        : _onSkip,
-                    child: Text('Salta'),
-                  ),
-                if (_currentPage < _pages.length - 1 && _currentPage > 0)
-                  ElevatedButton(
-                    onPressed: _currentPage == 0 && (username == null || username!.isEmpty)
-                        ? null
-                        : () {
-                            _pageController.nextPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeIn,
-                            );
-                          },
-                    child: Text('Avanti'),
-                  )
-                else if (_currentPage > 0)
                   ElevatedButton(
                     onPressed: _onSkip,
-                    child: Text('Fine'),
+                    child: Text('Salta'),
                   ),
               ],
             ),
@@ -195,7 +96,6 @@ class _TutorialScreenState extends State<TutorialScreen> {
     );
   }
 }
-
 
 class UsernamePage extends StatefulWidget {
   final ValueChanged<String> onConfirm;
@@ -210,7 +110,7 @@ class UsernamePage extends StatefulWidget {
 class _UsernamePageState extends State<UsernamePage> {
   final TextEditingController _controller = TextEditingController();
   String? error;
-  String? percorsoImmagine; // Percorso dell'immagine selezionata
+  String percorsoImmagine = 'assets/images/logoAPPetito-1024.png';
 
   Future<void> pickImageFromCamera() async {
     final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -268,39 +168,107 @@ class _UsernamePageState extends State<UsernamePage> {
   @override
   Widget build(BuildContext context) {
     final colorsModel = Provider.of<ColorsProvider>(context);
+    final ricetteModel = Provider.of<RicetteProvider>(context);
 
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Benvenuto in buonAPPetito',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'Inserisci il tuo nome',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.blue, fontSize: 24),
-              ),
-              TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  hintText: 'Nome utente',
-                  errorText: error,
+      backgroundColor: colorsModel.backgroudColor,
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          children: [
+            SizedBox(height: 150),
+            Text(
+              'Benvenuto in buonAPPetito',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.encodeSans(
+                color: colorsModel.coloreTitoli,
+                fontSize: 30,
+                fontWeight: FontWeight.w800
+              )
+            ),
+            SizedBox(height: 130),
+            Text(
+              'Inserisci il tuo nome',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.encodeSans(
+                color: colorsModel.coloreTitoli,
+                fontSize: 25,
+                fontWeight: FontWeight.w600
+              )
+            ),
+
+            //nome efoto profilo
+             
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButtonCircolareFoto(
+                    onPressed: () {},
+                    coloreBordo: colorsModel.coloreSecondario,
+                    percorsoImmagine: percorsoImmagine, 
+                    raggio: 55,
+                  ),
                 ),
-              ),
-              SizedBox(height: 12),
-              Row(
+                Expanded(
+                  // child: TextField(
+                  //   controller: _controller,
+                  //   decoration: InputDecoration(
+                  //     hintText: 'Nome utente',
+                  //     errorText: error,
+                  //   ),
+                  // ),
+                  child: SizedBox(
+                    child: TextField(
+                      controller: _controller,
+                      textInputAction: TextInputAction.done,
+                      textAlign: TextAlign.start,
+                      textAlignVertical: TextAlignVertical.top,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Nome utente',
+                        errorText: error,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20)
+                        ),
+                        hintStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 80),
+
+            // tasti per la selezione della foto profilo
+
+            Text(
+              'Scegli la tua foto profilo',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.encodeSans(
+                color: colorsModel.coloreTitoli,
+                fontSize: 25,
+                fontWeight: FontWeight.w600
+              )
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () => pickImageFromCamera(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorsModel.coloreSecondario,
+                      foregroundColor: Colors.white
                     ),
                     child: Icon(Icons.camera_alt),
                   ),
@@ -309,40 +277,50 @@ class _UsernamePageState extends State<UsernamePage> {
                     onPressed: () => pickImageFromGallery(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorsModel.coloreSecondario,
+                      foregroundColor: Colors.white
                     ),
                     child: Icon(Icons.photo_library),
                   ),
                 ],
               ),
-              if (percorsoImmagine != null)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50), // Forma circolare
-                    child: Image.file(
-                      File(percorsoImmagine!),
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
+            ),
+
+              Spacer(),
+
+              // tasto conferma
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, top: 12, right: 30, left:30),
+                child: ElevatedButton(
+                  onPressed: (){
+                    ricetteModel.cambiaNomeProfilo(_controller.text);
+                    ricetteModel.cambiaFotoProfilo(percorsoImmagine);
+                    _confirmUsername();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorsModel.coloreSecondario
                   ),
+                  child: Padding(
+                  padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
+                    child: Text(
+                      "Conferma",
+                      style: GoogleFonts.encodeSans(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700
+                      ),
+                    ),
+                  )
                 ),
-              ElevatedButton(
-                onPressed: _confirmUsername,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorsModel.coloreSecondario,
-                ),
-                child: Text('Conferma'),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-
+/*
 class TutorialPageDashboard extends StatelessWidget {
   final VoidCallback onNextPage;
 
@@ -564,3 +542,4 @@ class PreferitiPageTutorial extends StatelessWidget {
     );
   }
 }
+*/

@@ -299,6 +299,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       titolo = value;
                                     },
                                     style: TextStyle(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -359,6 +360,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                     },
                                     maxLines: 5,
                                     style: TextStyle(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -484,17 +486,17 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                       ),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: colorsModel.tileBackGroudColor,
                                                           borderRadius: BorderRadius.circular(20),
                                                         ),
                                                         child: ListTile(
                                                           title: Text(
                                                             cat,
                                                             style: GoogleFonts.encodeSans(
-                                                                    fontSize: 22,
-                                                                    fontWeight: FontWeight.w500,
-                                                                    color: Colors.black, 
-                                                                  ),
+                                                              fontSize: 22,
+                                                              fontWeight: FontWeight.w500,
+                                                              color: colorsModel.textColor,
+                                                            ),
                                                           )
                                                         ),
                                                       ),
@@ -603,13 +605,14 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                       ),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: colorsModel.tileBackGroudColor,
                                                           borderRadius: BorderRadius.circular(20),
                                                         ),
                                                         child: ListTile(
                                                           title: Text(
                                                             "$key".toUpperCase(),
                                                             style: GoogleFonts.encodeSans(
+                                                              color: colorsModel.textColor,
                                                               fontSize: 22,
                                                               fontWeight: FontWeight.w500,
                                                             ),
@@ -617,6 +620,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                           subtitle: Text(
                                                             "$value",
                                                             style: GoogleFonts.encodeSans(
+                                                              color: colorsModel.textColor,
                                                               fontSize: 18,
                                                               fontWeight: FontWeight.w300,
                                                             ),
@@ -727,7 +731,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                       ),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: colorsModel.tileBackGroudColor,
                                                           borderRadius: BorderRadius.circular(20),
                                                         ),
                                                         child: ListTile(
@@ -739,7 +743,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                                   style: GoogleFonts.encodeSans(
                                                                     fontSize: 22,
                                                                     fontWeight: FontWeight.w700,
-                                                                    color: Colors.black, 
+                                                                    color: colorsModel.textColor,
                                                                   ),
                                                                 ),
                                                                 TextSpan(
@@ -747,7 +751,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                                                   style: GoogleFonts.encodeSans(
                                                                     fontSize: 22,
                                                                     fontWeight: FontWeight.w500,
-                                                                    color: Colors.black, 
+                                                                    color: colorsModel.textColor,
                                                                   ),
                                                                 ),
                                                               ],
@@ -820,6 +824,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       } catch (e) {}
                                     },
                                     style: TextStyle(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.normal,
                                     ),

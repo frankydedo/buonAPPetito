@@ -37,7 +37,7 @@ class RicettePerCategorieState extends State<RicettePerCategoriePage> {
               size: 28.0,
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: colorsModel.coloreTitoli),
+              icon: Icon(Icons.arrow_back_ios_new_rounded, color: colorsModel.coloreSecondario),
               onPressed: () {
                 Navigator.pop(context);
               },

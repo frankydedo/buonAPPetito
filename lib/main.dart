@@ -21,10 +21,13 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
   
   // Ottieni la directory dei documenti dell'app
   final appDocsDir = await getApplicationDocumentsDirectory();
@@ -47,7 +50,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => DifficultyProvider()),
         ChangeNotifierProvider(create: (_) => Timeprovider()),
       ],
-      child: const MyApp(),
+      child: const MyApp(seenTutorial: null,),
     ),
   );
 }
@@ -55,7 +58,7 @@ void main() async {
 
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required bool seenTutorial});
 
   @override
   State<MyApp> createState() => _MyAppState();

@@ -6,7 +6,6 @@ import 'package:buonappetito/data/RicetteDB.dart';
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
 class RicetteProvider extends ChangeNotifier {
 

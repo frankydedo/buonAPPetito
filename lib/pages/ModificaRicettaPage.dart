@@ -1287,7 +1287,7 @@ Future showConfermaDialog ()
                               child: Padding(
                               padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
                                 child: Text(
-                                  "Salva Modifiche ",
+                                  "Salva Modifiche",
                                   style: GoogleFonts.encodeSans(
                                     color: Colors.white,
                                     fontSize: 30,

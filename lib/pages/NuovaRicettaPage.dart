@@ -7,6 +7,7 @@ import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:buonappetito/utils/ConfermaDialog.dart';
 import 'package:buonappetito/utils/MyCategoriaDialog.dart';
 import 'package:buonappetito/utils/NuovoIngredienteDialog.dart';
 import 'package:buonappetito/utils/NuovoPassaggioDialog.dart';
@@ -19,7 +20,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class NuovaRicettaPage extends StatefulWidget {
-  const NuovaRicettaPage({super.key, });
+
+  bool categorieCanBeEmpty;
+
+  NuovaRicettaPage({super.key, this.categorieCanBeEmpty = false});
 
   @override
   State<NuovaRicettaPage> createState() => _NuovaRicettaPageState();
@@ -111,6 +115,43 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
     );
   }
 
+  bool hasBeenModified(){
+    
+    if(percorsoImmagine != null){
+      return true;
+    }
+    if(titolo != null){
+      return true;
+    }
+    if(descrizione != null){
+      return true;
+    }
+    if(ingredientiInseriti.isNotEmpty){
+      return true;
+    }
+    if(categorie.isNotEmpty){
+      return true;
+    }
+    if(passaggiInseriti.isNotEmpty){
+      return true;
+    }
+    if(difficolta != null){
+      return true;
+    }
+    if(minutiPreparazione != null){
+      return true;
+    }
+
+    return false;
+  }
+
+  Future showConfermaDialog (){
+  return showDialog(
+      context: context,
+      builder: (context) => ConfermaDialog(domanda: "Sei sicuro di voler uscire?"),
+    );
+  }
+
   void generaDifficoltaInAutomatico() {
     int diffPassaggi;
     if (passaggiInseriti.length <= 4) {
@@ -169,10 +210,23 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
           backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
             backgroundColor: colorsModel.backgroudColor,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new_rounded, color: colorsModel.coloreSecondario, size: 29),
+              onPressed: () async {
+                if(hasBeenModified()){
+                  bool conferma = await showConfermaDialog();
+                  if(conferma){
+                    Navigator.pop(context);
+                  }
+                }else{
+                  Navigator.pop(context);
+                }
+              },
+            ),
             iconTheme: IconThemeData(
             color: colorsModel.coloreSecondario,
             size: 28.0,
-          ),
+            ),
           ),
           body: GestureDetector(
             onTap: (){
@@ -1163,7 +1217,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                               onPressed: (){
                                 // controllo che sia stato inserito tutto e nel caso avviso l'utente su cosa manca
                                 if (_formKey.currentState!.validate()){
-                                  if(categorie.isEmpty){
+                                  if(categorie.isEmpty && !widget.categorieCanBeEmpty){
                                       ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(content: Text("Selezionare le categorie", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Colors.red),
                                     );
@@ -1186,7 +1240,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                   }else{
                                     Ricetta nuovaRicetta = Ricetta(
                                       percorsoImmagine: percorsoImmagine!, 
-                                      categorie: categorie, 
+                                      categorie: categorie.isEmpty ? [] : categorie, 
                                       descrizione: descrizione!, 
                                       ingredienti: ingredientiInseriti, 
                                       passaggi: passaggiInseriti, 
@@ -1202,7 +1256,7 @@ class _NuovaRicettaPageState extends State<NuovaRicettaPage> {
                                       );
                                     }else{
                                       ricetteModel.aggiungiNuovaRicetta(nuovaRicetta);
-                                      Navigator.pop(context);
+                                      Navigator.pop(context, nuovaRicetta);
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(content: Text("Ricetta inserita correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                                       );

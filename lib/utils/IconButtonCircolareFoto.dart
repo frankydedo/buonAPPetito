@@ -21,35 +21,32 @@ class IconButtonCircolareFoto extends StatelessWidget {
       return TextButton(
         onPressed: onPressed,
         onLongPress: onLongPress,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: raggio,
+          width: raggio,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(75),
+            border: Border.all(
+              color: coloreBordo,
+              width: 3,
+            ),
+          ),
           child: Container(
             height: raggio,
             width: raggio,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(75),
               border: Border.all(
-                color: coloreBordo,
-                width: 3,
+                color: Colors.transparent,
+                width: 2,
               ),
             ),
-            child: Container(
-              height: raggio,
-              width: raggio,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(75),
-                border: Border.all(
-                  color: Colors.transparent,
-                  width: 2,
-                ),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  percorsoImmagine,
-                  fit: BoxFit.cover,
-                  width: raggio,
-                  height: raggio,
-                ),
+            child: ClipOval(
+              child: Image.asset(
+                percorsoImmagine,
+                fit: BoxFit.cover,
+                width: raggio,
+                height: raggio,
               ),
             ),
           ),

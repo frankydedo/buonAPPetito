@@ -45,14 +45,14 @@ class _FirstPageState extends State<FirstPage> {
           title: Row(
             children: [
               Spacer(),
-              IconButtonCircolareFoto(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/impostazionipage');
-                },
-                coloreBordo: colorsModel.coloreSecondario,
-                percorsoImmagine: ricetteModel.percorsoFotoProfilo,
-                raggio: 43
-              ),
+              // IconButtonCircolareFoto(
+              //   onPressed: (){
+              //     Navigator.pushNamed(context, '/impostazionipage');
+              //   },
+              //   coloreBordo: colorsModel.coloreSecondario,
+              //   percorsoImmagine: ricetteModel.percorsoFotoProfilo,
+              //   raggio: 43
+              // ),
               CarrelloIcon(
                   onPressed: () {
                     Navigator.pushNamed(context, '/carrellopage').then((_) {
@@ -62,15 +62,23 @@ class _FirstPageState extends State<FirstPage> {
                     });
                   },
                   showNumber: cartItemsNumber),
-              CategoriaIcon(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/categoriapage').then((_){
-                    setState((){
-                      numberOfCategory=ricetteModel.categorie.length;
-                    });
-                  });
-                }, showNumber: numberOfCategory,
-              )
+              IconButtonCircolareFoto(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/impostazionipage');
+                },
+                coloreBordo: colorsModel.coloreSecondario,
+                percorsoImmagine: ricetteModel.percorsoFotoProfilo,
+                raggio: 43
+              ),
+              // CategoriaIcon(
+              //   onPressed: () {
+              //     Navigator.pushNamed(context, '/categoriapage').then((_){
+              //       setState((){
+              //         numberOfCategory=ricetteModel.categorie.length;
+              //       });
+              //     });
+              //   }, showNumber: numberOfCategory,
+              // )
             ],
           ),
         ),
@@ -90,6 +98,23 @@ class _FirstPageState extends State<FirstPage> {
                       color: colorsModel.coloreSecondario),
                   title: Text(
                     "HOME",
+                    style: TextStyle(
+                        color: colorsModel.coloreSecondario,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/categoriapage');
+                  },
+                  leading: Icon(Icons.checklist_rounded,
+                  size: 24,
+                  color: colorsModel.coloreSecondario),
+                  title: Text(
+                    "CATEGORIE",
                     style: TextStyle(
                         color: colorsModel.coloreSecondario,
                         fontWeight: FontWeight.bold),

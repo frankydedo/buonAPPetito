@@ -439,7 +439,6 @@ Future showConfermaDialog ()
                                               setState(() {
                                                 categorie.clear();
                                                 categorie.addAll(categorieSelezionate);
-                                                print("categs: "+widget.recipe.categorie.toString());
                                               });
                                             }
                                             unfocus();
@@ -835,9 +834,7 @@ Future showConfermaDialog ()
                                     onChanged: (value) {
                                       try {
                                         minutiPreparazione = int.parse(value);
-                                      } catch (e) {
-                                        print("Errore di parsing: $e");
-                                      }
+                                      } catch (e) {}
                                     },
                                     style: TextStyle(
                                       fontSize: 20,

@@ -68,7 +68,6 @@ class _SearchPageState extends State<SearchPage> {
         }
       });
     }
-    print(categorieSelezionate.length.toString());
     searchAndFilterRecipes(controller.text);
   }
 
@@ -310,7 +309,6 @@ Future<void> showDifficultyDialog(BuildContext context) async {
           } else {
             activeFilters.remove('difficulty');
           }
-          print(activeFilters.toString());
           isButtonPressed2 = difficultyProvider.hasSelection;
 
           setState(() {
@@ -420,7 +418,6 @@ List<Ricetta> applyDifficultyFilter() {
     } else {
       activeFilters.add(filter);
     }
-    print(activeFilters.toList().toString());
     searchAndFilterRecipes(controller.text); // ricerca con i filtri aggiornati
   }
 }

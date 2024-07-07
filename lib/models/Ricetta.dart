@@ -1,13 +1,37 @@
+import 'package:hive/hive.dart';
+
+part 'Ricetta.g.dart'; // Questa direttiva deve essere presente
+
+@HiveType(typeId: 0)
 class Ricetta {
+  @HiveField(0)
   String percorsoImmagine;
+
+  @HiveField(1)
   String titolo;
+
+  @HiveField(2)
   String descrizione;
-  Map<String, String> ingredienti; // si tiene traccia del nome dell'ingrediente e della quantità
+
+  @HiveField(3)
+  Map<String, String> ingredienti;
+
+  @HiveField(4)
   List<String> categorie;
+
+  @HiveField(5)
   List<String> passaggi;
+
+  @HiveField(6)
   int difficolta;
+
+  @HiveField(7)
   int minutiPreparazione;
+
+  @HiveField(8)
   DateTime dataAggiunta;
+
+  @HiveField(9)
   bool isFavourite = false;
 
   Ricetta({
@@ -21,7 +45,6 @@ class Ricetta {
     required this.difficolta,
     required this.dataAggiunta,
   });
-
 
   String getCategorie() {
     String c = "";

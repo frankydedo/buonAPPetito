@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
+import 'package:buonappetito/models/Ricetta.dart';
+import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
 import 'package:buonappetito/pages/CategoriaPage.dart';
 import 'package:buonappetito/pages/CreaCategoriaPage.dart';
@@ -16,9 +18,27 @@ import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Ottieni la directory dei documenti dell'app
+  final appDocsDir = await getApplicationDocumentsDirectory();
+
+  // Inizializza Hive e specifica la directory
+  await Hive.initFlutter(appDocsDir.path);
+
+  // Registra gli adattatori
+  Hive.registerAdapter(RicettaAdapter());
+  Hive.registerAdapter(CategoriaAdapter());
+
+  await Hive.openBox('Ricette');
+  await Hive.openBox('Colori');
+
   runApp(
     MultiProvider(
       providers: [
@@ -48,8 +68,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    Future.microtask(() {
+    Future.microtask(() async {
       final colorsProvider = Provider.of<ColorsProvider>(context, listen: false);
+      await colorsProvider.initializationDone;  // aspetto che i dati siano in uno stato consistente 
       colorsProvider.initLightMode(context);
     });
   }

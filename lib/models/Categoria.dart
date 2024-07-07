@@ -1,20 +1,26 @@
-import 'package:buonappetito/models/Ricetta.dart';
+import 'package:hive/hive.dart';
+import 'Ricetta.dart';
 
-class Categoria{
+part 'Categoria.g.dart'; // Questa direttiva deve essere presente
 
+@HiveType(typeId: 1)
+class Categoria {
+  @HiveField(0)
   String nome;
+
+  @HiveField(1)
   List<Ricetta> ricette;
 
   Categoria({
     required this.nome,
-    required this.ricette
+    required this.ricette,
   });
 
-  void aggiungiRicetta (Ricetta r){
+  void aggiungiRicetta(Ricetta r) {
     ricette.add(r);
   }
-  void riumoviRicetta (Ricetta r){
+
+  void rimuoviRicetta(Ricetta r) {
     ricette.remove(r);
   }
-
 }

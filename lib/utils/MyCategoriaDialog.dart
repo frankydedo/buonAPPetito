@@ -30,7 +30,6 @@ class _MyCategoriaDialogState extends State<MyCategoriaDialog> {
     for(var entry in widget.selezioneCategorie.entries){
       selezionePrecedente.addAll({entry.key : entry.value});
     }
-    print("le categorie selezionate sono" + widget.selezioneCategorie.toString()+ "\n");
   }
 
   void _showAddCategoryDialog(RicetteProvider ricetteModel) {

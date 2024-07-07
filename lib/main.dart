@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, unused_import
+
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
@@ -8,9 +10,9 @@ import 'package:buonappetito/pages/FirstPage.dart';
 import 'package:buonappetito/pages/ImpostazioniPage.dart';
 import 'package:buonappetito/pages/NuovaRicettaPage.dart';
 import 'package:buonappetito/pages/PreferitiPage.dart';
+import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/pages/RicettePerCategoriePage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
-import 'package:buonappetito/pages/TutorialScreen.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
@@ -19,13 +21,11 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
 
+  WidgetsFlutterBinding.ensureInitialized();
+  
   // Ottieni la directory dei documenti dell'app
   final appDocsDir = await getApplicationDocumentsDirectory();
 
@@ -45,23 +45,24 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ColorsProvider()),
         ChangeNotifierProvider(create: (_) => RicetteProvider()),
         ChangeNotifierProvider(create: (_) => DifficultyProvider()),
-        ChangeNotifierProvider(create: (_) => Timeprovider()), // Corretta la maiuscola qui
+        ChangeNotifierProvider(create: (_) => Timeprovider()),
       ],
-      child: MyApp(seenTutorial: seenTutorial),
+      child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key, required this.seenTutorial});
 
-  final bool seenTutorial;
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+
   @override
   void initState() {
     super.initState();
@@ -69,7 +70,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     Future.microtask(() async {
       final colorsProvider = Provider.of<ColorsProvider>(context, listen: false);
-      await colorsProvider.initializationDone; // aspetto che i dati siano in uno stato consistente 
+      await colorsProvider.initializationDone;  // aspetto che i dati siano in uno stato consistente 
       colorsProvider.initLightMode(context);
     });
   }
@@ -82,7 +83,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangePlatformBrightness() {
-    if (Provider.of<ColorsProvider>(context, listen: false).temaAttuale == "Sistema Operativo") {
+    if(Provider.of<ColorsProvider>(context, listen: false).temaAttuale == "Sistema Operativo"){
       final colorsProvider = Provider.of<ColorsProvider>(context, listen: false);
       colorsProvider.updateLightMode(context);
     }
@@ -112,12 +113,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ColorsProvider, RicetteProvider>(
-        builder: (context, colorsModel, ricetteModel, _) {
+    return Consumer2<ColorsProvider, RicetteProvider>(builder: (context, colorsModel, ricetteModel, _) {
       return MaterialApp(
         title: 'buonAPPetito',
         debugShowCheckedModeBanner: false,
-        home: widget.seenTutorial ? FirstPage() : TutorialScreen(),
+        home: FirstPage(),
         routes: {
           '/firstpage': (context) => FirstPage(),
           '/dashboardpage': (context) => DashboardPage(),
@@ -128,14 +128,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/carrellopage': (context) => CarrelloPage(),
           '/categoriapage': (context) => CategoriaPage(),
           '/creacategoriapage': (context) {
-            final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-            return CreaCategoriaPage(
-              onUpdate: args['onUpdate'],
-            );
+          final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          return CreaCategoriaPage(
+            onUpdate: args['onUpdate'],
+          );
           },
-          '/ricettepercategoriepage': (context) => RicettePerCategoriePage(
-            nomeCategorie: ModalRoute.of(context)!.settings.arguments as String),
-          '/tutorialscreen': (context) => TutorialScreen(),
+          '/ricettepercategoriepage': (context) => RicettePerCategoriePage(nomeCategorie: ModalRoute.of(context)!.settings.arguments as String),
         },
       );
     });

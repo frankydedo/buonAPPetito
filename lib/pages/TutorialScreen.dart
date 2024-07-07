@@ -1,4 +1,11 @@
+import 'dart:io';
+
+import 'package:buonappetito/providers/ColorsProvider.dart';
+import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buonappetito/pages/FirstPage.dart';// Aggiunto import di UsernamePage
 
@@ -203,6 +210,46 @@ class UsernamePage extends StatefulWidget {
 class _UsernamePageState extends State<UsernamePage> {
   final TextEditingController _controller = TextEditingController();
   String? error;
+  String? percorsoImmagine; // Percorso dell'immagine selezionata
+
+  Future<void> pickImageFromCamera() async {
+    final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (image == null) return;
+
+    String imagePath = await saveImage(image.path);
+    setState(() {
+      percorsoImmagine = imagePath;
+    });
+  }
+
+  Future<void> pickImageFromGallery() async {
+    final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image == null) return;
+
+    String imagePath = await saveImage(image.path);
+    setState(() {
+      percorsoImmagine = imagePath;
+    });
+  }
+
+  Future<String> saveImage(String imagePath) async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String saveDirPath = path.join(appDocDir.path, 'foto_piatti_gz');
+
+    final Directory saveDir = Directory(saveDirPath);
+    if (!await saveDir.exists()) {
+      await saveDir.create(recursive: true);
+    }
+
+    final String fileName = path.basename(imagePath);
+    final String newPath = path.join(saveDirPath, fileName);
+
+    final File newImage = await File(imagePath).copy(newPath);
+
+    return newImage.path;
+  }
 
   void _confirmUsername() {
     if (_controller.text.isEmpty) {
@@ -219,25 +266,9 @@ class _UsernamePageState extends State<UsernamePage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() {
-      if (_controller.text.isNotEmpty && error != null) {
-        setState(() {
-          error = null;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final colorsModel = Provider.of<ColorsProvider>(context);
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -246,8 +277,14 @@ class _UsernamePageState extends State<UsernamePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Benvenuto in buonAPPetito\n      Inserisci il tuo nome',
-                style: TextStyle(color: Colors.blue, fontSize: 24,decorationThickness: 20),
+                'Benvenuto in buonAPPetito',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Inserisci il tuo nome',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.blue, fontSize: 24),
               ),
               TextField(
                 controller: _controller,
@@ -257,13 +294,45 @@ class _UsernamePageState extends State<UsernamePage> {
                 ),
               ),
               SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => pickImageFromCamera(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorsModel.coloreSecondario,
+                    ),
+                    child: Icon(Icons.camera_alt),
+                  ),
+                  SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: () => pickImageFromGallery(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorsModel.coloreSecondario,
+                    ),
+                    child: Icon(Icons.photo_library),
+                  ),
+                ],
+              ),
+              if (percorsoImmagine != null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50), // Forma circolare
+                    child: Image.file(
+                      File(percorsoImmagine!),
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ElevatedButton(
                 onPressed: _confirmUsername,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: colorsModel.coloreSecondario,
+                ),
                 child: Text('Conferma'),
-              ),
-              Text(
-                '\n\n\nUna volta inserito un nome valido ti \n    sarà mostrato un breve tutorial\n che ti aiuterà con l\'utilizzo dell\'app.\n',
-                style: TextStyle(color: Colors.blue, fontSize: 12,decorationThickness: 12),
               ),
             ],
           ),
@@ -272,6 +341,7 @@ class _UsernamePageState extends State<UsernamePage> {
     );
   }
 }
+
 
 class TutorialPageDashboard extends StatelessWidget {
   final VoidCallback onNextPage;

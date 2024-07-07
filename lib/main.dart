@@ -25,6 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
 
+
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
@@ -50,7 +51,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => DifficultyProvider()),
         ChangeNotifierProvider(create: (_) => Timeprovider()),
       ],
-      child: const MyApp(seenTutorial: null,),
+      child: MyApp(seenTutorial: seenTutorial),
     ),
   );
 }

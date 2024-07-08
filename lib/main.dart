@@ -28,8 +28,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async {
+
+
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
 
@@ -46,10 +49,6 @@ void main() async {
   await Hive.openBox('Ricette');
   await Hive.openBox('Colori');
 
-
-
-void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseApi().initNotification();
 

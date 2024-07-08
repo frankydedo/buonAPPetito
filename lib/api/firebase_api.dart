@@ -11,6 +11,8 @@ class FirebaseApi {
       sound: true,
     );
 
+    print('\n\n\n\n\n\n\n\n\n\n\n');
+
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
     } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
@@ -24,6 +26,9 @@ class FirebaseApi {
 
     final apnsToken = await _firebaseMessaging.getAPNSToken();
     print('APNS Token: $apnsToken');
+
+    print('\n\n\n\n\n\n\n\n\n\n\n');
+
 
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
 

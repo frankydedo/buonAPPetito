@@ -84,7 +84,6 @@ class _RicettaPageState extends State<RicettaPage> {
                       const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
                     }
-                    print("deleted");
                     Navigator.pop(context);
                   },
                   icon: Padding(

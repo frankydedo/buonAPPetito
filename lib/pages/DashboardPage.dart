@@ -28,8 +28,8 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    ricetteCarosello = Provider.of<RicetteProvider>(context, listen: false).generaRicetteCarosello();
-    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).ricetteCarosello;
+    ricetteCarosello = Provider.of<RicetteProvider>(context, listen: false).ricetteCarosello;
+    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
     if(ricetteCarosello.isNotEmpty){
       startTimer();
     }
@@ -263,7 +263,9 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: aggiuntiDiRecente[index]);})).then((_){
-                                  Navigator.pushNamed(context, '/firstpage');
+                                  setState(() {});
+                                  aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
+                                  ricetteCarosello = ricetteModel.generaRicetteCarosello();
                                 });
                               },
                               child: AggiuntiDiRecenteTile(

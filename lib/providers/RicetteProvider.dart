@@ -11,7 +11,7 @@ class RicetteProvider extends ChangeNotifier {
 
   RicetteProvider() {
     _loadData();
-    _ricetteCarosello=generaRicetteCarosello();
+    _ricetteCarosello= _ricetteCarosello.isEmpty ? generaRicetteCarosello() : _ricetteCarosello;
   }
 
   List<Ricetta> ricette = [];
@@ -33,7 +33,7 @@ class RicetteProvider extends ChangeNotifier {
   RicetteDB _db = RicetteDB();
 
   Future<void> _loadData() async {
-    // Apri il box specifico per il profilo
+    // Apro il box specifico per il profilo
     _db.loadDataRicette();
 
     //se non ci sono dati (prima apertura)

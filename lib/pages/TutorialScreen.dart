@@ -19,7 +19,7 @@ class TutorialScreen extends StatefulWidget {
 
 class _TutorialScreenState extends State<TutorialScreen> {
   PageController _pageController = PageController(initialPage: 0);
-  int _currentPage = 0;
+  // int _currentPage = 0;
   String? username;
 
   void _onSkip() async {
@@ -66,31 +66,31 @@ class _TutorialScreenState extends State<TutorialScreen> {
         children: [
           PageView(
             controller: _pageController,
-            onPageChanged: (int page) {
-              setState(() {
-                _currentPage = page;
-              });
-            },
+            // onPageChanged: (int page) {
+            //   setState(() {
+            //     _currentPage = page;
+            //   });
+            // },
             children: _pages,
           ),
-          Positioned(
-            bottom: 16.0,
-            left: 16.0,
-            right: 16.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                SizedBox(width: 100.0),
-                if (_currentPage == 0 && (username == null || username!.isEmpty))
-                  SizedBox(width: 100.0) // Disabilita il pulsante "Salta" se il nome utente non è inserito
-                else
-                  ElevatedButton(
-                    onPressed: _onSkip,
-                    child: Text('Salta'),
-                  ),
-              ],
-            ),
-          ),
+          // Positioned(
+          //   bottom: 16.0,
+          //   left: 16.0,
+          //   right: 16.0,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: <Widget>[
+          //       SizedBox(width: 100.0),
+          //       if (_currentPage == 0 && (username == null || username!.isEmpty))
+          //         SizedBox(width: 100.0) // Disabilita il pulsante "Salta" se il nome utente non è inserito
+          //       else
+          //         ElevatedButton(
+          //           onPressed: _onSkip,
+          //           child: Text('Salta'),
+          //         ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );
@@ -186,7 +186,7 @@ class _UsernamePageState extends State<UsernamePage> {
                 fontWeight: FontWeight.w800
               )
             ),
-            SizedBox(height: 130),
+            SizedBox(height: 80),
             Text(
               'Inserisci il tuo nome',
               textAlign: TextAlign.center,

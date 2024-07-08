@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
+import 'dart:io';
+
 import 'package:buonappetito/api/firebase_api.dart';
 import 'package:buonappetito/firebase_options.dart';
 import 'package:buonappetito/models/Ricetta.dart';
@@ -49,8 +51,14 @@ void main() async{
   await Hive.openBox('Ricette');
   await Hive.openBox('Colori');
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseApi().initNotification();
+  // essendo necessario l'account da apple developer (di cui il gruppo non era provvisto) 
+  // per poter inserire la capability per le notifiche push
+  // si è deciso di implementare le notifiche solo sui dispositivi android
+
+  if(Platform.isAndroid){
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await FirebaseApi().initNotification();
+  }
 
   runApp(
     MultiProvider(
@@ -58,7 +66,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) => ColorsProvider()),
         ChangeNotifierProvider(create: (_) => RicetteProvider()),
         ChangeNotifierProvider(create: (_) => DifficultyProvider()),
-        ChangeNotifierProvider(create: (_) => Timeprovider()), // Corretta la maiuscola qui
+        ChangeNotifierProvider(create: (_) => Timeprovider()),
       ],
       child: MyApp(seenTutorial: seenTutorial),
     ),

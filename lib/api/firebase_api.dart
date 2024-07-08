@@ -22,10 +22,21 @@ class FirebaseApi {
     }
 
     final fcmToken = await _firebaseMessaging.getToken();
+
     print('FCM Token: $fcmToken');
+    if (fcmToken != null) {
+      print('FCM Token: $fcmToken');
+    } else {
+      print('FCM Token not available yet');
+    }
 
     final apnsToken = await _firebaseMessaging.getAPNSToken();
-    print('APNS Token: $apnsToken');
+    if (apnsToken != null) {
+      print('APNS Token: $apnsToken');
+    } else {
+      print('APNS Token not available yet');
+    }
+
 
     print('\n\n\n\n\n\n\n\n\n\n\n');
 

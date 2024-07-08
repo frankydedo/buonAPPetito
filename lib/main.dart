@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use, unused_import
 
+import 'package:buonappetito/api/firebase_api.dart';
+import 'package:buonappetito/firebase_options.dart';
 import 'package:buonappetito/models/Ricetta.dart';
 import 'package:buonappetito/models/Categoria.dart';
 import 'package:buonappetito/pages/CarrelloPage.dart';
@@ -18,6 +20,8 @@ import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
 import 'package:buonappetito/providers/RicetteProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -41,6 +45,13 @@ void main() async {
 
   await Hive.openBox('Ricette');
   await Hive.openBox('Colori');
+
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseApi().initNotification();
 
   runApp(
     MultiProvider(
@@ -73,6 +84,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message){
+      print("recived a message while in the foreground");
+      if(message.notification != null){
+        print("Message also contained notification: " +message.notification.toString());
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
+      print("Message clicked");
+    });
+
     WidgetsBinding.instance.addObserver(this);
 
     Future.microtask(() async {

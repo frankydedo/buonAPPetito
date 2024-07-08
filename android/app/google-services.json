@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1052609869278",
+    "project_id": "buonappetito-c14e7",
+    "storage_bucket": "buonappetito-c14e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052609869278:android:2b787fa6a6e095eb9e194f",
+        "android_client_info": {
+          "package_name": "com.example.buonappetito"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYbt-x3JSfi1rDKggrgLbgZG8cUGaVK04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

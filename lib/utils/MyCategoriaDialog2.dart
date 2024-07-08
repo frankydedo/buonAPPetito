@@ -56,6 +56,7 @@ class _MyCategoriaDialogState2 extends State<MyCategoriaDialog2> {
             ElevatedButton(
               onPressed: () {
                 String newCategoriaNome = categoriaController.text.trim();
+                newCategoriaNome = newCategoriaNome[0].toUpperCase()+newCategoriaNome.substring(1).toLowerCase(); // formatto la stringa con solo la prima lettera maiuscola
                 if (newCategoriaNome.isNotEmpty) {
                   Categoria newCategoria = Categoria(nome: newCategoriaNome, ricette: []);
                   setState(() {

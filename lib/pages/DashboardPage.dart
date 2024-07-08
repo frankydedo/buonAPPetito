@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     ricetteCarosello = Provider.of<RicetteProvider>(context, listen: false).generaRicetteCarosello();
-    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).ricetteCarosello;
     if(ricetteCarosello.isNotEmpty){
       startTimer();
     }
@@ -143,12 +143,11 @@ class _DashboardPageState extends State<DashboardPage> {
                           },
                           itemCount: ricetteCarosello.length,
                           itemBuilder: (context, index) {
+                            Ricetta ric = ricetteCarosello[index];
                             return GestureDetector(
                               onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ricetteCarosello[index]);})).then((_){
-                                  setState(() {
-                                      aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
-                                    });
+                                Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ric);})).then((_){
+                                  setState(() {});
                                 });
                               },
                               child: CaroselloTile(ricetta: ricetteCarosello[index])
@@ -214,7 +213,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: ElevatedButton(
                       onPressed: () async{
                         await showFinestraTemporaleDialog(context);
-                        aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
+                        setState(() {
+                          aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
+                        });
                       }, 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorsModel.coloreSecondario,

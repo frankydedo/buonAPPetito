@@ -301,6 +301,7 @@ Future showConfermaDialog ()
                                   "Titolo",
                                   style: GoogleFonts.encodeSans(
                                     textStyle: TextStyle(
+                                      color: colorsModel.textColor,
                                       fontSize: 25,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -328,6 +329,7 @@ Future showConfermaDialog ()
                                       titolo = value;
                                     },
                                     style: TextStyle(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -358,6 +360,7 @@ Future showConfermaDialog ()
                                       "Descrizione",
                                       style: GoogleFonts.encodeSans(
                                         textStyle: TextStyle(
+                                          color: colorsModel.textColor,
                                           fontSize: 25,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -384,6 +387,7 @@ Future showConfermaDialog ()
                                     },
                                     maxLines: 5,
                                     style: TextStyle(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -415,6 +419,7 @@ Future showConfermaDialog ()
                                         "Categorie",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
+                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -439,7 +444,6 @@ Future showConfermaDialog ()
                                               setState(() {
                                                 categorie.clear();
                                                 categorie.addAll(categorieSelezionate);
-                                                print("categs: "+widget.recipe.categorie.toString());
                                               });
                                             }
                                             unfocus();
@@ -507,17 +511,17 @@ Future showConfermaDialog ()
                                                       ),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: colorsModel.tileBackGroudColor,
                                                           borderRadius: BorderRadius.circular(20),
                                                         ),
                                                         child: ListTile(
                                                           title: Text(
                                                             cat,
                                                             style: GoogleFonts.encodeSans(
-                                                                    fontSize: 22,
-                                                                    fontWeight: FontWeight.w500,
-                                                                    color: Colors.black, 
-                                                                  ),
+                                                              color: colorsModel.textColor,
+                                                              fontSize: 22,
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
                                                           )
                                                         ),
                                                       ),
@@ -545,6 +549,7 @@ Future showConfermaDialog ()
                                         "Ingredienti",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
+                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -625,13 +630,14 @@ Future showConfermaDialog ()
                                                       ),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: colorsModel.tileBackGroudColor,
                                                           borderRadius: BorderRadius.circular(20),
                                                         ),
                                                         child: ListTile(
                                                           title: Text(
                                                             "$key".toUpperCase(),
                                                             style: GoogleFonts.encodeSans(
+                                                              color: colorsModel.textColor,
                                                               fontSize: 22,
                                                               fontWeight: FontWeight.w500,
                                                             ),
@@ -639,6 +645,7 @@ Future showConfermaDialog ()
                                                           subtitle: Text(
                                                             "$value",
                                                             style: GoogleFonts.encodeSans(
+                                                              color: colorsModel.textColor,
                                                               fontSize: 18,
                                                               fontWeight: FontWeight.w300,
                                                             ),
@@ -669,6 +676,7 @@ Future showConfermaDialog ()
                                         "Passaggi",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
+                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -748,7 +756,7 @@ Future showConfermaDialog ()
                                                       ),
                                                       child: Container(
                                                         decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: colorsModel.tileBackGroudColor,
                                                           borderRadius: BorderRadius.circular(20),
                                                         ),
                                                         child: ListTile(
@@ -760,7 +768,7 @@ Future showConfermaDialog ()
                                                                   style: GoogleFonts.encodeSans(
                                                                     fontSize: 22,
                                                                     fontWeight: FontWeight.w700,
-                                                                    color: Colors.black, 
+                                                                    color: colorsModel.textColor, 
                                                                   ),
                                                                 ),
                                                                 TextSpan(
@@ -768,7 +776,7 @@ Future showConfermaDialog ()
                                                                   style: GoogleFonts.encodeSans(
                                                                     fontSize: 22,
                                                                     fontWeight: FontWeight.w500,
-                                                                    color: Colors.black, 
+                                                                    color: colorsModel.textColor,
                                                                   ),
                                                                 ),
                                                               ],
@@ -796,6 +804,7 @@ Future showConfermaDialog ()
                             child: Text(
                               "Tempo di Preparazione",
                               style: GoogleFonts.encodeSans(
+                                color: colorsModel.textColor,
                                 fontSize: 25,
                                 fontWeight: FontWeight.w700
                               ),
@@ -808,6 +817,7 @@ Future showConfermaDialog ()
                                 Text(
                                   "Minuti:",
                                   style: GoogleFonts.encodeSans(
+                                    color: colorsModel.textColor,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500
                                   ),
@@ -835,11 +845,10 @@ Future showConfermaDialog ()
                                     onChanged: (value) {
                                       try {
                                         minutiPreparazione = int.parse(value);
-                                      } catch (e) {
-                                        print("Errore di parsing: $e");
-                                      }
+                                      } catch (e) {}
                                     },
                                     style: TextStyle(
+                                      color: colorsModel.textColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.normal,
                                     ),
@@ -867,6 +876,7 @@ Future showConfermaDialog ()
                                 child: Text(
                                   "Difficoltà",
                                   style: GoogleFonts.encodeSans(
+                                    color: colorsModel.textColor,
                                     fontSize: 25,
                                     fontWeight: FontWeight.w700
                                   ),
@@ -924,7 +934,7 @@ Future showConfermaDialog ()
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: colorsModel.tileBackGroudColor,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
@@ -937,6 +947,7 @@ Future showConfermaDialog ()
                                                 Text(
                                                   "Principiante",
                                                   style: GoogleFonts.encodeSans(
+                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -963,7 +974,7 @@ Future showConfermaDialog ()
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: colorsModel.tileBackGroudColor,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
@@ -976,6 +987,7 @@ Future showConfermaDialog ()
                                                 Text(
                                                   "Amatoriale",
                                                   style: GoogleFonts.encodeSans(
+                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -1003,7 +1015,7 @@ Future showConfermaDialog ()
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: colorsModel.tileBackGroudColor,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
@@ -1016,6 +1028,7 @@ Future showConfermaDialog ()
                                                 Text(
                                                   "Intermedio",
                                                   style: GoogleFonts.encodeSans(
+                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -1044,7 +1057,7 @@ Future showConfermaDialog ()
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: colorsModel.tileBackGroudColor,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
@@ -1057,6 +1070,7 @@ Future showConfermaDialog ()
                                                 Text(
                                                   "Chef",
                                                   style: GoogleFonts.encodeSans(
+                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -1086,7 +1100,7 @@ Future showConfermaDialog ()
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: colorsModel.tileBackGroudColor,
                                             borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               width: 1.5,
@@ -1099,6 +1113,7 @@ Future showConfermaDialog ()
                                                 Text(
                                                   "Chef Stellato",
                                                   style: GoogleFonts.encodeSans(
+                                                    color: colorsModel.textColor,
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600
                                                   ),
@@ -1138,6 +1153,7 @@ Future showConfermaDialog ()
                                         "Foto",
                                         style: GoogleFonts.encodeSans(
                                           textStyle: TextStyle(
+                                            color: colorsModel.textColor,
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -1271,7 +1287,7 @@ Future showConfermaDialog ()
                               child: Padding(
                               padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
                                 child: Text(
-                                  "Salva Modifiche ",
+                                  "Salva Modifiche",
                                   style: GoogleFonts.encodeSans(
                                     color: Colors.white,
                                     fontSize: 30,

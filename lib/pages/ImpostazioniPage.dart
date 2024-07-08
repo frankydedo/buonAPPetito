@@ -79,6 +79,12 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
           backgroundColor: colorsModel.backgroudColor,
           appBar: AppBar(
             backgroundColor: colorsModel.backgroudColor,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new_rounded, color: colorsModel.coloreSecondario),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             iconTheme: IconThemeData(
             color: colorsModel.coloreSecondario,
             size: 28.0,
@@ -103,6 +109,23 @@ class _ImpostazioniPageState extends State<ImpostazioniPage> {
                     onTap:() {Navigator.pushNamed(context, '/firstpage');},
                     leading: Icon(Icons.home_rounded, color: colorsModel.coloreSecondario),
                     title: Text("HOME", style: TextStyle(color: colorsModel.coloreSecondario, fontWeight: FontWeight.bold),),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8),
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/categoriapage');
+                    },
+                    leading: Icon(Icons.checklist_rounded,
+                    size: 24,
+                    color: colorsModel.coloreSecondario),
+                    title: Text(
+                      "CATEGORIE",
+                      style: TextStyle(
+                          color: colorsModel.coloreSecondario,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
                 Padding(

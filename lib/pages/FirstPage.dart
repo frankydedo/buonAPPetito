@@ -32,9 +32,8 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Consumer2<ColorsProvider, RicetteProvider>(
         builder: (context, colorsModel, ricetteModel, _) {
-      int cartItemsNumber =
-          Provider.of<RicetteProvider>(context, listen: false).carrello.length;
-
+      int cartItemsNumber =Provider.of<RicetteProvider>(context, listen: false).carrello.length;
+      int numberOfCategory = Provider.of<RicetteProvider>(context, listen:false).categorie.length;
       return Scaffold(
         appBar: AppBar(
           backgroundColor: colorsModel.backgroudColor,
@@ -45,14 +44,14 @@ class _FirstPageState extends State<FirstPage> {
           title: Row(
             children: [
               Spacer(),
-              IconButtonCircolareFoto(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/impostazionipage');
-                },
-                coloreBordo: colorsModel.coloreSecondario,
-                percorsoImmagine: ricetteModel.percorsoFotoProfilo,
-                raggio: 43
-              ),
+              // IconButtonCircolareFoto(
+              //   onPressed: (){
+              //     Navigator.pushNamed(context, '/impostazionipage');
+              //   },
+              //   coloreBordo: colorsModel.coloreSecondario,
+              //   percorsoImmagine: ricetteModel.percorsoFotoProfilo,
+              //   raggio: 43
+              // ),
               CarrelloIcon(
                   onPressed: () {
                     Navigator.pushNamed(context, '/carrellopage').then((_) {
@@ -61,7 +60,15 @@ class _FirstPageState extends State<FirstPage> {
                       });
                     });
                   },
-                  showNumber: cartItemsNumber)
+                  showNumber: cartItemsNumber),
+              IconButtonCircolareFoto(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/impostazionipage');
+                },
+                coloreBordo: colorsModel.coloreSecondario,
+                percorsoImmagine: ricetteModel.percorsoFotoProfilo,
+                raggio: 43
+              ),
             ],
           ),
         ),
@@ -81,6 +88,23 @@ class _FirstPageState extends State<FirstPage> {
                       color: colorsModel.coloreSecondario),
                   title: Text(
                     "HOME",
+                    style: TextStyle(
+                        color: colorsModel.coloreSecondario,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/categoriapage');
+                  },
+                  leading: Icon(Icons.checklist_rounded,
+                  size: 24,
+                  color: colorsModel.coloreSecondario),
+                  title: Text(
+                    "CATEGORIE",
                     style: TextStyle(
                         color: colorsModel.coloreSecondario,
                         fontWeight: FontWeight.bold),

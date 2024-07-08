@@ -26,7 +26,7 @@ class RicetteProvider extends ChangeNotifier {
 
   int finestraTemporale = 1; //numero delle settimane da mostrare in "aggiunti di recente"
   List<String> get carrelloInvertito => carrello.reversed.toList();
-  List<Ricetta> get ricetteCarosello => ricetteCarosello;
+  List<Ricetta> get ricetteCarosello => _ricetteCarosello;
 
   // per il database
 

@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     ricetteCarosello = Provider.of<RicetteProvider>(context, listen: false).generaRicetteCarosello();
-    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
+    aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).ricetteCarosello;
     if(ricetteCarosello.isNotEmpty){
       startTimer();
     }

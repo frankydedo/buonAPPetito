@@ -13,6 +13,7 @@ import 'package:buonappetito/pages/PreferitiPage.dart';
 import 'package:buonappetito/pages/RicettaPage.dart';
 import 'package:buonappetito/pages/RicettePerCategoriePage.dart';
 import 'package:buonappetito/pages/SearchPage.dart';
+import 'package:buonappetito/pages/TutorialScreen.dart';
 import 'package:buonappetito/providers/DifficultyProvider.dart';
 import 'package:buonappetito/providers/TimeProvider.dart';
 import 'package:buonappetito/providers/ColorsProvider.dart';
@@ -21,11 +22,13 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-  
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool seenTutorial = prefs.getBool('seenTutorial') ?? false;
+
   // Ottieni la directory dei documenti dell'app
   final appDocsDir = await getApplicationDocumentsDirectory();
 
@@ -45,17 +48,21 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ColorsProvider()),
         ChangeNotifierProvider(create: (_) => RicetteProvider()),
         ChangeNotifierProvider(create: (_) => DifficultyProvider()),
-        ChangeNotifierProvider(create: (_) => Timeprovider()),
+        ChangeNotifierProvider(create: (_) => Timeprovider()), // Corretta la maiuscola qui
       ],
-      child: const MyApp(),
+      child: MyApp(seenTutorial: seenTutorial),
     ),
   );
 }
 
 
 
+
+
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.seenTutorial});
+
+  final bool seenTutorial;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -117,7 +124,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       return MaterialApp(
         title: 'buonAPPetito',
         debugShowCheckedModeBanner: false,
-        home: FirstPage(),
+        home: widget.seenTutorial? FirstPage() : TutorialScreen(),
         routes: {
           '/firstpage': (context) => FirstPage(),
           '/dashboardpage': (context) => DashboardPage(),

@@ -69,15 +69,6 @@ class _FirstPageState extends State<FirstPage> {
                 percorsoImmagine: ricetteModel.percorsoFotoProfilo,
                 raggio: 43
               ),
-              // CategoriaIcon(
-              //   onPressed: () {
-              //     Navigator.pushNamed(context, '/categoriapage').then((_){
-              //       setState((){
-              //         numberOfCategory=ricetteModel.categorie.length;
-              //       });
-              //     });
-              //   }, showNumber: numberOfCategory,
-              // )
             ],
           ),
         ),

@@ -197,7 +197,7 @@ class _UsernamePageState extends State<UsernamePage> {
               )
             ),
 
-            //nome efoto profilo
+            //nome e foto profilo
              
             Row(
               children: [

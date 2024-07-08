@@ -147,9 +147,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             return GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ric);})).then((_){
-                                  setState(() {
-                                      // aggiuntiDiRecente = Provider.of<RicetteProvider>(context, listen: false).generaAggiuntiDiRecente();
-                                    });
+                                  setState(() {});
                                 });
                               },
                               child: CaroselloTile(ricetta: ricetteCarosello[index])
@@ -215,7 +213,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: ElevatedButton(
                       onPressed: () async{
                         await showFinestraTemporaleDialog(context);
-                        aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
+                        setState(() {
+                          aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
+                        });
                       }, 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorsModel.coloreSecondario,

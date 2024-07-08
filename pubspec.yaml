@@ -97,6 +97,14 @@ flutter:
     - assets/colori/indigo.png
     - assets/colori/verde.png
     - assets/colori/viola.png
+    - assets/foto_piatti_gz/Baccala-alla-livornese_780x520_wm.jpg.avif
+    - assets/foto_piatti_gz/branzino-cartoccio.jpg
+    - assets/foto_piatti_gz/bruschette.jpg.avif
+    - assets/foto_piatti_gz/crostata-di-frutta-2.jpg.avif
+    - assets/foto_piatti_gz/filetto-al-pepe-verde.jpg.avif
+    - assets/foto_piatti_gz/panna cotta-1.jpg.avif
+    - assets/foto_piatti_gz/tiramisu.jpg.avif
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

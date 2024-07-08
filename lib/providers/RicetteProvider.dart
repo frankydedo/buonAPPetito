@@ -164,6 +164,9 @@ class RicetteProvider extends ChangeNotifier {
     if(preferiti.contains(r)){
       rimuoviDaiPreferiti(r);
     }
+    if (ricetteCarosello.contains(r)){
+      ricetteCarosello.remove(r);
+    }
     categorie.removeWhere((c) => c.ricette.isEmpty);
 
     ricette.remove(r);

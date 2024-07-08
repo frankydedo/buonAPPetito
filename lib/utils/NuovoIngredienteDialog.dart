@@ -132,13 +132,13 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 unit = newValue!;
-                                enableQuantita = (unit == 'grammi');
+                                enableQuantita = (unit != 'Q.B.');
                                 if (!enableQuantita) {
                                   provQuantita = '';
                                 }
                               });
                             },
-                            items: <String>['grammi', 'Q.B.']
+                            items: <String>['grammi', 'ml', 'unità', 'Q.B.']
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

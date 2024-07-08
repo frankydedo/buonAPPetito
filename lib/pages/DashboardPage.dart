@@ -147,7 +147,10 @@ class _DashboardPageState extends State<DashboardPage> {
                             return GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context){return RicettaPage(recipe: ric);})).then((_){
-                                  setState(() {});
+                                  setState(() {
+                                    aggiuntiDiRecente = ricetteModel.generaAggiuntiDiRecente();
+                                    ricetteCarosello = ricetteModel.generaRicetteCarosello();
+                                  });
                                 });
                               },
                               child: CaroselloTile(ricetta: ricetteCarosello[index])

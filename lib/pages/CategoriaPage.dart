@@ -53,14 +53,6 @@ class _CategoriaPageState extends State<CategoriaPage> {
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                 child: Column(
                     children: [
-                      // Text(
-                      //   'LISTA DI CATEGORIE',
-                      //   style: GoogleFonts.encodeSans(
-                      //     color: colorsModel.coloreTitoli,
-                      //     fontSize: 22,
-                      //     fontWeight: FontWeight.w800,
-                      //   ),
-                      // ),
                       SizedBox(height: 20),
                       Expanded(
                         child: ListView.builder(
@@ -102,7 +94,9 @@ class _CategoriaPageState extends State<CategoriaPage> {
                                         ],
                                       ),
                                       Text(
-                                        '$numeroRicette ricette',
+                                        numeroRicette == 1
+                                        ? '$numeroRicette ricetta'
+                                        : '$numeroRicette ricette',
                                         style: GoogleFonts.encodeSans(
                                           color: colorsModel.coloreTitoli,
                                           fontSize: 18,

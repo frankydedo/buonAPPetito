@@ -169,255 +169,262 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
               ),
             ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: controller,
-                  cursorColor: colorsModel.coloreSecondario,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.create_rounded, color: Colors.grey.shade600),
-                    hintText: 'Crea una categoria...',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: colorsModel.coloreSecondario,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 88,
-                      width: screenWidth * 0.4,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: colorsModel.coloreSecondario,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                          elevation: 5,
-                          shadowColor: Colors.black,
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Ricetta',
-                              style: GoogleFonts.encodeSans(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700
-                              )
-                            ),
-                            Text(
-                              'Esistente',
-                              style: GoogleFonts.encodeSans(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700
-                              )
-                            ),
-                          ],
-                        ),
-                        onPressed: () {
-                          // Naviga alla schermata per aggiungere una ricetta esistente
-                          _showSelectRicettaDialog(context, widget.onUpdate, controller.text.trim(), ricetteSelezionate);
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 88,
-                      width: screenWidth * 0.4,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: colorsModel.coloreSecondario,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                          elevation: 5,
-                          shadowColor: Colors.black,
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Nuova',
-                              style: GoogleFonts.encodeSans(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700
-                              )
-                            ),
-                            Text(
-                              'Ricetta',
-                              style: GoogleFonts.encodeSans(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700
-                              )
-                            ),
-                          ],
-                        ),
-                        onPressed: () async {
-                          // Naviga alla schermata per creare una nuova ricetta e aspetta il risultato
-                          final nuovaRicetta = await Navigator.push(context, MaterialPageRoute(builder: (context) => NuovaRicettaPage(categorieCanBeEmpty: true)));
-                          if (nuovaRicetta != null && nuovaRicetta is Ricetta) {
-                            setState(() {
-                              ricetteSelezionate.add(nuovaRicetta);
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                // Title for selected recipes
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Ricette Selezionate',
-                    style: GoogleFonts.encodeSans(
-                      color: colorsModel.coloreTitoli,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                ricetteSelezionate.isNotEmpty
-                    ? Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: controller,
+                    cursorColor: colorsModel.coloreSecondario,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.create_rounded, color: Colors.grey.shade600),
+                      hintText: 'Crea una categoria...',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: SizedBox(
-                        height: ricetteSelezionate.length * 88 <150 ? 150 : min(ricetteSelezionate.length * 125, 470),
-                        width: screenWidth * 0.9,
-                        child: ClipRRect(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          color: colorsModel.coloreSecondario,
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
+                    style: TextStyle(
+                      color: Provider.of<ColorsProvider>(context, listen: false).textColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 88,
+                        width: screenWidth * 0.4,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: colorsModel.coloreSecondario,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Ricetta',
+                                style: GoogleFonts.encodeSans(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700
+                                )
+                              ),
+                              Text(
+                                'Esistente',
+                                style: GoogleFonts.encodeSans(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700
+                                )
+                              ),
+                            ],
+                          ),
+                          onPressed: () {
+                            // Naviga alla schermata per aggiungere una ricetta esistente
+                            _showSelectRicettaDialog(context, widget.onUpdate, controller.text.trim(), ricetteSelezionate);
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 88,
+                        width: screenWidth * 0.4,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: colorsModel.coloreSecondario,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Nuova',
+                                style: GoogleFonts.encodeSans(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700
+                                )
+                              ),
+                              Text(
+                                'Ricetta',
+                                style: GoogleFonts.encodeSans(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700
+                                )
+                              ),
+                            ],
+                          ),
+                          onPressed: () async {
+                            // Naviga alla schermata per creare una nuova ricetta e aspetta il risultato
+                            final nuovaRicetta = await Navigator.push(context, MaterialPageRoute(builder: (context) => NuovaRicettaPage(categorieCanBeEmpty: true)));
+                            if (nuovaRicetta != null && nuovaRicetta is Ricetta) {
+                              setState(() {
+                                ricetteSelezionate.add(nuovaRicetta);
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  // Title for selected recipes
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Ricette Selezionate',
+                      style: GoogleFonts.encodeSans(
+                        color: colorsModel.coloreTitoli,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  ricetteSelezionate.isNotEmpty
+                      ? Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(20),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                            child: ListView.builder(
-                              itemCount: ricetteSelezionate.length,
-                              itemBuilder: (context, index) {
-                                Ricetta ric = ricetteSelezionate[index];
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Slidable(
-                                    endActionPane: ActionPane(
-                                      motion: DrawerMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          onPressed: (context) {
-                                            setState(() {
-                                              ricetteSelezionate.remove(ric);
-                                            });
-                                          },
-                                          borderRadius: BorderRadius.circular(20),
-                                          icon: Icons.delete_outline,
-                                          backgroundColor: Colors.red,
-                                        )
-                                      ],
+                        ),
+                        child: SizedBox(
+                          height: ricetteSelezionate.length * 88 <150 ? 150 : min(ricetteSelezionate.length * 125, 470),
+                          width: screenWidth * 0.9,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                              child: ListView.builder(
+                                itemCount: ricetteSelezionate.length,
+                                itemBuilder: (context, index) {
+                                  Ricetta ric = ricetteSelezionate[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Slidable(
+                                      endActionPane: ActionPane(
+                                        motion: DrawerMotion(),
+                                        children: [
+                                          SlidableAction(
+                                            onPressed: (context) {
+                                              setState(() {
+                                                ricetteSelezionate.remove(ric);
+                                              });
+                                            },
+                                            borderRadius: BorderRadius.circular(20),
+                                            icon: Icons.delete_outline,
+                                            backgroundColor: Colors.red,
+                                          )
+                                        ],
+                                      ),
+                                      child: GestureDetector(
+                                        child: RicettaTileOrizzontale(ricetta: ric),
+                                      ),
                                     ),
-                                    child: GestureDetector(
-                                      child: RicettaTileOrizzontale(ricetta: ric),
-                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.heart_broken_rounded,
+                                color: Colors.grey,
+                                size: 80,
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                'Nessuna ricetta selezionata',
+                                style: GoogleFonts.encodeSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Aggiungi o crea ricette \nper vederle qui.',
+                                style: GoogleFonts.encodeSans(
+                                  textStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
+                  // Spacer(),
+            
+                  // tasto crea categoria
+            
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: colorsModel.coloreSecondario,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        elevation: 5,
+                        shadowColor: Colors.black,
                       ),
-                    )
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.heart_broken_rounded,
-                              color: Colors.grey,
-                              size: 80,
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              'Nessuna ricetta selezionata',
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
+                          child: Center(
+                            child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              "Crea Categoria",
                               style: GoogleFonts.encodeSans(
                                 textStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Aggiungi o crea ricette \nper vederle qui.',
-                              style: GoogleFonts.encodeSans(
-                                textStyle: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                Spacer(),
-
-                // tasto crea categoria
-
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: colorsModel.coloreSecondario,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      elevation: 5,
-                      shadowColor: Colors.black,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
-                        child: Center(
-                          child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            "Crea Categoria",
-                            style: GoogleFonts.encodeSans(
-                              textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 30,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
                           ),
-                        ),
+                      ),
+                      ),
+                      onPressed: () {
+                        salvaPressed(ricetteSelezionate);
+                      },
                     ),
-                    ),
-                    onPressed: () {
-                      salvaPressed(ricetteSelezionate);
-                    },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -446,7 +453,8 @@ void _showSelectRicettaDialog(BuildContext context, Function onUpdate, String ca
           }).toList();
 
           return AlertDialog(
-            title: Text('Seleziona una o più ricette'),
+            backgroundColor: Provider.of<ColorsProvider>(context, listen: false).dialogBackgroudColor,
+            title: Text('Seleziona una o più ricette', style: TextStyle(color: Provider.of<ColorsProvider>(context, listen: false).textColor)),
             content: Container(
               height: MediaQuery.of(context).size.height * 0.5,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -458,6 +466,11 @@ void _showSelectRicettaDialog(BuildContext context, Function onUpdate, String ca
                     decoration: InputDecoration(
                       labelText: 'Cerca',
                       border: OutlineInputBorder(),
+                    ),
+                    style: TextStyle(
+                      color: Provider.of<ColorsProvider>(context, listen: false).textColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
                     ),
                     onChanged: (value) {
                       setState(() {
@@ -476,7 +489,7 @@ void _showSelectRicettaDialog(BuildContext context, Function onUpdate, String ca
                         bool isRicettaSelected = temporarySelectedRicette.contains(ricetta);
 
                         return ListTile(
-                          title: Text(ricetta.titolo),
+                          title: Text(ricetta.titolo, style: TextStyle(color: Provider.of<ColorsProvider>(context, listen: false).textColor),),
                           leading: Checkbox(
                             activeColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
                             value: isRicettaSelected,

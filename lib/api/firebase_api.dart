@@ -11,8 +11,6 @@ class FirebaseApi {
       sound: true,
     );
 
-    print('\n\n\n\n\n\n\n\n\n\n\n');
-
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
     } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
@@ -36,10 +34,6 @@ class FirebaseApi {
     } else {
       print('APNS Token not available yet');
     }
-
-
-    print('\n\n\n\n\n\n\n\n\n\n\n');
-
 
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
 

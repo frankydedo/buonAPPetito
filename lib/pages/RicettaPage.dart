@@ -83,8 +83,8 @@ class _RicettaPageState extends State<RicettaPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Ricetta cancellata correttamente", style: TextStyle(color: Colors.white, fontSize: 18),), backgroundColor: Color.fromRGBO(26, 35, 126, 1)),
                       );
+                      Navigator.pop(context);
                     }
-                    Navigator.pop(context);
                   },
                   icon: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -290,7 +290,7 @@ class _RicettaPageState extends State<RicettaPage> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(12.0),
+                            padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -347,6 +347,23 @@ class _RicettaPageState extends State<RicettaPage> {
                                 ],
                               ),
                             ),
+                          ),
+
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(20, 0,0,0),
+                                child: Text(
+                                  "PER UNA PERSONA",
+                                  style: GoogleFonts.encodeSans(
+                                    color: colorsModel.isLightMode ? colorsModel.coloreTitoli : Colors.grey.shade700,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                              ),
+                              Spacer()
+                            ],
                           ),
 
                           Padding(

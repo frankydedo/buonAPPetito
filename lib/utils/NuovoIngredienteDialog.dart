@@ -179,7 +179,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
                           // Solo se l'unità è 'grammi', aggiunge il valore della quantità
-                          if (unit == 'grammi') {
+                          if (unit != "Q.B.") {
                             Map<String, String> nuovoIngrediente = {provIngrediente!: provQuantita! + " " + unit};
                             Navigator.pop(context, nuovoIngrediente);
                           } else {

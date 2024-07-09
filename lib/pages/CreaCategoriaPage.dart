@@ -36,7 +36,6 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
   void salvaPressed(List<Ricetta> ricetteSelezionate) {
     // Logica per salvare la categoria e le ricette selezionate
     String categoriaNome = controller.text.trim();
-    categoriaNome = categoriaNome[0].toUpperCase()+categoriaNome.substring(1).toLowerCase(); // formatto la stringa con solo la prima lettera maiuscola
     if (categoriaNome.isEmpty) {
       // Mostra un messaggio di errore se il nome della categoria è vuoto
       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,7 +71,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Il nome della categoria esiste già. Inserisci un nome diverso.',
+            'Una ricetta con lo stesso nome è già presente.',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -84,6 +83,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
       return; // Esce dal metodo senza eseguire ulteriori azioni
     } else {
       // crea la nuova categoria
+      categoriaNome = categoriaNome[0].toUpperCase()+categoriaNome.substring(1).toLowerCase(); // formatto la stringa con solo la prima lettera maiuscola
       Provider.of<RicetteProvider>(context, listen: false).aggiungiNuovaCategoria(Categoria(nome: categoriaNome, ricette: []));
 
       // Aggiungi la nuova categoria alle ricette selezionate
@@ -354,7 +354,7 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                             ),
                             SizedBox(height: 16),
                             Text(
-                              'Non hai selezionato nessuna ricetta',
+                              'Nessuna ricetta selezionata',
                               style: GoogleFonts.encodeSans(
                                 textStyle: TextStyle(
                                   color: Colors.grey,
@@ -396,15 +396,22 @@ class _CreaCategoriaPageState extends State<CreaCategoriaPage> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 6.0, top: 6, right: 30, left:30),
-                        child: Text(
-                          "Crea Categoria",
-                          style: GoogleFonts.encodeSans(
-                            color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700
+                        child: Center(
+                          child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "Crea Categoria",
+                            style: GoogleFonts.encodeSans(
+                              textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                    ),
+                    ),
                     onPressed: () {
                       salvaPressed(ricetteSelezionate);
                     },
@@ -423,112 +430,122 @@ void _showSelectRicettaDialog(BuildContext context, Function onUpdate, String ca
   // Lista per tenere traccia delle ricette selezionate temporaneamente
   List<Ricetta> temporarySelectedRicette = List.from(ricetteSelezionate);
 
+  // Variabile per il testo della ricerca
+  String searchText = '';
+
   showDialog(
     context: context,
     builder: (context) {
       return StatefulBuilder(
         builder: (context, setState) {
+          // l'utente può cercare per nome, categoria o ingredienti
+          List<Ricetta> filteredRicette = Provider.of<RicetteProvider>(context, listen: false).ricette.where((ricetta) {
+            return ricetta.titolo.toLowerCase().contains(searchText.toLowerCase()) ||
+                   ricetta.ingredienti.keys.toList().any((ingrediente) => ingrediente.toLowerCase().contains(searchText.toLowerCase())) ||
+                   ricetta.categorie.toList().any((categoria) => categoria.toLowerCase().contains(searchText.toLowerCase()));
+          }).toList();
+
           return AlertDialog(
             title: Text('Seleziona una o più ricette'),
             content: Container(
-              width: double.minPositive,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: Provider.of<RicetteProvider>(context, listen: false).ricette.length,
-                itemBuilder: (context, index) {
-                  Ricetta ricetta = Provider.of<RicetteProvider>(context, listen: false).ricette[index];
-                  bool isRicettaSelected = temporarySelectedRicette.contains(ricetta);
-
-                  return ListTile(
-                    title: Text(ricetta.titolo),
-                    leading: Checkbox(
-                      activeColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
-                      value: isRicettaSelected,
-                      onChanged: (value) {
-                        setState(() {
-                          if (value != null && value) {
-                            temporarySelectedRicette.add(ricetta);
-                          } else {
-                            temporarySelectedRicette.remove(ricetta);
-                          }
-                        });
-                      },
+              height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Barra di ricerca
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Cerca',
+                      border: OutlineInputBorder(),
                     ),
-                    onTap: () {
+                    onChanged: (value) {
                       setState(() {
-                        if (isRicettaSelected) {
-                          temporarySelectedRicette.remove(ricetta);
-                        } else {
-                          temporarySelectedRicette.add(ricetta);
-                        }
+                        searchText = value;
                       });
                     },
-                  );
-                },
+                  ),
+                  SizedBox(height: 10),
+                  // Lista delle ricette filtrate
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: filteredRicette.length,
+                      itemBuilder: (context, index) {
+                        Ricetta ricetta = filteredRicette[index];
+                        bool isRicettaSelected = temporarySelectedRicette.contains(ricetta);
+
+                        return ListTile(
+                          title: Text(ricetta.titolo),
+                          leading: Checkbox(
+                            activeColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
+                            value: isRicettaSelected,
+                            onChanged: (value) {
+                              setState(() {
+                                if (value != null && value) {
+                                  temporarySelectedRicette.add(ricetta);
+                                } else {
+                                  temporarySelectedRicette.remove(ricetta);
+                                }
+                              });
+                            },
+                          ),
+                          onTap: () {
+                            setState(() {
+                              if (isRicettaSelected) {
+                                temporarySelectedRicette.remove(ricetta);
+                              } else {
+                                temporarySelectedRicette.add(ricetta);
+                              }
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             actions: [
               TextButton(
-                child: Text('ANNULLA',
-                 style: GoogleFonts.encodeSans(
-                  color: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700
-                 ),
-                 ),
+                child: Text(
+                  'ANNULLA',
+                  style: GoogleFonts.encodeSans(
+                    color: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
-
-            ElevatedButton(
-              onPressed: (){
-                ricetteSelezionate.clear();
-                ricetteSelezionate.addAll(temporarySelectedRicette);
-                onUpdate();
-                Navigator.pop(context);
-              }, 
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+              ElevatedButton(
+                onPressed: () {
+                  ricetteSelezionate.clear();
+                  ricetteSelezionate.addAll(temporarySelectedRicette);
+                  onUpdate();
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  elevation: 5,
+                  shadowColor: Colors.black,
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                elevation: 5,
-                shadowColor: Colors.black,
+                child: Text(
+                  'SALVA',
+                  style: GoogleFonts.encodeSans(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
-              child: Text('SALVA',
-                 style: GoogleFonts.encodeSans(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700
-                 ),
-               ),
-              )
-              // TextButton(
-              //   child: Text('SALVA',
-              //    style: GoogleFonts.encodeSans(
-              //     color: Provider.of<ColorsProvider>(context, listen: false).coloreSecondario,
-              //     fontSize: 20,
-              //     fontWeight: FontWeight.w500
-              //    ),
-              //    ),
-              //   onPressed: () {
-              //     // Update the original selected recipes list
-              //     ricetteSelezionate.clear();
-              //     ricetteSelezionate.addAll(temporarySelectedRicette);
-
-              //     // Aggiungi le categorie selezionate alla ricetta
-              //     // for (Ricetta ricetta in ricetteSelezionate) {
-              //     //   if (!ricetta.getCategorie().contains(categoriaNome)) {
-              //     //     ricetta.aggiungiNuovaCategoria(categoriaNome);
-              //     //   }
-              //     // }
-              //     onUpdate();
-              //     Navigator.pop(context);
-              //   },
-              // ),
             ],
           );
         },

@@ -97,6 +97,11 @@ class _SearchPageState extends State<SearchPage> {
                 child: TextField(
                   controller: controller,
                   cursorColor: colorsModel.coloreSecondario,
+                  style: TextStyle(
+                    color: colorsModel.textColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                  ),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search, color: Colors.grey.shade600),
                     hintText: 'Cerca una ricetta...',
@@ -104,10 +109,6 @@ class _SearchPageState extends State<SearchPage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20)
                     ),
-                    // border: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(20),
-                    //   borderSide: BorderSide(color: Colors.black),
-                    // ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(

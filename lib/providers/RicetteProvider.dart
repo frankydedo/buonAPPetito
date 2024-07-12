@@ -174,6 +174,11 @@ class RicetteProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void saveData(){
+    _saveData();
+    notifyListeners();
+  }
+
 
   List<Ricetta> generaAggiuntiDiRecente(){
     List<Ricetta> aggiuntiDiRecente = ricette.where((r) => r.dataAggiunta.isAfter(DateTime.now().subtract(Duration(days: 7 * finestraTemporale)))).toList();

@@ -66,7 +66,7 @@ class _NuovoPassaggioDialogState extends State<NuovoPassaggioDialog> {
                           provPassaggio = value;
                         },
                         style: TextStyle(
-                          color: Colors.black,
+                          color: colorsModel.textColor,
                           fontSize: 20,
                           fontWeight: FontWeight.normal,
                         ),

@@ -68,7 +68,7 @@ class _NuovoIngredienteDialogState extends State<NuovoIngredienteDialog> {
                           provIngrediente = value;
                         },
                         style: TextStyle(
-                          color: Colors.black,
+                          color: colorsModel.textColor,
                           fontSize: 20,
                           fontWeight: FontWeight.normal,
                         ),

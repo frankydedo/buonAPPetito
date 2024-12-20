@@ -5,7 +5,7 @@
 
 
 buonAPPetito is a flutter app in which the user can store its favourite recipes in order to retrive them whenever he wants.
-Several fanctions are available, like:
+Several functions are available, like:
 
   - suggested recipes;
   - recently added;
@@ -15,7 +15,7 @@ Several fanctions are available, like:
   - settings (profile, photo, nickname, app theme);
   - etc.
 
-Here are same screenshots.
+Here are some screenshots.
 
 <img width="139" alt="image" src="https://github.com/user-attachments/assets/f6438296-a7cb-4e65-864b-5996a90906f0" />
 <img width="149" alt="image" src="https://github.com/user-attachments/assets/82fd77c2-130c-41a0-b709-67715cdd7134" />

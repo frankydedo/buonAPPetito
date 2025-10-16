@@ -4,12 +4,12 @@
 
 
 
-buonAPPetito is a flutter app in which the user can store its favourite recipes in order to retrieve them whenever he wants.
+buonAPPetito is a flutter app in which the user can store its favorite recipes in order to retrieve them whenever he wants.
 Several functions are available, like:
 
   - suggested recipes;
   - recently added;
-  - favourites;
+  - favorites;
   - search by name or by filters (e.g. difficulty, time, category);
   - shopping cart that can be automatically filled depending on the recipe(s) user wants to cook;
   - settings (profile, photo, nickname, app theme);
